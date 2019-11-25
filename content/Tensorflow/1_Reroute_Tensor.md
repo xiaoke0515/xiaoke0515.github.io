@@ -44,11 +44,13 @@ SaveGraph('tensorboard/after/', sess)
 
 在图建好后，tensorboard中的图如下所示：
 
-![reroute之前](https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_before.jpg)
+![reroute之前](./1-figure_before.jpg)
+;(https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_before.jpg)
 
 在修改图时，首先用consumers函数求b节点的所有下一级节点，即mul节点。随后用op._update_input()函数来将mul的第1个输入从b节点变成c节点。修改后图如下所示：
 
-![reroute之后](https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_after.jpg)
+![reroute之后](./1-figure_after.jpg)
+;(https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_after.jpg)
 
 这样，mul的输入从b节点变成了c节点。
 
