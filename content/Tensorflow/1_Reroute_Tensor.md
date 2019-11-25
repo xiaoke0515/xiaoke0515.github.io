@@ -52,7 +52,7 @@ SaveGraph('tensorboard/after/', sess)
 
 这样，mul的输入从b节点变成了c节点。
 
-##在某个节点后插入op
+## 在某个节点后插入op
 
 这个是在看tensorflow.contrib.quantize模块的create_training_graph函数代码后学会的。实现了个简单的InsertOP函数来完成这个功能。
 
