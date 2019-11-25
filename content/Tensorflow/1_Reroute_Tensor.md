@@ -3,6 +3,7 @@
 网上大部分教程都说tensorflow的图建好后是不能修改的，但是实际上是可以的。
 
 ## Operation._update_input()函数
+
 ```python
 op._update_input(i, new_tensor)
 ```
@@ -52,6 +53,7 @@ SaveGraph('tensorboard/after/', sess)
 这样，mul的输入从b节点变成了c节点。
 
 ##在某个节点后插入op
+
 这个是在看tensorflow.contrib.quantize模块的create_training_graph函数代码后学会的。实现了个简单的InsertOP函数来完成这个功能。
 
 ```python
