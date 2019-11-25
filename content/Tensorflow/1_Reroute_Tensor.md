@@ -40,3 +40,4 @@ SaveGraph('tensorboard/after/', sess)
 ```
 
 在28行图建好后，tensorboard中的图如下所示：
+![reroute之前](https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_before.jpg)
