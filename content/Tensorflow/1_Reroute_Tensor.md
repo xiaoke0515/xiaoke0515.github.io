@@ -72,6 +72,7 @@ def InsertOP(in_tensor, out_tensor, exclude_consumers):
 * exclude_consumers：是一个op的列表，表示in_tensor的所有consumer中，不希望插入out_tensor的。
 
 用法：
+
 首先，定义一个要插入的op：
 ```python
 def f(in_tensor):
@@ -81,5 +82,9 @@ def f(in_tensor):
 ```
 它输出两个变量：
 * out_tensor：NewOP输出的tensor。
-* exclude_consumers：插入的NewOP给in_tensor带来的新的consumers，这是一个值得注意的地方。如果NewOP是一个节点，则exclude_consumers=[NewOP]；如果NewOP是一个子图，那么exclude_consumers则是NewOP子图中所有的in_tensor的consumer。如果不把这些consumer排除，那么在InsertOP后计算图会形成环。
+* exclude_consumers：插入的NewOP给in_tensor带来的新的consumers，这是一个值得注意的地方。
+如果NewOP是一个节点，则exclude_consumers=[NewOP]；
+如果NewOP是一个子图，那么exclude_consumers则是NewOP子图中所有的in_tensor的consumer。
+如果不把这些consumer排除，那么在InsertOP后计算图会形成环。
+
 之后再用InsertOP函数插入NewOP。
