@@ -3,8 +3,10 @@
 网上大部分教程都说tensorflow的图建好后是不能修改的，但是实际上是可以的。
 
 ```python
-function op._update_input()
+op._update_input(i, new_tensor)
 ```
+此函数的作用是将op的第i个输入变成new_tensor。
+
 
 ```markdown
 
