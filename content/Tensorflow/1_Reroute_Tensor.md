@@ -2,7 +2,7 @@
 
 网上大部分教程都说tensorflow的图建好后是不能修改的，但是实际上是可以的。
 
-```markdown
+```python
 function op._update_input()
 ```
 
