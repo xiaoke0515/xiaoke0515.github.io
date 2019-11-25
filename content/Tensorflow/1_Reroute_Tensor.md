@@ -25,7 +25,8 @@ def SaveGraph(tb_dir, sess):
 a = tf.placeholder(shape=[], dtype=tf.float32, name='a')
 b = tf.placeholder(shape=[], dtype=tf.float32, name='b')
 c = tf.placeholder(shape=[], dtype=tf.float32, name='c')
-  
+
+#build graph  
 d = a*b
 
 # save graph
@@ -40,8 +41,12 @@ op._update_input(1, c)#<update the first input of op with c>
 SaveGraph('tensorboard/after/', sess)
 ```
 
-在28行图建好后，tensorboard中的图如下所示：
+在图建好后，tensorboard中的图如下所示：
 
 ![reroute之前](https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_before.jpg)
 
-随后在第
+在修改图时，首先用consumers函数求b节点的所有下一级节点，即mul节点。随后用op._update_input()函数来将mul的第1个输入从b节点变成c节点。修改后图如下所示：
+
+![reroute之后](https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_after.jpg)
+
+
