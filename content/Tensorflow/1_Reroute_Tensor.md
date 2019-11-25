@@ -49,4 +49,37 @@ SaveGraph('tensorboard/after/', sess)
 
 ![reroute之后](https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_after.jpg)
 
+这样，mul的输入从b节点变成了c节点。
 
+##在某个节点后插入op
+这个是在看tensorflow.contrib.quantize模块的create_training_graph函数代码后学会的。实现了个简单的InsertOP函数来完成这个功能。
+
+```python
+def InsertOP(in_tensor, out_tensor, exclude_consumers):
+    consumers = in_tensor.consumers()
+    for con in consumers:
+        if con in exclude_consumers:
+            continue
+        for i, inp in enumerate(con.inputs):
+            if inp is in_tensor:
+                con._update_input(i, out_tensor)
+    return
+```
+
+参数：
+* in_tensor：在此tensor后插入op。
+* out_tensor：插入的op的输出的tensor。
+* exclude_consumers：是一个op的列表，表示in_tensor的所有consumer中，不希望插入out_tensor的。
+
+用法：
+首先，定义一个要插入的op：
+```python
+def f(in_tensor):
+    out_tensor = NewOP(in_tensor)
+    exclude_consumers = ...
+    return out_tensor, exclude_consumers
+```
+它输出两个变量：
+* out_tensor：NewOP输出的tensor。
+* exclude_consumers：插入的NewOP给in_tensor带来的新的consumers，这是一个值得注意的地方。如果NewOP是一个节点，则exclude_consumers=[NewOP]；如果NewOP是一个子图，那么exclude_consumers则是NewOP子图中所有的in_tensor的consumer。如果不把这些consumer排除，那么在InsertOP后计算图会形成环。
+之后再用InsertOP函数插入NewOP。
