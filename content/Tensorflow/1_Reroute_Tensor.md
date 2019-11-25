@@ -7,11 +7,6 @@
 op._update_input(i, new_tensor)
 ```
 
-{% codeblock [lang:python] [demo] [start:0] [url] [link text] %}
-code snippet
-{% endcodeblock %} 
-
-
 此函数的作用是将op的第i个输入变成new_tensor。
 
 下面的例子是用该函数将mul op的输入从b变成c。
