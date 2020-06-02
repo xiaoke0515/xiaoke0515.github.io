@@ -1,13 +1,24 @@
-theme: jekyll-theme-slate
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
 
-title: Blog - Y.L. Zhao
-description: > 
+# Site settings
+title: Blog of Y.L.Zhao
+email: ylzhao1996@qq.com
+description: > # this means to ignore newlines until "baseurl:"
+#  Write an awesome description for your new site here. You can edit this
+#  line in _config.yml. It will appear in your document head meta (for
+#  Google search results) and in your feed.xml site description.
   My blog is built on Nov. 24, 2019. It is used to record something I am interested in.
-  About [ME](./content/resume/resume.md)
 
 
-links1:
-  - name: all
-    url:  /content
-    type: recent
-    external: false
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://xiaoke0515.github.io/" # the base hostname & protocol for your site
+twitter_username: xiaoke0515
+github_username:  xiaoke0515
+
+# Build settings
+markdown: kramdown
