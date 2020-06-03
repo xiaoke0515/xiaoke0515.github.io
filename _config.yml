@@ -6,19 +6,24 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: Blog of Y.L.Zhao
+title: Y.L. Zhao
 email: ylzhao1996@qq.com
 description: > # this means to ignore newlines until "baseurl:"
-#  Write an awesome description for your new site here. You can edit this
-#  line in _config.yml. It will appear in your document head meta (for
-#  Google search results) and in your feed.xml site description.
-  My blog is built on Nov. 24, 2019. It is used to record something I am interested in.
+  My site is built on Nov. 24, 2019. It is used to record something I am interested in.
 
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://xiaoke0515.github.io/" # the base hostname & protocol for your site
-twitter_username: xiaoke0515
+#permalink: /:year/:month/:day/:title
+twitter_username: y.zhao
 github_username:  xiaoke0515
 
 # Build settings
+#auto: true
 markdown: kramdown
+
+# collections
+collections:
+  tag:
+    output: true
+

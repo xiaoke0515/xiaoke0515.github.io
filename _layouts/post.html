@@ -8,6 +8,16 @@ layout: default
     <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}</p>
   </header>
 
+  <div class="tags">
+    {% assign sortedTags = page.tags | sort %}
+    <small>Tags: </small>
+    {%for tag in sortedTags %}
+      <span class="tag">
+        <small> <a href="{{ site.baseurl }}/_posts/{{{ tag }}"> #{{ tag }}</a> </small>
+      </span>
+    {% endfor %}
+  </div>
+
   <div class="post-content" itemprop="articleBody">
     {{ content }}
   </div>
