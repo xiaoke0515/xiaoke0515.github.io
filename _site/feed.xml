@@ -6,9 +6,159 @@
 </description>
     <link>https://xiaoke0515.github.io//</link>
     <atom:link href="https://xiaoke0515.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 03 Jun 2020 14:23:16 +0800</pubDate>
-    <lastBuildDate>Wed, 03 Jun 2020 14:23:16 +0800</lastBuildDate>
+    <pubDate>Sun, 07 Jun 2020 19:46:48 +0800</pubDate>
+    <lastBuildDate>Sun, 07 Jun 2020 19:46:48 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Time signal 论文：Analysis and Design of Energy Efficient Time Domain Signal Processing</title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Zhengyu Chen, Jie Gu, Analysis and Design of Energy Efficient Time Domain Signal Processing, International Symposium on Low Power Electronic Design (ISLPED), 2016.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;My first time ever heard about using time signal for ReRAM accelerator. Found this paper to learn some details.&lt;/p&gt;
+
+&lt;p&gt;Let’s see abstract first：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Time domain signal processing (TDSP) encodes information into time rather than voltage with higher efficiency than conventional digital design. This paper performs systematical analysis on the design principle and energy efficiency of TDSP. Variation impact, which poses significant challenges to TDSP, is evaluated and a variation driven design methodology is proposed to achieve an optimum tradeoff between energy efficiency and design robustness. Several novel circuit level design techniques such as dual encoding strategy and bit-scalable design are also proposed in this work to significantly improve the energy efficiency of TDSP. Design example on a critical building block of facial recognition application was used to demonstrate the potential of the technique. The result in a 45nm technology shows 3.3X energy-delay product reduction and 34% area saving can be achieved using TDSP compared with conventional digital.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;1-time-signal-processing&quot;&gt;1. Time signal processing&lt;/h2&gt;
+
+&lt;h3 id=&quot;11-system&quot;&gt;1.1 system&lt;/h3&gt;
+
+&lt;p&gt;System is described in figure below. It’s composed of en/decoders and time domain logic.&lt;/p&gt;
+
+&lt;!--![System overview](/img/ReRAM_DNN_accelerator/1_figure_system.jpg)--&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_system.jpg&quot; alt=&quot;System overview&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;12-time-encoder&quot;&gt;1.2 Time Encoder&lt;/h3&gt;
+
+&lt;p&gt;Time encoder is also called DTC (Digital-to-Time Converter). Figure below shows some impementation of DTCs.&lt;/p&gt;
+
+&lt;!--![TE](/img/ReRAM_DNN_accelerator/1_figure_te.jpg)--&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_te.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tech. (a) is proposed in &lt;a href=&quot;https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;amp;arnumber=6630119&quot;&gt;This Paper&lt;/a&gt;. &lt;script type=&quot;math/tex&quot;&gt;T_{in}&lt;/script&gt; is the time signal, such as &lt;em&gt;Step Signal&lt;/em&gt;. &lt;script type=&quot;math/tex&quot;&gt;D_{in}&lt;/script&gt; is the digital signal. By selecting different path with &lt;script type=&quot;math/tex&quot;&gt;D_{in}&lt;/script&gt;, delay of signal &lt;script type=&quot;math/tex&quot;&gt;T_{out}&lt;/script&gt; is decided. The design suffer from energy problem because of (1) multiple gates (2) signal returning to original stage which cause &lt;script type=&quot;math/tex&quot;&gt;2\times&lt;/script&gt; energy consumption.&lt;/p&gt;
+
+&lt;p&gt;Tech. (b) can encode multi-bit with a single inverter. (1) &lt;script type=&quot;math/tex&quot;&gt;3\times&lt;/script&gt; energy saving compared to (a). (2) energy consumption is a constant even if embedding multi-bit.&lt;/p&gt;
+
+&lt;p&gt;Tech. (c)(d) are “Cascade TE”. To be further discuess in the next sections.&lt;/p&gt;
+
+&lt;h3 id=&quot;13-dual-encoding-scheme&quot;&gt;1.3 Dual-encoding Scheme&lt;/h3&gt;
+
+&lt;p&gt;Compared to Tech. (a), which only encode information to only one kind of edge (raising or falling), this scheme means that encode information into both the two edges for energy saving. For more details, please refer to the paper.&lt;/p&gt;
+
+&lt;h3 id=&quot;14-time-logic-cell-tlc&quot;&gt;1.4 Time Logic Cell (TLC)&lt;/h3&gt;
+
+&lt;p&gt;No more words, see the figure below.&lt;/p&gt;
+
+&lt;!--![TLC](/img/ReRAM_DNN_accelerator/1_figure_TLC.jpg)--&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_TLC.jpg&quot; alt=&quot;TLC&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;15-time-decoder&quot;&gt;1.5 Time Decoder&lt;/h3&gt;
+
+&lt;p&gt;A technology is described in figure blew. It is explicit and no more words.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_TDC.jpg&quot; alt=&quot;TDC&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;2-variation-driven-design-methodology&quot;&gt;2. Variation-Driven Design Methodology&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-variation-driven-design&quot;&gt;2.1 Variation driven design&lt;/h3&gt;
+
+&lt;p&gt;The auther introduces a energy-variation trade-off here. Consider the two kind of Tech. (c) (named cascade) and (d) (named cascode). As shown in figure below, cascade-type DTC has a larger energy but a smaller variation. Cascode-type DTC has an opposite characteristic. In order to trade off between energy and variation, a hybrid DTC is used.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_tradeoff.jpg&quot; alt=&quot;trade off&quot; width=&quot;500&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Details of energy consumption and variation is described with the following equations:&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{cascade\_TE}=\sqrt{2N}\sigma_1&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{cascode\_TE}=\sqrt{\sum_{i=1}^{n}\left(A+N_i\sigma_2\right)^2}&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{hybrid\_TE}=\sqrt{\sum_{i=1}^m\left(A+N_i\sigma_2\right)^2+\sum_{j=1}^{n-m}2^j\left(A+2^{m-1}\sigma_2\right)^2}&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;E_{cascade\_TE}=2N\cdot CV_{dd}^2&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;E_{cascode\_TE}=2nCV_{dd}^2&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;E_{hybrid\_TE}=\left(m+2^{n-m}\right)*2CV^2=\left(2m+2^{n-m+1}\right)CV^2&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;22-simulated-variation-impact&quot;&gt;2.2 Simulated Variation Impact&lt;/h3&gt;
+
+&lt;p&gt;Simulated variation compared to conventional adder is shown in the figure below. It is amazing that time signal computing can achieve a such low variation.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_variation_result.jpg&quot; alt=&quot;variation_res&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;3-case-study&quot;&gt;3. Case Study&lt;/h2&gt;
+
+&lt;p&gt;The following cases are studed in the origin paper:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Big-scalable design&lt;/li&gt;
+  &lt;li&gt;Efficient MAX/MIN/CMP operation&lt;/li&gt;
+  &lt;li&gt;Parallel operation with short cirtical path&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;For more details, please refer to the origin paper.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-conclusion&quot;&gt;4. Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Energy and area result is summrized in the following table:&lt;/p&gt;
+
+&lt;!--| | CPU | Conventional ASIC | TDSP |
+|:---:|:---:|:---:|:---:|
+|Technology||||--&gt;
+
+&lt;table align=&quot;center&quot; border=&quot;1&quot; frame=&quot;box&quot;&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;td&gt;&amp;nbsp;&lt;/td&gt; 
+        &lt;th&gt;CPU&lt;/th&gt; 
+        &lt;th&gt;Conventional ASIC&lt;/th&gt; 
+        &lt;th&gt;TDSP&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt; Technology &lt;/th&gt;
+        &lt;td colspan=&quot;3&quot;&gt; 45nm, 1.1V &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt; Energy (fJ)&lt;/th&gt;
+        &lt;td&gt; 2304 &lt;/td&gt;
+        &lt;td&gt; 323 &lt;/td&gt;
+        &lt;td&gt; 224.4 &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt; Area (&lt;span&gt;&lt;script type=&quot;math/tex&quot;&gt;\mu m^2&lt;/script&gt;&lt;/span&gt;)&lt;/th&gt;
+        &lt;td&gt; N/A &lt;/td&gt;
+        &lt;td&gt; 115 &lt;/td&gt;
+        &lt;td&gt; 75.6 &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt; Delay (ns)&lt;/th&gt;
+        &lt;td&gt; 3.2 &lt;/td&gt;
+        &lt;td&gt; 0.98 &lt;/td&gt;
+        &lt;td&gt; 0.43 &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;thoughts&quot;&gt;Thoughts&lt;/h2&gt;
+
+&lt;p&gt;First ReRAM-based DNN accelerator that uses time signal is &lt;a href=&quot;&quot;&gt;Timely architecture&lt;/a&gt;. The author claims that TDC is much more energy efficient than ADC. This paper solve my confusion on how DTC and TDC works.&lt;/p&gt;
+
+&lt;p&gt;Actually, I think DAC and TDC can also be a conversion pair. With a capacitance used as integrator, along with a comparator, analog signal can be converted to time signal.&lt;/p&gt;
+
+&lt;p&gt;Moreover, the design in timely uses a circuit to store time signal, which is also what I am confused about.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 06 Jun 2020 00:00:00 +0800</pubDate>
+        <link>https://xiaoke0515.github.io//reram_paper/2020/06/06/1_Time_signal.html</link>
+        <guid isPermaLink="true">https://xiaoke0515.github.io//reram_paper/2020/06/06/1_Time_signal.html</guid>
+        
+        <category>analog computing</category>
+        
+        <category>analog signal processing</category>
+        
+        
+        <category>ReRAM_paper</category>
+        
+      </item>
     
       <item>
         <title>如何在建好TF图后修改图</title>
