@@ -29,4 +29,18 @@ layout: default
     {{ content }}
   </div>
 
+  <nav>
+    <h1 class="page-heading">Categories</h1>
+
+    <ul class="categories">
+      {% for category in site.categories %}
+        <li>
+          <span>
+            <a href="{{ category.url | prepend: site.baseurl }}">{{ category | first }}</a>
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+
 </article>
