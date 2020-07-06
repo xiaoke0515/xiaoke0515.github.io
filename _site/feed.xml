@@ -6,9 +6,107 @@
 </description>
     <link>https://xiaoke0515.github.io//</link>
     <atom:link href="https://xiaoke0515.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 07 Jun 2020 21:38:32 +0800</pubDate>
-    <lastBuildDate>Sun, 07 Jun 2020 21:38:32 +0800</lastBuildDate>
+    <pubDate>Mon, 06 Jul 2020 18:09:41 +0800</pubDate>
+    <lastBuildDate>Mon, 06 Jul 2020 18:09:41 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V</title>
+        <description>&lt;p&gt;前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;您的主机不满足在启用 Hyper-V 或 Device/Credential Guard 的情况下运行 VMware。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;打开 VMWare 官方文档就是让关闭 Hyper-V。但是其实在我的个人版 Windows 是没有 Hyper-V 选项的。在搜了半天 Hyper-V 是啥才想到可能是和我前几天打开的那个虚拟机功能有关。&lt;/p&gt;
+
+&lt;p&gt;在我关闭这个功能之后，事情并没有改善，我一度以为思路错了，直到我继续谷歌半天才确定就是这个辣鸡虚拟机功能搞的鬼。***&lt;/p&gt;
+
+&lt;h2 id=&quot;解决问题记录&quot;&gt;解决问题记录&lt;/h2&gt;
+
+&lt;p&gt;原因还是 Hyper-V 和 VMWare 不兼容。所以这里实际记录的实际上是如何彻底关闭 Hyper-V。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;小娜-&amp;gt;启用和关闭Windows功能-&amp;gt;关闭 虚拟机平台（或Hyper-V）&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/img/others/1_figure_windows_function.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;小娜-&amp;gt;计算机管理-&amp;gt;服务和应用程序-&amp;gt;服务-&amp;gt;把所有带 Hyper-V 的停止并禁用。&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/img/others/1_figure_windows_service.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;重启计算机&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;问题解决。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 06 Jul 2020 00:00:00 +0800</pubDate>
+        <link>https://xiaoke0515.github.io//others/2020/07/06/1_Close_Hyper-V.html</link>
+        <guid isPermaLink="true">https://xiaoke0515.github.io//others/2020/07/06/1_Close_Hyper-V.html</guid>
+        
+        <category>record</category>
+        
+        
+        <category>others</category>
+        
+      </item>
+    
+      <item>
+        <title>FMNN 论文：A Switched Operation Approach to Sampled-Data Control Stabilization of Fuzzy Memristive Neural Networks With Time-Varying Delay</title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;authors:
+Xin Wang , Ju H. Park , Shouming Zhong , and Huilan Yang of Southwest University, Chongqing 400715, China&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;X. Wang, J. H. Park, S. Zhong and H. Yang, “A Switched Operation Approach to Sampled-Data Control Stabilization of Fuzzy Memristive Neural Networks With Time-Varying Delay,” in IEEE Transactions on Neural Networks and Learning Systems, vol. 31, no. 3, pp. 891-900, March 2020, doi: 10.1109/TNNLS.2019.2910574.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Here is abstract:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;This paper investigates the issue of sampled-data stabilization for Takagi-Sugeno fuzzy memristive neural networks (FMNNs) with time-varying delay. First, the concerned FMNNs are transformed into the tractable fuzzy NNs based on the excitatory and inhibitory of memristive synaptic weights using a new convex combination technique. Meanwhile, a switched fuzzy sampled-data controller is employed for the first time to tackle stability problems related to FMNNs. Then, the novel stabilization criteria of the FMNNs are established using the fuzzy membership functions (FMFs)-dependent Lyapunov-Krasovskii functional. This sufficiently utilizes information from not only the delayed state and the actual sampling pattern but also the FMFs. Two simulation examples are presented to demonstrate the feasibility and validity of the proposed method.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;background--takagisugeno-ts-fuzzy-model&quot;&gt;Background : Takagi–Sugeno (T–S) fuzzy model&lt;/h2&gt;
+
+&lt;p&gt;Refering: &lt;a href=&quot;https://wenku.baidu.com/view/5c66a4a5ad51f01dc281f178.html&quot;&gt;T-S模糊模型&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;contribution&quot;&gt;Contribution:&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;FMNNs were transformed into the tractable fuzzy NNs using a new convex combination
+technique by taking the excitatory and inhibitory of memristive synaptic weights into account.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A switched FSDC (SFSDC) was designed for the first time to solve the stabilization problem of FMNNs.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;A switched FSDC (SFSDC) was designed for the first time to solve the stabilization problem of FMNNs.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;network-model&quot;&gt;Network Model:&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;(to be continued)&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 02 Jul 2020 00:00:00 +0800</pubDate>
+        <link>https://xiaoke0515.github.io//mnn_paper/2020/07/02/1_FMNN.html</link>
+        <guid isPermaLink="true">https://xiaoke0515.github.io//mnn_paper/2020/07/02/1_FMNN.html</guid>
+        
+        <category>analog computing</category>
+        
+        <category>MNN</category>
+        
+        
+        <category>MNN_paper</category>
+        
+      </item>
     
       <item>
         <title>Time signal 论文：Analysis and Design of Energy Efficient Time Domain Signal Processing</title>

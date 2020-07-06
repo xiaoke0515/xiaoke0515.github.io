@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Y.L. Zhao</title>
-  <meta name="description" content="My site is built on Nov. 24, 2019. It is used to record something I am interested in.
-">
+  <title>VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V</title>
+  <meta name="description" content="前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://xiaoke0515.github.io//category.html">
+  <link rel="canonical" href="https://xiaoke0515.github.io//others/2020/07/06/1_Close_Hyper-V.html">
   <link rel="alternate" type="application/rss+xml" title="Y.L. Zhao" href="https://xiaoke0515.github.io//feed.xml">
 </head>
 
@@ -63,40 +62,110 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
-    <script src="/js/get-query-string.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        var viewed_category = GetQueryString("category");
-        document.getElementById('viewed_category').value = "Category:" + viewed_category;
-        window.onload = function(){
-                $("#viewed_category").val(viewed_category);
-            }
-    </script>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  
-  <h1 class="page-heading">Category: <input type="text" id="viewed_category"></h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V</h1>
+    <p class="post-meta"><time datetime="2020-07-06T00:00:00+08:00" itemprop="datePublished">Jul 6, 2020</time></p>
+  </header>
 
+  <div class="categories">
+    <small>Category:</small>
+    <span class="category">
+      <small> <a href="">others</a></small>
+    </span>
+  </div>
 
-  <ul class="post-list">
+  <div class="tags">
     
+    <small>Tags: </small>
     
+      <span class="tag">
+        <small> <a href="/_posts/"> #record</a> </small>
+      </span>
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  </ul>
+  </div>
 
+  <div class="post-content" itemprop="articleBody">
+    <p>前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。</p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<blockquote>
+  <p>您的主机不满足在启用 Hyper-V 或 Device/Credential Guard 的情况下运行 VMware。</p>
+</blockquote>
 
-</div>
+<p>打开 VMWare 官方文档就是让关闭 Hyper-V。但是其实在我的个人版 Windows 是没有 Hyper-V 选项的。在搜了半天 Hyper-V 是啥才想到可能是和我前几天打开的那个虚拟机功能有关。</p>
+
+<p>在我关闭这个功能之后，事情并没有改善，我一度以为思路错了，直到我继续谷歌半天才确定就是这个辣鸡虚拟机功能搞的鬼。***</p>
+
+<h2 id="解决问题记录">解决问题记录</h2>
+
+<p>原因还是 Hyper-V 和 VMWare 不兼容。所以这里实际记录的实际上是如何彻底关闭 Hyper-V。</p>
+
+<ol>
+  <li>
+    <p>小娜-&gt;启用和关闭Windows功能-&gt;关闭 虚拟机平台（或Hyper-V）</p>
+
+    <p><img src="/img/others/1_figure_windows_function.jpg" alt="" /></p>
+  </li>
+  <li>
+    <p>小娜-&gt;计算机管理-&gt;服务和应用程序-&gt;服务-&gt;把所有带 Hyper-V 的停止并禁用。</p>
+
+    <p><img src="/img/others/1_figure_windows_service.jpg" alt="" /></p>
+  </li>
+  <li>
+    <p>重启计算机</p>
+  </li>
+</ol>
+
+<p>问题解决。</p>
+
+  </div>
+
+  <nav>
+    <h1 class="page-heading">Categories</h1>
+
+    <ul class="categories">
+      
+        <li>
+          <span>
+            <a href="">jekyll</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">update</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">tensorflow</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">ReRAM_paper</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">MNN_paper</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">others</a>
+          </span>
+        </li>
+      
+    </ul>
+  </nav>
+
+</article>
 
       </div>
     </div>
