@@ -4,11 +4,168 @@
     <title>Y.L. Zhao</title>
     <description>My site is built on Nov. 24, 2019. It is used to record something I am interested in.
 </description>
-    <link>https://xiaoke0515.github.io//</link>
-    <atom:link href="https://xiaoke0515.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Jul 2020 18:09:41 +0800</pubDate>
-    <lastBuildDate>Mon, 06 Jul 2020 18:09:41 +0800</lastBuildDate>
-    <generator>Jekyll v3.1.6</generator>
+    <link>http://localhost:5000/</link>
+    <atom:link href="http://localhost:5000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 09 Jul 2020 12:13:08 +0800</pubDate>
+    <lastBuildDate>Thu, 09 Jul 2020 12:13:08 +0800</lastBuildDate>
+    <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>接网线</title>
+        <description>&lt;p&gt;人生中第一次接网线，踩了一些坑。记录一下。&lt;/p&gt;
+
+&lt;h2 id=&quot;解决问题记录&quot;&gt;解决问题记录&lt;/h2&gt;
+
+&lt;h3 id=&quot;工具&quot;&gt;工具&lt;/h3&gt;
+
+&lt;p&gt;网线钳，水晶头若干（一定要买的足够多）&lt;/p&gt;
+
+&lt;h3 id=&quot;步骤&quot;&gt;步骤&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;将外皮剥出足够长。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;解缠绕，拉直所有线。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;按照如下顺序排列：（不同协议可能不同，最好查一下。我这次是同一根网线所以顺序一样即可）&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;橙白-橙-绿白-蓝-蓝白-绿-棕白-棕&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;不必剥线，夹断取齐，插入水晶头&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;用网线钳夹紧，网线钳夹到完全合死即可。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Tue, 07 Jul 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:5000/others/2020/07/07/2_Net_wire.html</link>
+        <guid isPermaLink="true">http://localhost:5000/others/2020/07/07/2_Net_wire.html</guid>
+        
+        <category>net wire</category>
+        
+        
+        <category>others</category>
+        
+      </item>
+    
+      <item>
+        <title>Candance 1： Candance的初步使用</title>
+        <description>&lt;h2 id=&quot;candance的安装&quot;&gt;Candance的安装&lt;/h2&gt;
+
+&lt;p&gt;使用的是已经安装好的 candance ，没有涉及到安装问题，留出位置，以后遇到问题再补。&lt;/p&gt;
+
+&lt;h2 id=&quot;candance-启动&quot;&gt;Candance 启动&lt;/h2&gt;
+
+&lt;p&gt;命令：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;virtuoso &amp;amp;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;在我安装好的这个cadance中，virtuoso 打开的是6.1版本，icfb 打开的是5.1版本。6.1版本用的是oa库，5.1版本用的是cdb库，这两个库不兼容，使用时要注意。在此我用的是6.1版本。&lt;/p&gt;
+
+&lt;h2 id=&quot;安装库&quot;&gt;安装库&lt;/h2&gt;
+
+&lt;p&gt;安装时要注意是 cdb 库还是 oa 库。在我电脑中的库中，SMIC_13mmrf_1P6M_30k 是 cdb 库，FreePDK-45 是 OA 库，所以这里我将安装FreePDK库。&lt;/p&gt;
+
+&lt;p&gt;Tools - Library Manager - File - New Library， Directory选择 /path/to/pdk/FreePDK45/ncsu_basekit/lib/，Name 输入NCSU_Devices_FreePDK45，之后 OK。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_New_Library.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在如下对话框中选择 Do not need process information 即可。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Technology_File_for_New_Library.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;之后回到如下界面，在新的Library中出现 cell，即说明安装成功。每一个 cell 都有许多 View。双击一个 view 可浏览，如下图。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Library_Install_Done.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;新建-cellview&quot;&gt;新建 cellview&lt;/h2&gt;
+
+&lt;p&gt;在安装好库后就可以画 cell 了。在画 cell 之前要新建一个库，用于存放我们画的 cell。步骤与上一节相同，只不过我们的路径选择一个空文件夹即可。在这里我新建的库的名字叫 proj1。&lt;/p&gt;
+
+&lt;p&gt;File - New - CellView， Library 选择我们新建的库， cell 起一个名字（这里我要画一个反相器），Type 选择 schematic。OK 之后就会打开一个画图的界面。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_New_File.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;反相器由两个 mos 组成。接下来我们将画这两个 mos 。 Create - Instance， Library 选择 FreePDK 那个库， cell 选择一个mos， View 选择 Symbol， Name 随意取个名字。此时在光标处就会出现一个 mos 管的形状，点击就可以把它放在任何想要的位置。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Add_Instance.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;画好两个 mos 后，接下来增加四个 pin， 分别对应 Vin 、 Vout 、 VDD 、 GND。 Create - Pin ，根据需要选择输入-输出类型，之后添加即可。最后将两个 mos 和四个 pin 用线连接起来。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Inverter_Done.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;之后 File- Check and Save ，无 error 即可。&lt;/p&gt;
+
+&lt;h2 id=&quot;搭建-inverter-的仿真电路&quot;&gt;搭建 inverter 的仿真电路&lt;/h2&gt;
+
+&lt;p&gt;首先要给我们画的 inverter 创建一个 symbol。这里我们为方便进行自动生成。 Create - CellView - From CellView。 按如下默认设置即可，选择 OK 。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_CellView_from_CellView.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;此时在 Library Manager 中，我们发现我们画的 inverter 多了个 symbol 的 view，说明创建成功。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Add_Symbol_Done.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;之后我们将搭建 inverter 的仿真电路。同样地，我们新建一个 cellview，我这里取名为 inverter_sim，按下图添加周边电路元件。下面的元件都可以在 basic 库中找到。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_fiugre_Inverter_sim.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;同样地， check and save。&lt;/p&gt;
+
+&lt;h2 id=&quot;spectre-仿真&quot;&gt;Spectre 仿真&lt;/h2&gt;
+
+&lt;p&gt;在我们的 inverter_sim 的原理图界面，Launch - ADE L。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_ADEL.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;首先添加 model library。Setup - Model Library。 路径为 /path/to/pdk/FreePDK45/ncsu_basekit/models/hspice/tran_models ， 把所有的 .inc 文件添加进去。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Model_Library_Setup.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Analysis - choose， 这里就和 spice 一样了，选择一种 analysis 。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Choosing_Analysis.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Simulation - NetList and Run，弹出一个窗口，无 error 和 warning。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Simulation.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Results - Direct Plot - Main Form，按如下图选择并在原理图中选择一个点来 plot。我这里选择 inverter 的 Vout，直接在原理图上选择对应位置即可。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Direct_Plot_Form.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;之后就会弹出一个窗口，就是绘制的曲线。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Visualization.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;至此，我们的第一个 candance project 仿真完成。&lt;/p&gt;
+</description>
+        <pubDate>Tue, 07 Jul 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:5000/ic/design/2020/07/07/1_Candance_Intro.html</link>
+        <guid isPermaLink="true">http://localhost:5000/ic/design/2020/07/07/1_Candance_Intro.html</guid>
+        
+        <category>ic</category>
+        
+        <category>candance</category>
+        
+        <category>virtuoso</category>
+        
+        
+        <category>IC</category>
+        
+        <category>Design</category>
+        
+      </item>
     
       <item>
         <title>VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V</title>
@@ -45,8 +202,8 @@
 &lt;p&gt;问题解决。&lt;/p&gt;
 </description>
         <pubDate>Mon, 06 Jul 2020 00:00:00 +0800</pubDate>
-        <link>https://xiaoke0515.github.io//others/2020/07/06/1_Close_Hyper-V.html</link>
-        <guid isPermaLink="true">https://xiaoke0515.github.io//others/2020/07/06/1_Close_Hyper-V.html</guid>
+        <link>http://localhost:5000/others/2020/07/06/1_Close_Hyper-V.html</link>
+        <guid isPermaLink="true">http://localhost:5000/others/2020/07/06/1_Close_Hyper-V.html</guid>
         
         <category>record</category>
         
@@ -96,8 +253,8 @@ technique by taking the excitatory and inhibitory of memristive synaptic weights
 &lt;p&gt;&lt;strong&gt;(to be continued)&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 02 Jul 2020 00:00:00 +0800</pubDate>
-        <link>https://xiaoke0515.github.io//mnn_paper/2020/07/02/1_FMNN.html</link>
-        <guid isPermaLink="true">https://xiaoke0515.github.io//mnn_paper/2020/07/02/1_FMNN.html</guid>
+        <link>http://localhost:5000/mnn_paper/2020/07/02/1_FMNN.html</link>
+        <guid isPermaLink="true">http://localhost:5000/mnn_paper/2020/07/02/1_FMNN.html</guid>
         
         <category>analog computing</category>
         
@@ -248,8 +405,8 @@ technique by taking the excitatory and inhibitory of memristive synaptic weights
 &lt;p&gt;Moreover, the design in timely uses a circuit to store time signal, which is also what I am confused about.&lt;/p&gt;
 </description>
         <pubDate>Sat, 06 Jun 2020 00:00:00 +0800</pubDate>
-        <link>https://xiaoke0515.github.io//reram_paper/2020/06/06/1_Time_signal.html</link>
-        <guid isPermaLink="true">https://xiaoke0515.github.io//reram_paper/2020/06/06/1_Time_signal.html</guid>
+        <link>http://localhost:5000/reram_paper/2020/06/06/1_Time_signal.html</link>
+        <guid isPermaLink="true">http://localhost:5000/reram_paper/2020/06/06/1_Time_signal.html</guid>
         
         <category>analog computing</category>
         
@@ -285,33 +442,33 @@ technique by taking the excitatory and inhibitory of memristive synaptic weights
     &lt;span class=&quot;n&quot;&gt;writer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_graph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   
     
-&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dtype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;a&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dtype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;b&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dtype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;c&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dtype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'a'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dtype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dtype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'c'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;span class=&quot;c&quot;&gt;#build graph  &lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#build graph  
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;
 
-&lt;span class=&quot;c&quot;&gt;# save graph&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Session&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;SaveGraph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;tensorboard/before/&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# save graph
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Session&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;SaveGraph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'tensorboard/before/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;span class=&quot;c&quot;&gt;# reroute operation mul&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;op&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#&amp;lt;op here is the mul operation of d&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_update_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#&amp;lt;update the first input of op with c&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# save new graph&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;SaveGraph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;tensorboard/after/&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# reroute operation mul
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;op&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#&amp;lt;op here is the mul operation of d&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_update_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#&amp;lt;update the first input of op with c&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# save new graph
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SaveGraph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'tensorboard/after/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;在图建好后，tensorboard中的图如下所示：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/img/Tensorflow/1/1_figure_before.jpg&quot; alt=&quot;reroute之前&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:5000/img/Tensorflow/1/1_figure_before.jpg&quot; alt=&quot;reroute之前&quot; /&gt;
 &lt;!-- (https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_before.jpg)--&gt;&lt;/p&gt;
 
 &lt;p&gt;在修改图时，首先用consumers函数求b节点的所有下一级节点，即mul节点。随后用op._update_input()函数来将mul的第1个输入从b节点变成c节点。修改后图如下所示：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/img/Tensorflow/1/1_figure_after.jpg&quot; alt=&quot;reroute之后&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:5000/img/Tensorflow/1/1_figure_after.jpg&quot; alt=&quot;reroute之后&quot; /&gt;
 &lt;!-- (https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_after.jpg)--&gt;&lt;/p&gt;
 
 &lt;p&gt;这样，mul的输入从b节点变成了c节点。&lt;/p&gt;
@@ -358,8 +515,8 @@ technique by taking the excitatory and inhibitory of memristive synaptic weights
 &lt;p&gt;之后再用InsertOP函数插入NewOP。&lt;/p&gt;
 </description>
         <pubDate>Wed, 03 Jun 2020 12:25:00 +0800</pubDate>
-        <link>https://xiaoke0515.github.io//tensorflow/2020/06/03/1_Reroute_Tensor.html</link>
-        <guid isPermaLink="true">https://xiaoke0515.github.io//tensorflow/2020/06/03/1_Reroute_Tensor.html</guid>
+        <link>http://localhost:5000/tensorflow/2020/06/03/1_Reroute_Tensor.html</link>
+        <guid isPermaLink="true">http://localhost:5000/tensorflow/2020/06/03/1_Reroute_Tensor.html</guid>
         
         <category>tensorflow</category>
         
@@ -379,15 +536,15 @@ technique by taking the excitatory and inhibitory of memristive synaptic weights
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 02 Jun 2020 23:17:39 +0800</pubDate>
-        <link>https://xiaoke0515.github.io//jekyll/update/2020/06/02/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">https://xiaoke0515.github.io//jekyll/update/2020/06/02/welcome-to-jekyll.html</guid>
+        <link>http://localhost:5000/jekyll/update/2020/06/02/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://localhost:5000/jekyll/update/2020/06/02/welcome-to-jekyll.html</guid>
         
         <category>test</category>
         

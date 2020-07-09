@@ -10,8 +10,8 @@
   <meta name="description" content="如何在建好TF图后修改图">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://xiaoke0515.github.io//tensorflow/2020/06/03/1_Reroute_Tensor.html">
-  <link rel="alternate" type="application/rss+xml" title="Y.L. Zhao" href="https://xiaoke0515.github.io//feed.xml">
+  <link rel="canonical" href="http://localhost:5000/tensorflow/2020/06/03/1_Reroute_Tensor.html">
+  <link rel="alternate" type="application/rss+xml" title="Y.L. Zhao" href="http://localhost:5000/feed.xml">
 </head>
 
 
@@ -114,29 +114,29 @@
 <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'b'</span><span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'c'</span><span class="p">)</span>
 
-<span class="c">#build graph  </span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span>
+<span class="c1">#build graph  
+</span><span class="n">d</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span>
 
-<span class="c"># save graph</span>
-<span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="c1"># save graph
+</span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
 <span class="n">SaveGraph</span><span class="p">(</span><span class="s">'tensorboard/before/'</span><span class="p">,</span> <span class="n">sess</span><span class="p">)</span>
 
-<span class="c"># reroute operation mul</span>
-<span class="n">op</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">consumers</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="c">#&lt;op here is the mul operation of d&gt;</span>
-<span class="n">op</span><span class="o">.</span><span class="n">_update_input</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span><span class="c">#&lt;update the first input of op with c&gt;</span>
-
-<span class="c"># save new graph</span>
-<span class="n">SaveGraph</span><span class="p">(</span><span class="s">'tensorboard/after/'</span><span class="p">,</span> <span class="n">sess</span><span class="p">)</span>
+<span class="c1"># reroute operation mul
+</span><span class="n">op</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">consumers</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="c1">#&lt;op here is the mul operation of d&gt;
+</span><span class="n">op</span><span class="o">.</span><span class="n">_update_input</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span><span class="c1">#&lt;update the first input of op with c&gt;
+</span>
+<span class="c1"># save new graph
+</span><span class="n">SaveGraph</span><span class="p">(</span><span class="s">'tensorboard/after/'</span><span class="p">,</span> <span class="n">sess</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>在图建好后，tensorboard中的图如下所示：</p>
 
-<p><img src="/img/Tensorflow/1/1_figure_before.jpg" alt="reroute之前" />
+<p><img src="http://localhost:5000/img/Tensorflow/1/1_figure_before.jpg" alt="reroute之前" />
 <!-- (https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_before.jpg)--></p>
 
 <p>在修改图时，首先用consumers函数求b节点的所有下一级节点，即mul节点。随后用op._update_input()函数来将mul的第1个输入从b节点变成c节点。修改后图如下所示：</p>
 
-<p><img src="/img/Tensorflow/1/1_figure_after.jpg" alt="reroute之后" />
+<p><img src="http://localhost:5000/img/Tensorflow/1/1_figure_after.jpg" alt="reroute之后" />
 <!-- (https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_after.jpg)--></p>
 
 <p>这样，mul的输入从b节点变成了c节点。</p>
@@ -222,6 +222,18 @@
         <li>
           <span>
             <a href="">others</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">IC</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">Design</a>
           </span>
         </li>
       
