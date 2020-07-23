@@ -50,6 +50,8 @@ tags:
 		```
 		python setup.py install
 		```
+
+	[2020-07-03 更新： setuptool会有版本问题，最新的版本不支持python2，要选择之前的版本]
 		
 1. 修改pip源
 
@@ -88,6 +90,8 @@ tags:
 			cd build/scons
 			python setup.py install
 			```
+
+	[2020-07-03 更新： scons 会有版本问题，最新的版本不支持 python2 ，要选择之前的版本，亲测 3.1.2 之前的版本可以]
 
 ## GEM5的其他依赖
 
