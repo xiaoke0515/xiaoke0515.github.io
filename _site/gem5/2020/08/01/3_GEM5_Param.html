@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>GEM5- GEM5 给 SimObject 添加 Param</title>
+  <meta name="description" content="先废话一下吧， GEM5 仿真器的代码组织是以 SimObject 为核心的。以 CPU 和 memory 两类重要的模块为例，在各自的文件夹下定义了好多个 class ，每个 class 都以 SimObject 类为基类。GEM5 提供了给 SimObject 添加参数的方式，在 http://www.gem...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://localhost:5000/gem5/2020/08/01/3_GEM5_Param.html">
+  <link rel="alternate" type="application/rss+xml" title="Y.L. Zhao" href="http://localhost:5000/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Y.L. Zhao</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/resume/resume.html">Yilong Zhao</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">GEM5- GEM5 给 SimObject 添加 Param</h1>
+    <p class="post-meta"><time datetime="2020-08-01T00:00:00+08:00" itemprop="datePublished">Aug 1, 2020</time></p>
+  </header>
+
+  <div class="categories">
+    <small>Category:</small>
+    <span class="category">
+      <small> <a href="">GEM5</a></small>
+    </span>
+  </div>
+
+  <div class="tags">
+    
+    <small>Tags: </small>
+    
+      <span class="tag">
+        <small> <a href="/_posts/"> #GEM5</a> </small>
+      </span>
+    
+      <span class="tag">
+        <small> <a href="/_posts/"> #cycle accurate</a> </small>
+      </span>
+    
+      <span class="tag">
+        <small> <a href="/_posts/"> #simulator</a> </small>
+      </span>
+    
+  </div>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>先废话一下吧， GEM5 仿真器的代码组织是以 SimObject 为核心的。
+以 CPU 和 memory 两类重要的模块为例，在各自的文件夹下定义了好多个 class ，每个 class 都以 SimObject 类为基类。
+GEM5 提供了给 SimObject 添加参数的方式，在 <a href="http://www.gem5.org/documentation/learning_gem5/part2/parameters/">http://www.gem5.org/documentation/learning_gem5/part2/parameters/</a> 中。
+原理非常简单，在此不再完整描述，只介绍必要的部分。
+在这里将讨论一个重要的问题，如何定义一个类型复杂的参数。</p>
+
+<h2 id="background">BackGround</h2>
+
+<h3 id="gem5-中的参数定义">GEM5 中的参数定义</h3>
+
+<p>GEM5 中给一个 SimObject 定义一个参数有如下几个步骤：</p>
+
+<ol>
+  <li>
+    <p>在 SimObject 对应的 .py 文件中添加参数</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="n">Param</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'The number of xxx'</span><span class="p">)</span> <span class="c1"># 一个整数作为参数
+</span>     <span class="n">VectorParam</span><span class="o">.</span><span class="n">Int</span><span class="p">([],</span> <span class="s">'The number of xxxs'</span><span class="p">)</span> <span class="c1"># 一个整数 vector 作为参数
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>GEM5 编译器通过分析上述 .py 文件在 param 文件夹下生成与 SimObject 名字相同的 c++ 头文件，里面定义了 c++ 可引用的参数类型。</p>
+  </li>
+  <li>
+    <p>在我们写的 SimObject 的 c++ class 中，将 2 步骤中的参数类型传递给构造函数，就可以在构造函数中解析参数。</p>
+  </li>
+</ol>
+
+<h3 id="gem5-中的参数类型">GEM5 中的参数类型</h3>
+
+<p>我们先看一下 GEM5 中提供了哪几种参数。</p>
+
+<p>通过观察 GEM5 中定义参数的步骤，可以分析出来 GEM5 是通过某种方式将 python 中的数据类型和 c++ 中的数据类型打通，进而完成将 python config 脚本中的参数传递给 c++ 代码的任务。
+因此在 GEM5 的源码中，默认参数类型在 c++ 文件和 python 文件分别定义了一份。
+c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。</p>
+
+<p>下面的列表我们将描述 python 文件中定义的数据类型，并列出对应的 c++ 数据类型：</p>
+
+<table align="center" border="1" frame="box">
+    <tr align="center">
+        <th>Python 类型</th> 
+        <th>c++ 类型</th> 
+        <th>c++ 头文件</th>
+    </tr>
+    <tr align="center">
+        <th>Int</th>
+        <td>std::string</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>(U)Int(8,16...)</th>
+        <td>(u)int(8,16...)_t</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Float</th>
+        <td>double</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Bool</th>
+        <td>bool</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Counter</th>
+        <td>Counter</td>
+        <td>base/type.hh</td>
+    </tr>
+    <tr align="center">
+        <th>Tick</th>
+        <td>Tick</td>
+        <td>base/type.hh</td>
+    </tr>
+    <tr align="center">
+        <th>TcpPort / UdpPort</th>
+        <td>uint16_t</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Percent</th>
+        <td>int</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Cycles</th>
+        <td>Cycles</td>
+        <td>base/type.hh</td>
+    </tr>
+    <tr align="center">
+        <th>MemorySize / MemorySize32</th>
+        <td>uint64_t</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Addr</th>
+        <td>Addr</td>
+        <td>base/type.hh</td>
+    </tr>
+    <tr align="center">
+        <th>AddrRange</th>
+        <td>AddrRange</td>
+        <td>base/addr_range.hh</td>
+    </tr>
+    <tr align="center">
+        <th>EthernetAddr</th>
+        <td>Net::EthAddr</td>
+        <td>base/inet.hh</td>
+    </tr>
+    <tr align="center">
+        <th>IpAddress</th>
+        <td>Net::IpAddress</td>
+        <td>base/inet.hh</td>
+    </tr>
+    <tr align="center">
+        <th>IpNetmask</th>
+        <td>Net::IpNetmask</td>
+        <td>base/inet.hh</td>
+    </tr>
+    <tr align="center">
+        <th>IpWithPort</th>
+        <td>Net::IpWithPort</td>
+        <td>base/inet.hh</td>
+    </tr>
+    <tr align="center">
+        <th>Time</th>
+        <td>tm</td>
+        <td>base/time.hh</td>
+    </tr>
+    <tr align="center">
+        <th>TickParamValue / Latency / Frequency / Clock</th>
+        <td>Tick</td>
+        <td>base/types.hh</td>
+    </tr>
+    <tr align="center">
+        <th>Voltage / Current / Energy / NetworkBandwidth / MemoryBandwidth</th>
+        <td>double</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>NullSimObject</th>
+        <td>Null</td>
+        <td>内置类型</td>
+    </tr>
+</table>
+
+<p>一般来说，上述的数据类型已经足够丰富，足够使用了。</p>
+
+<h2 id="定义新的参数类型">定义新的参数类型</h2>
+
+<p>在我的需求中实际上是要定义一个新的复杂的数据类型。
+一种直观的方式是通过 SimObject 的嵌套来实现。
+但是这种方式会多定义好多 SimObject ，增加编译时间。
+因此我更希望通过仿照 GEM5 的源码中定义数据类型的方式来实现。
+于是我看了下源码是如何定义的。</p>
+
+<h3 id="gem5-源码中参数定义">GEM5 源码中参数定义</h3>
+
+<p>以 AddrRange 类型为例：</p>
+
+<ol>
+  <li>
+    <p>python 文件中的定义（python/m5/params.py)：</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">class</span> <span class="nc">AddrRange</span><span class="p">(</span><span class="n">ParamValue</span><span class="p">):</span> <span class="c1"># 以ParamValue为基类来定义一个数据类型
+</span>     <span class="n">cxx_type</span> <span class="o">=</span> <span class="s">'AddrRange'</span>   <span class="c1"># 定义对应的 c++ class 名称
+</span>
+     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+         <span class="o">...</span>
+         <span class="k">if</span> <span class="s">'end'</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">Addr</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">'end'</span><span class="p">))</span> <span class="c1"># 读取 kwargs
+</span>         <span class="o">...</span>
+        
+     <span class="c1"># 定义 python 方法 （可选）
+</span>     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="o">...</span>
+
+     <span class="c1"># pybind_predecls 方法：
+</span>     <span class="c1"># 定义一个引用文件（即 AddrRange 对应的 c++ class 定义的位置）
+</span>     <span class="c1"># 这句 code 在某个使用 AddrRange 参数的 SimObject 生成的 build/X86/python/_m5/param_xxx.cc 中，会出现在引用头文件的部分
+</span>     <span class="c1"># build/X86/python/_m5/param_xxx.cc 文件是用于 SimObject 的 c++ 和 python 文件之间的 pybind
+</span>     <span class="o">@</span><span class="nb">classmethod</span>
+     <span class="k">def</span> <span class="nf">pybind_predecls</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+         <span class="o">...</span>
+         <span class="n">code</span><span class="p">(</span><span class="s">'#include "base/addr_range.hh"'</span><span class="p">)</span>
+
+     <span class="c1"># cxx_predecls 方法：
+</span>     <span class="c1"># 定义一个引用文件（即 AddrRange 对应的 c++ class 定义的位置）
+</span>     <span class="c1"># 这句 code 在某个使用 AddrRange 参数的 SimObject 生成的 build/X86/params/xxx.hh 中，会出现在引用头文件的部分
+</span>     <span class="c1"># build/X86/params/xxx.hh 文件是用于定义 SimObject 的 c++ 语言的参数类型
+</span>     <span class="o">@</span><span class="nb">classmethod</span>
+     <span class="k">def</span> <span class="nf">cxx_predecls</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+         <span class="o">...</span>
+         <span class="n">code</span><span class="p">(</span><span class="s">'#include "base/addr_range.hh"'</span><span class="p">)</span>
+
+     <span class="c1"># cxx_ini_predecls 和 cxx_ini_parse 方法：（可选）
+</span>     <span class="c1"># 定义一个引用文件和sparse代码
+</span>     <span class="c1"># 这句 code 在由 .py 配置文件生成 .ini 配置文件时生成参数的信息
+</span>     <span class="o">@</span><span class="nb">classmethod</span>
+     <span class="k">def</span> <span class="nf">cxx_ini_predecls</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+         <span class="o">...</span>
+         <span class="n">code</span><span class="p">(</span><span class="s">'#include &lt;vector&gt;'</span><span class="p">)</span>
+
+     <span class="o">@</span><span class="nb">classmethod</span>
+     <span class="k">def</span> <span class="nf">cxx_ini_parse</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">ret</span><span class="p">):</span>
+         <span class="o">...</span>
+         <span class="n">code</span><span class="p">(</span><span class="s">'${ret} _ret;'</span><span class="p">)</span>
+
+     <span class="c1"># 定义 getValue函数：
+</span>     <span class="c1"># 这个是 python 和 c++ 代码之间联系的关键之一，这个含义我们在接下来pybind一节中介绍
+</span>     <span class="k">def</span> <span class="nf">getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+             <span class="kn">from</span> <span class="nn">_m5.range</span> <span class="kn">import</span> <span class="n">AddrRange</span> 
+
+             <span class="k">return</span> <span class="n">AddrRange</span><span class="p">(</span><span class="nb">long</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">),</span> <span class="nb">long</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">masks</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intlvMatch</span><span class="p">))</span>
+
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>c++ 文件中的定义(base/addr_range.hh)：</p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">class</span> <span class="nc">AddrRange</span><span class="p">{</span>
+ <span class="nl">private:</span>
+     <span class="c1">// 定义私有成员变量，可自由发挥</span>
+     <span class="n">Addr</span> <span class="n">_start</span><span class="p">;</span> 
+     <span class="n">Addr</span> <span class="n">_end</span><span class="p">;</span>
+     <span class="p">...</span>
+ <span class="nl">public:</span>
+
+     <span class="c1">// 定义构造函数</span>
+     <span class="n">AddrRange</span><span class="p">()</span>
+         <span class="o">:</span> <span class="n">_start</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">_end</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">...</span>
+     <span class="p">{}</span>
+     <span class="n">AddrRange</span><span class="p">(</span><span class="n">Addr</span> <span class="n">_start</span><span class="p">,</span> <span class="n">Addr</span> <span class="n">_end</span><span class="p">,</span> <span class="p">...)</span>
+     <span class="o">:</span> <span class="n">_start</span><span class="p">(</span><span class="n">_start</span><span class="p">),</span> <span class="n">_end</span><span class="p">(</span><span class="n">_end</span><span class="p">),</span> <span class="p">...</span>
+     <span class="p">{}</span>
+
+     <span class="c1">// 定义其他方法，以下面这个为例</span>
+     <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">to_string</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+         <span class="p">...</span>
+     <span class="p">}</span>
+
+     <span class="p">...</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 SConscript 文件中设置编译以上两个文件</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">PySource</span><span class="p">(</span><span class="s">'m5'</span><span class="p">,</span> <span class="s">'m5/params.py'</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>以及</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">Source</span><span class="p">(</span><span class="s">'types.cc'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="将两种语言定义的数据类型联系起来pybind">将两种语言定义的数据类型联系起来（pybind）</h3>
+
+<p>GEM5 中将两种语言的数据类型联系起来的关键是利用 pybind，与 AddrRange 相关的代码在 python/pybind11/core.cc 文件中定义：</p>
+
+<ol>
+  <li>首先定义一个 python module ， 名为 core.range：
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kt">void</span>
+ <span class="nf">pybind_init_core</span><span class="p">(</span><span class="n">py</span><span class="o">::</span><span class="n">module</span> <span class="o">&amp;</span><span class="n">m_native</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="n">py</span><span class="o">::</span><span class="n">module</span> <span class="n">m_core</span> <span class="o">=</span> <span class="n">m_native</span><span class="p">.</span><span class="n">def_submodule</span><span class="p">(</span><span class="s">"core"</span><span class="p">);</span>
+     <span class="p">...</span>
+        
+     <span class="c1">// 调用下面的函数定义一个子模块 core.range</span>
+     <span class="n">init_range</span><span class="p">(</span><span class="n">m_native</span><span class="p">);</span>
+ <span class="p">}</span>
+
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="nf">init_range</span><span class="p">(</span><span class="n">py</span><span class="o">::</span><span class="n">module</span> <span class="o">&amp;</span><span class="n">m_native</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="n">py</span><span class="o">::</span><span class="n">module</span> <span class="n">m</span> <span class="o">=</span> <span class="n">m_native</span><span class="p">.</span><span class="n">def_submodule</span><span class="p">(</span><span class="s">"range"</span><span class="p">);</span>
+
+     <span class="c1">// 绑定数据类型 AddrRange</span>
+     <span class="n">py</span><span class="o">::</span><span class="n">class_</span><span class="o">&lt;</span><span class="n">AddrRange</span><span class="o">&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s">"AddrRange"</span><span class="p">)</span>
+         <span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="n">py</span><span class="o">::</span><span class="n">init</span><span class="o">&lt;&gt;</span><span class="p">())</span>                  <span class="c1">// 绑定构造函数</span>
+         <span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="n">py</span><span class="o">::</span><span class="n">init</span><span class="o">&lt;</span><span class="n">Addr</span> <span class="o">&amp;</span><span class="p">,</span> <span class="n">Addr</span> <span class="o">&amp;&gt;</span><span class="p">())</span>    <span class="c1">// 绑定另一个构造函数</span>
+         <span class="p">...</span>   <span class="c1">//</span>
+
+         <span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="s">"__str__"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">AddrRange</span><span class="o">::</span><span class="n">to_string</span><span class="p">)</span><span class="c1">// 将 python 文件中定义的 __str__ 函数与 c++ 文件中定义的 to_string 函数绑定</span>
+
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>将 core 模块挂载到 _m5 模块下</p>
+
+    <p>在 sim/init.cc 文件中，已经定义了 _m5 模块。在这个文件的如下代码中，调用了上述 pybind_init_core 函数，将 range 挂载到了 _m5 模块下：</p>
+
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">EmbeddedPyBind</span><span class="o">::</span><span class="n">initAll</span><span class="p">()</span>
+ <span class="p">{</span>
+     <span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">EmbeddedPyBind</span> <span class="o">*&gt;</span> <span class="n">pending</span><span class="p">;</span>
+
+     <span class="n">py</span><span class="o">::</span><span class="n">module</span> <span class="n">m_m5</span> <span class="o">=</span> <span class="n">py</span><span class="o">::</span><span class="n">module</span><span class="p">(</span><span class="s">"_m5"</span><span class="p">);</span>
+     <span class="n">m_m5</span><span class="p">.</span><span class="n">attr</span><span class="p">(</span><span class="s">"__package__"</span><span class="p">)</span> <span class="o">=</span> <span class="n">py</span><span class="o">::</span><span class="n">cast</span><span class="p">(</span><span class="s">"_m5"</span><span class="p">);</span>
+
+     <span class="n">pybind_init_core</span><span class="p">(</span><span class="n">m_m5</span><span class="p">);</span>
+     <span class="p">...</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 python 定义的 AddrRange 中定义 getValue 函数</p>
+
+    <p>回头再说之前代码中的 getValue函数：</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="k">def</span> <span class="nf">getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="kn">from</span> <span class="nn">_m5.range</span> <span class="kn">import</span> <span class="n">AddrRange</span> 
+
+         <span class="k">return</span> <span class="n">AddrRange</span><span class="p">(</span><span class="nb">long</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">),</span> <span class="nb">long</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">masks</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intlvMatch</span><span class="p">))</span>
+</code></pre></div>    </div>
+
+    <p>现在可以理解，这实际上是引用了 _m5 模块中的 c++ 类型 AddrRange，并调用它的构造函数，返回一个 c++ 类型的 AddrRange。</p>
+  </li>
+</ol>
+
+<h2 id="在任意位置定义新的参数">在任意位置定义新的参数</h2>
+
+<p>我的习惯是将改动都放在自己的文件夹下，这就要实现在任意位置定义新的参数。这里其实也算是个步骤总结：</p>
+
+<ol>
+  <li>
+    <p>定义一个 c++ class （参考上面的代码）</p>
+
+    <ol>
+      <li>
+        <p>定义构造函数，与其他函数</p>
+      </li>
+      <li>
+        <p>在 SConscript 中设置编译：</p>
+      </li>
+    </ol>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">Source</span><span class="p">(</span><span class="s">'xxx.cc'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>利用 pybind 将上述 c++ 类转换成 python 库（参考上面的代码）</p>
+
+    <ol>
+      <li>
+        <p>定义一个子模块 init 函数</p>
+      </li>
+      <li>
+        <p>在上述函数中将 c++ 类绑定成 python module</p>
+      </li>
+      <li>
+        <p>在 sim/init.cc 的对应位置调用上述函数</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>定义一个 python class （参考上面的代码）</p>
+
+    <ol>
+      <li>
+        <p>定义 cxx_type</p>
+      </li>
+      <li>
+        <p>定义构造函数，读取 kwargs</p>
+      </li>
+      <li>
+        <p>定义 pybind_predecls 、 cxx_predecls 、 cxx_ini_predecls 、 cxx_ini_parse ，后两者可选</p>
+      </li>
+      <li>
+        <p>定义 getValue ，返回 pybind 中绑定的 c++ 类</p>
+      </li>
+      <li>
+        <p>在 SConscript 中将这个文件挂载到 m5 模块下：</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">PySource</span><span class="p">(</span><span class="s">'m5'</span><span class="p">,</span> <span class="s">'xxx.py'</span><span class="p">)</span>
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+  </div>
+
+  <nav>
+    <h1 class="page-heading">Categories</h1>
+
+    <ul class="categories">
+      
+        <li>
+          <span>
+            <a href="">jekyll</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">update</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">tensorflow</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">ReRAM_paper</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">MNN_paper</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">others</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">IC</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">Design</a>
+          </span>
+        </li>
+      
+        <li>
+          <span>
+            <a href="">GEM5</a>
+          </span>
+        </li>
+      
+    </ul>
+  </nav>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Y.L. Zhao</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Y.L. Zhao</li>
+          <li><a href="mailto:ylzhao1996@qq.com">ylzhao1996@qq.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/xiaoke0515"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">xiaoke0515</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/y.zhao"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">y.zhao</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>My site is built on Nov. 24, 2019. It is used to record something I am interested in.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

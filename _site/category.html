@@ -67,36 +67,51 @@
     <script src="/js/get-query-string.js" type="text/javascript"></script>
     <script type="text/javascript">
         var viewed_category = GetQueryString("category");
-        document.getElementById('viewed_category').value = "Category:" + viewed_category;
-        window.onload = function(){
-                $("#viewed_category").val(viewed_category);
-            }
+        window.viewed_category = viewed_category
+        document.write(viewed_category)
+        //document.getElementById('viewed_category').value = "Category:" + viewed_category;
+        //window.onload = function(){
+        //        $("#viewed_category").val(viewed_category);
+        //}
+        
     </script>
 
   
-  <h1 class="page-heading">Category: <input type="text" id="viewed_category"></h1>
+  
+  <!--<h1 class="page-heading">Category: <input type="text" id="viewed_category"></h1>-->
+  <h1 class="page-heading">Category: <var>viewed_category</var></h1>
 
 
   <ul class="post-list">
+    <p></p>
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+      
+        <p>jekyll</p>
+        
+      
+        <p>update</p>
+        
+      
+        <p>tensorflow</p>
+        
+      
+        <p>ReRAM_paper</p>
+        
+      
+        <p>MNN_paper</p>
+        
+      
+        <p>others</p>
+        
+      
+        <p>IC</p>
+        
+      
+        <p>Design</p>
+        
+      
+        <p>GEM5</p>
+        
   </ul>
 
 

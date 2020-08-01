@@ -6,9 +6,483 @@
 </description>
     <link>http://localhost:5000/</link>
     <atom:link href="http://localhost:5000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 Jul 2020 11:35:03 +0800</pubDate>
-    <lastBuildDate>Tue, 21 Jul 2020 11:35:03 +0800</lastBuildDate>
+    <pubDate>Sat, 01 Aug 2020 17:38:07 +0800</pubDate>
+    <lastBuildDate>Sat, 01 Aug 2020 17:38:07 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>GEM5- GEM5 给 SimObject 添加 Param</title>
+        <description>&lt;p&gt;先废话一下吧， GEM5 仿真器的代码组织是以 SimObject 为核心的。
+以 CPU 和 memory 两类重要的模块为例，在各自的文件夹下定义了好多个 class ，每个 class 都以 SimObject 类为基类。
+GEM5 提供了给 SimObject 添加参数的方式，在 &lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/parameters/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/parameters/&lt;/a&gt; 中。
+原理非常简单，在此不再完整描述，只介绍必要的部分。
+在这里将讨论一个重要的问题，如何定义一个类型复杂的参数。&lt;/p&gt;
+
+&lt;h2 id=&quot;background&quot;&gt;BackGround&lt;/h2&gt;
+
+&lt;h3 id=&quot;gem5-中的参数定义&quot;&gt;GEM5 中的参数定义&lt;/h3&gt;
+
+&lt;p&gt;GEM5 中给一个 SimObject 定义一个参数有如下几个步骤：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;在 SimObject 对应的 .py 文件中添加参数&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     &lt;span class=&quot;n&quot;&gt;Param&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'The number of xxx'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 一个整数作为参数
+&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;VectorParam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([],&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'The number of xxxs'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 一个整数 vector 作为参数
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;GEM5 编译器通过分析上述 .py 文件在 param 文件夹下生成与 SimObject 名字相同的 c++ 头文件，里面定义了 c++ 可引用的参数类型。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在我们写的 SimObject 的 c++ class 中，将 2 步骤中的参数类型传递给构造函数，就可以在构造函数中解析参数。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;gem5-中的参数类型&quot;&gt;GEM5 中的参数类型&lt;/h3&gt;
+
+&lt;p&gt;我们先看一下 GEM5 中提供了哪几种参数。&lt;/p&gt;
+
+&lt;p&gt;通过观察 GEM5 中定义参数的步骤，可以分析出来 GEM5 是通过某种方式将 python 中的数据类型和 c++ 中的数据类型打通，进而完成将 python config 脚本中的参数传递给 c++ 代码的任务。
+因此在 GEM5 的源码中，默认参数类型在 c++ 文件和 python 文件分别定义了一份。
+c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&gt;
+
+&lt;p&gt;下面的列表我们将描述 python 文件中定义的数据类型，并列出对应的 c++ 数据类型：&lt;/p&gt;
+
+&lt;table align=&quot;center&quot; border=&quot;1&quot; frame=&quot;box&quot;&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Python 类型&lt;/th&gt; 
+        &lt;th&gt;c++ 类型&lt;/th&gt; 
+        &lt;th&gt;c++ 头文件&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Int&lt;/th&gt;
+        &lt;td&gt;std::string&lt;/td&gt;
+        &lt;td&gt;内置类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;(U)Int(8,16...)&lt;/th&gt;
+        &lt;td&gt;(u)int(8,16...)_t&lt;/td&gt;
+        &lt;td&gt;内置类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Float&lt;/th&gt;
+        &lt;td&gt;double&lt;/td&gt;
+        &lt;td&gt;内置类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Bool&lt;/th&gt;
+        &lt;td&gt;bool&lt;/td&gt;
+        &lt;td&gt;内置类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Counter&lt;/th&gt;
+        &lt;td&gt;Counter&lt;/td&gt;
+        &lt;td&gt;base/type.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Tick&lt;/th&gt;
+        &lt;td&gt;Tick&lt;/td&gt;
+        &lt;td&gt;base/type.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;TcpPort / UdpPort&lt;/th&gt;
+        &lt;td&gt;uint16_t&lt;/td&gt;
+        &lt;td&gt;内置类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Percent&lt;/th&gt;
+        &lt;td&gt;int&lt;/td&gt;
+        &lt;td&gt;内置类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Cycles&lt;/th&gt;
+        &lt;td&gt;Cycles&lt;/td&gt;
+        &lt;td&gt;base/type.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;MemorySize / MemorySize32&lt;/th&gt;
+        &lt;td&gt;uint64_t&lt;/td&gt;
+        &lt;td&gt;内置类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Addr&lt;/th&gt;
+        &lt;td&gt;Addr&lt;/td&gt;
+        &lt;td&gt;base/type.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;AddrRange&lt;/th&gt;
+        &lt;td&gt;AddrRange&lt;/td&gt;
+        &lt;td&gt;base/addr_range.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;EthernetAddr&lt;/th&gt;
+        &lt;td&gt;Net::EthAddr&lt;/td&gt;
+        &lt;td&gt;base/inet.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;IpAddress&lt;/th&gt;
+        &lt;td&gt;Net::IpAddress&lt;/td&gt;
+        &lt;td&gt;base/inet.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;IpNetmask&lt;/th&gt;
+        &lt;td&gt;Net::IpNetmask&lt;/td&gt;
+        &lt;td&gt;base/inet.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;IpWithPort&lt;/th&gt;
+        &lt;td&gt;Net::IpWithPort&lt;/td&gt;
+        &lt;td&gt;base/inet.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Time&lt;/th&gt;
+        &lt;td&gt;tm&lt;/td&gt;
+        &lt;td&gt;base/time.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;TickParamValue / Latency / Frequency / Clock&lt;/th&gt;
+        &lt;td&gt;Tick&lt;/td&gt;
+        &lt;td&gt;base/types.hh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;Voltage / Current / Energy / NetworkBandwidth / MemoryBandwidth&lt;/th&gt;
+        &lt;td&gt;double&lt;/td&gt;
+        &lt;td&gt;内置类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt;NullSimObject&lt;/th&gt;
+        &lt;td&gt;Null&lt;/td&gt;
+        &lt;td&gt;内置类型&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p&gt;一般来说，上述的数据类型已经足够丰富，足够使用了。&lt;/p&gt;
+
+&lt;h2 id=&quot;定义新的参数类型&quot;&gt;定义新的参数类型&lt;/h2&gt;
+
+&lt;p&gt;在我的需求中实际上是要定义一个新的复杂的数据类型。
+一种直观的方式是通过 SimObject 的嵌套来实现。
+但是这种方式会多定义好多 SimObject ，增加编译时间。
+因此我更希望通过仿照 GEM5 的源码中定义数据类型的方式来实现。
+于是我看了下源码是如何定义的。&lt;/p&gt;
+
+&lt;h3 id=&quot;gem5-源码中参数定义&quot;&gt;GEM5 源码中参数定义&lt;/h3&gt;
+
+&lt;p&gt;以 AddrRange 类型为例：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;python 文件中的定义（python/m5/params.py)：&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ParamValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 以ParamValue为基类来定义一个数据类型
+&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;cxx_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'AddrRange'&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# 定义对应的 c++ class 名称
+&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+         &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'end'&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+             &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'end'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 读取 kwargs
+&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+        
+     &lt;span class=&quot;c1&quot;&gt;# 定义 python 方法 （可选）
+&lt;/span&gt;     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__str__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+
+     &lt;span class=&quot;c1&quot;&gt;# pybind_predecls 方法：
+&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 定义一个引用文件（即 AddrRange 对应的 c++ class 定义的位置）
+&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 这句 code 在某个使用 AddrRange 参数的 SimObject 生成的 build/X86/python/_m5/param_xxx.cc 中，会出现在引用头文件的部分
+&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# build/X86/python/_m5/param_xxx.cc 文件是用于 SimObject 的 c++ 和 python 文件之间的 pybind
+&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;classmethod&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pybind_predecls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'#include &quot;base/addr_range.hh&quot;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+     &lt;span class=&quot;c1&quot;&gt;# cxx_predecls 方法：
+&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 定义一个引用文件（即 AddrRange 对应的 c++ class 定义的位置）
+&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 这句 code 在某个使用 AddrRange 参数的 SimObject 生成的 build/X86/params/xxx.hh 中，会出现在引用头文件的部分
+&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# build/X86/params/xxx.hh 文件是用于定义 SimObject 的 c++ 语言的参数类型
+&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;classmethod&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cxx_predecls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'#include &quot;base/addr_range.hh&quot;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+     &lt;span class=&quot;c1&quot;&gt;# cxx_ini_predecls 和 cxx_ini_parse 方法：（可选）
+&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 定义一个引用文件和sparse代码
+&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 这句 code 在由 .py 配置文件生成 .ini 配置文件时生成参数的信息
+&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;classmethod&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cxx_ini_predecls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'#include &amp;lt;vector&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+     &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;classmethod&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cxx_ini_parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'${ret} _ret;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+     &lt;span class=&quot;c1&quot;&gt;# 定义 getValue函数：
+&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 这个是 python 和 c++ 代码之间联系的关键之一，这个含义我们在接下来pybind一节中介绍
+&lt;/span&gt;     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+             &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;_m5.range&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt; 
+
+             &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+                             &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;masks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;intlvMatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;c++ 文件中的定义(base/addr_range.hh)：&lt;/p&gt;
+
+    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;nl&quot;&gt;private:&lt;/span&gt;
+     &lt;span class=&quot;c1&quot;&gt;// 定义私有成员变量，可自由发挥&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+     &lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+ &lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt;
+
+     &lt;span class=&quot;c1&quot;&gt;// 定义构造函数&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+         &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...)&lt;/span&gt;
+     &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+
+     &lt;span class=&quot;c1&quot;&gt;// 定义其他方法，以下面这个为例&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+         &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+     &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在 SConscript 文件中设置编译以上两个文件&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;PySource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'m5'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'m5/params.py'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;以及&lt;/p&gt;
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'types.cc'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;将两种语言定义的数据类型联系起来pybind&quot;&gt;将两种语言定义的数据类型联系起来（pybind）&lt;/h3&gt;
+
+&lt;p&gt;GEM5 中将两种语言的数据类型联系起来的关键是利用 pybind，与 AddrRange 相关的代码在 python/pybind11/core.cc 文件中定义：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;首先定义一个 python module ， 名为 core.range：
+    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;
+ &lt;span class=&quot;nf&quot;&gt;pybind_init_core&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m_native&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_core&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_native&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def_submodule&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;core&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+        
+     &lt;span class=&quot;c1&quot;&gt;// 调用下面的函数定义一个子模块 core.range&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;init_range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m_native&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+ &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;
+ &lt;span class=&quot;nf&quot;&gt;init_range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m_native&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_native&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def_submodule&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;range&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+     &lt;span class=&quot;c1&quot;&gt;// 绑定数据类型 AddrRange&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;AddrRange&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+         &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;// 绑定构造函数&lt;/span&gt;
+         &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// 绑定另一个构造函数&lt;/span&gt;
+         &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;//&lt;/span&gt;
+
+         &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;__str__&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// 将 python 文件中定义的 __str__ 函数与 c++ 文件中定义的 to_string 函数绑定&lt;/span&gt;
+
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将 core 模块挂载到 _m5 模块下&lt;/p&gt;
+
+    &lt;p&gt;在 sim/init.cc 文件中，已经定义了 _m5 模块。在这个文件的如下代码中，调用了上述 pybind_init_core 函数，将 range 挂载到了 _m5 模块下：&lt;/p&gt;
+
+    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;EmbeddedPyBind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;initAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;EmbeddedPyBind&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pending&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+     &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_m5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;_m5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;m_m5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;__package__&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;_m5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+     &lt;span class=&quot;n&quot;&gt;pybind_init_core&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m_m5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在 python 定义的 AddrRange 中定义 getValue 函数&lt;/p&gt;
+
+    &lt;p&gt;回头再说之前代码中的 getValue函数：&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+         &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;_m5.range&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt; 
+
+         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+                         &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;masks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;intlvMatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;现在可以理解，这实际上是引用了 _m5 模块中的 c++ 类型 AddrRange，并调用它的构造函数，返回一个 c++ 类型的 AddrRange。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;在任意位置定义新的参数&quot;&gt;在任意位置定义新的参数&lt;/h2&gt;
+
+&lt;p&gt;我的习惯是将改动都放在自己的文件夹下，这就要实现在任意位置定义新的参数。这里其实也算是个步骤总结：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;定义一个 c++ class （参考上面的代码）&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;定义构造函数，与其他函数&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;在 SConscript 中设置编译：&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'xxx.cc'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;利用 pybind 将上述 c++ 类转换成 python 库（参考上面的代码）&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;定义一个子模块 init 函数&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;在上述函数中将 c++ 类绑定成 python module&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;在 sim/init.cc 的对应位置调用上述函数&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;定义一个 python class （参考上面的代码）&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;定义 cxx_type&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;定义构造函数，读取 kwargs&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;定义 pybind_predecls 、 cxx_predecls 、 cxx_ini_predecls 、 cxx_ini_parse ，后两者可选&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;定义 getValue ，返回 pybind 中绑定的 c++ 类&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;在 SConscript 中将这个文件挂载到 m5 模块下：&lt;/p&gt;
+
+        &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;PySource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'m5'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'xxx.py'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sat, 01 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:5000/gem5/2020/08/01/3_GEM5_Param.html</link>
+        <guid isPermaLink="true">http://localhost:5000/gem5/2020/08/01/3_GEM5_Param.html</guid>
+        
+        <category>GEM5</category>
+        
+        <category>simulator</category>
+        
+        <category>cycle accurate</category>
+        
+        
+        <category>GEM5</category>
+        
+      </item>
+    
+      <item>
+        <title>GEM5- GEM5 的基础使用</title>
+        <description>&lt;p&gt;参考文档 &lt;a href=&quot;http://www.gem5.org/&quot;&gt;http://www.gem5.org/&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;GEM5 的编译&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part1/building/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part1/building/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;GEM5 的 config 文件&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part1/simple_config/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part1/simple_config/&lt;/a&gt;
+  &lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part1/cache_config/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part1/cache_config/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;GEM5 的 output&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part1/gem5_stats/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part1/gem5_stats/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;编写一个模块 （ SimObject ）&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/helloobject/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/helloobject/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;debug flag 的使用&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/debugging/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/debugging/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;cycle accurate 的核心： event 的定义&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/events/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/events/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;模块的参数定义&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/parameters/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/parameters/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;模块间的数据交互： port 的定义&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/memoryobject/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/memoryobject/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;一个例子： cache&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/simplecache/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/simplecache/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;GEM5 中的 ruby&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part3/MSIintro/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part3/MSIintro/&lt;/a&gt;&lt;/p&gt;
+
+    &lt;p&gt;这里开始我暂时用不上，还没有仔细看。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 21 Jul 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:5000/gem5/2020/07/21/2_GEM5_Basic_Usage.html</link>
+        <guid isPermaLink="true">http://localhost:5000/gem5/2020/07/21/2_GEM5_Basic_Usage.html</guid>
+        
+        <category>GEM5</category>
+        
+        <category>simulator</category>
+        
+        <category>cycle accurate</category>
+        
+        
+        <category>GEM5</category>
+        
+      </item>
     
       <item>
         <title>GEM5- GEM5 的非 sudo 用户安装</title>
