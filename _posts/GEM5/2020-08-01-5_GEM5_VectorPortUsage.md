@@ -58,6 +58,7 @@ tags:
 为了表示哪几个名字必须一样，哪几个名字不必一样，我特意将 c++ class 中 port 的名字与 python 中 port 的名字设置的不同。
 
 另：啰嗦一句
-其实重点在于 getPort 函数，这个函数用于定义 python 文件中的 port 名字与 c++ class 中的哪个 port 对应
+
+其实重点在于 getPort 函数，这个函数用于定义 python 文件中的 port 名字与 c++ class 中的哪个 port 对应。
 c++ class 中的 port 可能不必定义成一个 vector 。
 只要能让 gem5 编译器找到对应的 port 即可。
