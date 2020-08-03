@@ -56,13 +56,9 @@ links1:
     url:      /categories/others  
     type:     others  
     esternal: false
-  - mame:     IC  
-    url:      /categories/IC  
+  - mame:     IC Design 
+    url:      /categories/ICDesign 
     type:     IC  
-    esternal: false
-  - mame:     Design 
-    url:      /categories/Design 
-    type:     Design 
     esternal: false
   - mame:     GEM5 
     url:      /categories/GEM5 

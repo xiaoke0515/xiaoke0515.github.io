@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 03 Aug 2020 14:42:46 +0800</pubDate>
-    <lastBuildDate>Mon, 03 Aug 2020 14:42:46 +0800</lastBuildDate>
+    <pubDate>Mon, 03 Aug 2020 14:47:28 +0800</pubDate>
+    <lastBuildDate>Mon, 03 Aug 2020 14:47:28 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -1171,8 +1171,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 &lt;p&gt;至此，我们的第一个 candance project 仿真完成。&lt;/p&gt;
 </description>
         <pubDate>Tue, 07 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/ic/design/2020/07/07/1_Candance_Intro.html</link>
-        <guid isPermaLink="true">http://localhost:4000/ic/design/2020/07/07/1_Candance_Intro.html</guid>
+        <link>http://localhost:4000/icdesign/2020/07/07/1_Candance_Intro.html</link>
+        <guid isPermaLink="true">http://localhost:4000/icdesign/2020/07/07/1_Candance_Intro.html</guid>
         
         <category>ic</category>
         
@@ -1181,9 +1181,7 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
         <category>virtuoso</category>
         
         
-        <category>IC</category>
-        
-        <category>Design</category>
+        <category>ICDesign</category>
         
       </item>
     

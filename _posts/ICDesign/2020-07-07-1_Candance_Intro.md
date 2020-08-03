@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Candance 1： Candance的初步使用
-categories: IC Design
+categories: ICDesign
 tags:
     - "ic"
     - "candance"
