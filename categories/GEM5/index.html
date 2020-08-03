@@ -1,0 +1,64 @@
+---
+layout: default
+---
+
+<div class="home">
+
+    
+    {% assign cat = "GEM5" %}
+    <h1 class="page-heading">View by categories</h1>
+
+    <ul class="categories">
+        {% for category in site.categories %}
+        <li>
+            <span>
+            <!--<a href="/category?category={{ category | first }}">{{ category | first }}</a>-->
+            <a href="/categories/{{ category | first }}">{{ category | first }}</a>
+            : {{ category | last | size }} posts
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <hr style="height:3px;border:none;border-top:3px double black;" />
+
+    <h1 class="page-heading">Category: <var>{{ cat }}</var></h1>
+
+
+    <ul class="post-list">
+        <p>{{ window }}</p>
+        {% for category in site.categories %}
+        {% if category[0] != cat %}
+            <!--<p>{{category[0]}}</p>-->
+            {% continue %}
+        {% endif %}
+        {% for post in category[1] %}
+            <li>
+            <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+
+            <h2>
+                <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+            </h2>
+            <p>
+                tags:
+            {% for tag in post.tags %}
+            <small>#{{ tag }}</small>;
+            {% endfor %}
+            </p>
+            
+            <p>
+                category:
+            {% for category in post.categories %}
+            <small>{{ category }}</small>;
+            {% endfor %}
+            </p>
+            </li>
+        <hr style="height:1px;border:none;border-top:1px solid gray;" />
+        {% endfor %}
+        {% endfor %}
+    </ul>
+
+
+    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+
+</div>

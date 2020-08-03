@@ -1,0 +1,66 @@
+---
+layout: default
+---
+
+<div class="home">
+
+  
+  <h1 class="page-heading">View by categories</h1>
+
+  <ul class="categories">
+    {% for category in site.categories %}
+      <li>
+        <span>
+          <!--<a href="/category?category={{ category | first }}">{{ category | first }}</a>-->
+          <a href="/categories/{{ category | first }}">{{ category | first }}</a>
+          : {{ category | last | size }} posts
+        </span>
+      </li>
+    {% endfor %}
+  </ul>
+  
+  <!---<h1 class="page-heading">View by tags</h1>
+
+  <ul class="tags">
+    {% for category in site.tags %}
+      <li>
+        <span>
+          <a href="{{ tags.url | prepend: site.baseurl }}">{{ tag | first }}</a>
+        </span>
+      </li>
+    {% endfor %}
+  </ul>-->
+  <hr style="height:3px;border:none;border-top:3px double black;" />
+
+  <h1 class="page-heading">Newest Posts</h1>
+
+  <ul class="post-list">
+    {% for post in site.posts %}
+      <li>
+        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+
+        <h2>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h2>
+        <p>
+          tags:
+         {% for tag in post.tags %}
+         <small>#{{ tag }}</small>;
+        {% endfor %}
+        </p>
+        
+        <p>
+          category:
+         {% for category in post.categories %}
+         <small>{{ category }}</small>;
+        {% endfor %}
+        </p>
+      </li>
+    <hr style="height:1px;border:none;border-top:1px solid gray;" />
+    {% endfor %}
+  </ul>
+
+
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+
+</div>

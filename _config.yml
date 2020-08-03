@@ -27,3 +27,45 @@ collections:
   tag:
     output: true
 
+links1:
+  - mame:     All
+    url:      /categories/
+    type:     recent
+    esternal: false
+  - mame:     jekyll
+    url:      /categories/jekyll
+    type:     jekyll
+    esternal: false
+  - mame:     update
+    url:      /categories/update
+    type:     update
+    esternal: false
+  - mame:     tensorflow 
+    url:      /categories/tensorflow 
+    type:     tensorflow 
+    esternal: false
+  - mame:     ReRAM_paper 
+    url:      /categories/ReRAM_paper 
+    type:     ReRAM_paper 
+    esternal: false
+  - mame:     MNN_paper 
+    url:      /categories/MNN_paper 
+    type:     MNN_paper 
+    esternal: false
+  - mame:     others  
+    url:      /categories/others  
+    type:     others  
+    esternal: false
+  - mame:     IC  
+    url:      /categories/IC  
+    type:     IC  
+    esternal: false
+  - mame:     Design 
+    url:      /categories/Design 
+    type:     Design 
+    esternal: false
+  - mame:     GEM5 
+    url:      /categories/GEM5 
+    type:     GEM5 
+    esternal: false
+

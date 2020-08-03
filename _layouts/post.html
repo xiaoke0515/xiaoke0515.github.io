@@ -30,13 +30,15 @@ layout: default
   </div>
 
   <nav>
+    <hr style="height:3px;border:none;border-top:3px double black;" />
     <h1 class="page-heading">Categories</h1>
 
     <ul class="categories">
       {% for category in site.categories %}
         <li>
           <span>
-            <a href="{{ category.url | prepend: site.baseurl }}">{{ category | first }}</a>
+            <a href="/categories/{{ category | first }}">{{ category | first }}</a>
+            : {{ category | last | size }} posts
           </span>
         </li>
       {% endfor %}
