@@ -11,7 +11,7 @@ tags:
 
 >Zhengyu Chen, Jie Gu, Analysis and Design of Energy Efficient Time Domain Signal Processing, International Symposium on Low Power Electronic Design (ISLPED), 2016.
 
-The paper is [here]("dl.acm.org/citation.cfm?id=2934585")
+The paper is [here](https://dl.acm.org/citation.cfm?id=2934585, 'paper')
 
 My first time ever heard about using time signal for ReRAM accelerator. Found this paper to learn some details.
 

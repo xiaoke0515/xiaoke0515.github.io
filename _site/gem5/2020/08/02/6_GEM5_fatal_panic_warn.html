@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>接网线</title>
-  <meta name="description" content="人生中第一次接网线，踩了一些坑。记录一下。">
+  <title>GEM5- GEM5 中的 fatal 、 panic 、 warn</title>
+  <meta name="description" content="除了可以使用 assert 外， GEM5 中提供了三个用于检查的函数：">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/others/2020/07/07/2_Net_wire.html">
+  <link rel="canonical" href="http://localhost:4000/gem5/2020/08/02/6_GEM5_fatal_panic_warn.html">
   <link rel="alternate" type="application/rss+xml" title="Y.L. Zhao" href="http://localhost:4000/feed.xml">
 </head>
 
@@ -65,14 +65,14 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">接网线</h1>
-    <p class="post-meta"><time datetime="2020-07-07T00:00:00+08:00" itemprop="datePublished">Jul 7, 2020</time></p>
+    <h1 class="post-title" itemprop="name headline">GEM5- GEM5 中的 fatal 、 panic 、 warn</h1>
+    <p class="post-meta"><time datetime="2020-08-02T00:00:00+08:00" itemprop="datePublished">Aug 2, 2020</time></p>
   </header>
 
   <div class="categories">
     <small>Category:</small>
     <span class="category">
-      <small> <a href="">others</a></small>
+      <small> <a href="">GEM5</a></small>
     </span>
   </div>
 
@@ -81,44 +81,39 @@
     <small>Tags: </small>
     
       <span class="tag">
-        <small> <a href="/_posts/"> #net wire</a> </small>
+        <small> <a href="/_posts/"> #GEM5</a> </small>
+      </span>
+    
+      <span class="tag">
+        <small> <a href="/_posts/"> #cycle accurate</a> </small>
+      </span>
+    
+      <span class="tag">
+        <small> <a href="/_posts/"> #simulator</a> </small>
       </span>
     
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <p>人生中第一次接网线，踩了一些坑。记录一下。</p>
-
-<h2 id="解决问题记录">解决问题记录</h2>
-
-<h3 id="工具">工具</h3>
-
-<p>网线钳，水晶头若干（一定要买的足够多）</p>
-
-<h3 id="步骤">步骤</h3>
+    <p>除了可以使用 assert 外， GEM5 中提供了三个用于检查的函数：</p>
 
 <ol>
   <li>
-    <p>将外皮剥出足够长。</p>
-  </li>
-  <li>
-    <p>解缠绕，拉直所有线。</p>
-  </li>
-  <li>
-    <p>按照如下顺序排列：（不同协议可能不同，最好查一下。我这次是同一根网线所以顺序一样即可）</p>
+    <p>fatal / falal_if</p>
 
-    <blockquote>
-      <p>橙白-橙-绿白-蓝-蓝白-绿-棕白-棕</p>
-    </blockquote>
+    <p>程序直接退出</p>
   </li>
   <li>
-    <p>不必剥线，夹断取齐，插入水晶头</p>
+    <p>panic / panic_ic</p>
+
+    <p>程序退出当前函数，继续执行</p>
   </li>
   <li>
-    <p>用网线钳夹紧，网线钳夹到完全合死即可。</p>
+    <p>warn / warn_if</p>
+
+    <p>程序报 warning ，继续执行</p>
   </li>
 </ol>
-
 
   </div>
 

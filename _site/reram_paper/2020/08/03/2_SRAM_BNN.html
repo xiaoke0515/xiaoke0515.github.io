@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>接网线</title>
-  <meta name="description" content="人生中第一次接网线，踩了一些坑。记录一下。">
+  <title>SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/others/2020/07/07/2_Net_wire.html">
+  <link rel="canonical" href="http://localhost:4000/reram_paper/2020/08/03/2_SRAM_BNN.html">
   <link rel="alternate" type="application/rss+xml" title="Y.L. Zhao" href="http://localhost:4000/feed.xml">
 </head>
 
@@ -65,14 +65,14 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">接网线</h1>
-    <p class="post-meta"><time datetime="2020-07-07T00:00:00+08:00" itemprop="datePublished">Jul 7, 2020</time></p>
+    <h1 class="post-title" itemprop="name headline">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</h1>
+    <p class="post-meta"><time datetime="2020-08-03T00:00:00+08:00" itemprop="datePublished">Aug 3, 2020</time></p>
   </header>
 
   <div class="categories">
     <small>Category:</small>
     <span class="category">
-      <small> <a href="">others</a></small>
+      <small> <a href="">ReRAM_paper</a></small>
     </span>
   </div>
 
@@ -81,44 +81,85 @@
     <small>Tags: </small>
     
       <span class="tag">
-        <small> <a href="/_posts/"> #net wire</a> </small>
+        <small> <a href="/_posts/"> #analog computing</a> </small>
+      </span>
+    
+      <span class="tag">
+        <small> <a href="/_posts/"> #analog signal processing</a> </small>
       </span>
     
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <p>人生中第一次接网线，踩了一些坑。记录一下。</p>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
-<h2 id="解决问题记录">解决问题记录</h2>
+<blockquote>
+  <p>Rui Liu, Xiaochen Peng, Xiaoyu Sun, Win-San Khwa, Xin Si, Jia-Jing Chen, Jia-Fang Li, Meng-Fan Chang, and Shimeng Yu. 2018. Parallelizing SRAM arrays with customized bit-cell for binary neural networks. In Proceedings of the 55th Annual Design Automation Conference (DAC ’18). Association for Computing Machinery, New York, NY, USA, Article 21, 1–6. DOI:https://doi.org/10.1145/3195970.3196089.</p>
+</blockquote>
 
-<h3 id="工具">工具</h3>
+<p>The paper is <a href="https://dl.acm.org/doi/pdf/10.1145/3195970.3196089," title="paper">here</a></p>
 
-<p>网线钳，水晶头若干（一定要买的足够多）</p>
+<p>Abstract first:</p>
 
-<h3 id="步骤">步骤</h3>
+<blockquote>
+  <p>Recent advances in deep neural networks (DNNs) have shown Binary Neural Networks (BNNs) are able to provide a reasonable accuracy on various image datasets with a significant reduction in computation and memory cost. In this paper, we explore two BNNs: hybrid BNN (HBNN) and XNOR-BNN, where the weights are binarized to +1/-1 while the neuron activations are binarized to 1/0 and +1/-1 respectively. Two SRAM bit cell designs are proposed, namely, 6T SRAM for HBNN and customized 8T SRAM for XNOR-BNN. In our design, the high-precision multiply-and-accumulate (MAC) is replaced by bitwise multiplication for HBNN or XNOR for XNOR-BNN plus bit-counting operations. To parallelize the weighted sum operation, we activate multiple word lines in the SRAM array simultaneously and digitize the analog voltage developed along the bit line by a multi-level sense amplifier (MLSA). In order to partition the large matrices in DNNs, we investigate the impact of sensing bit-levels of MLSA on the accuracy degradation for different sub-array sizes and propose using the nonlinear quantization technique to mitigate the accuracy degradation. With 64×64 sub-array size and 3-bit MLSA, HBNN and XNOR-BNN architectures can minimize the accuracy degradation to 2.37% and 0.88%, respectively, for an inspired VGG-16 network on the CIFAR-10 dataset. Design space exploration of SRAM based synaptic architectures with the conventional row-by-row access scheme and our proposed parallel access scheme are also performed, showing significant benefits in the area, latency and energy-efficiency. Finally, we have successfully taped-out and validated the proposed HBNN and XNOR-BNN designs in TSMC 65 nm process with measured silicon data, achieving energy-efficiency &gt;100 TOPS/W for HBNN and &gt;50 TOPS/W for XNOR-BNN.</p>
+</blockquote>
 
-<ol>
+<h2 id="contributions">Contributions:</h2>
+
+<ul>
   <li>
-    <p>将外皮剥出足够长。</p>
+    <p>XNOR-BNN complementary with costomized SRAM</p>
   </li>
   <li>
-    <p>解缠绕，拉直所有线。</p>
+    <p>Peripheral circuits which allow parallel access for SRAM</p>
   </li>
   <li>
-    <p>按照如下顺序排列：（不同协议可能不同，最好查一下。我这次是同一根网线所以顺序一样即可）</p>
+    <p>Low accuracy degration and high energy saving</p>
+  </li>
+</ul>
 
-    <blockquote>
-      <p>橙白-橙-绿白-蓝-蓝白-绿-棕白-棕</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>不必剥线，夹断取齐，插入水晶头</p>
-  </li>
-  <li>
-    <p>用网线钳夹紧，网线钳夹到完全合死即可。</p>
-  </li>
-</ol>
+<h2 id="background">Background:</h2>
 
+<h3 id="hbnn-proposed">HBNN (proposed)</h3>
+
+<p>Feature:</p>
+
+<ul>
+  <li>
+    <p>Weights: +1 / -1</p>
+  </li>
+  <li>
+    <p>Activations: 0 / 1</p>
+  </li>
+</ul>
+
+<h3 id="sram-cell">SRAM Cell</h3>
+
+<p>Directly refer to the explicit figure:</p>
+
+<p><img src="/img/ReRAM_DNN_accelerator/2_figure_SRAM_Cell.jpg" alt="SRAM Cell" width="500" align="bottom" /></p>
+
+<h2 id="parallel-architecture">Parallel Architecture</h2>
+
+<p>All the cells in the same column are opened by WLs.
+Currents are accumulated at BLs, and the MAC operation is implemented.</p>
+
+<p><img src="/img/ReRAM_DNN_accelerator/2_figure_MAC.jpg" alt="MAC" width="500" align="bottom" /></p>
+
+<h2 id="experiments--results">Experiments &amp; Results</h2>
+
+<h3 id="accuracy">Accuracy</h3>
+
+<p><img src="/img/ReRAM_DNN_accelerator/2_figure_Accuracy.jpg" alt="MAC" width="900" align="bottom" /></p>
+
+<h3 id="performance">Performance</h3>
+
+<p><img src="/img/ReRAM_DNN_accelerator/2_figure_Performance.jpg" alt="MAC" width="500" align="bottom" /></p>
+
+<h3 id="chip">Chip</h3>
+
+<p><img src="/img/ReRAM_DNN_accelerator/2_figure_Chip.jpg" alt="MAC" width="900" align="bottom" /></p>
 
   </div>
 

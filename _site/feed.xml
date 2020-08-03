@@ -4,11 +4,206 @@
     <title>Y.L. Zhao</title>
     <description>My site is built on Nov. 24, 2019. It is used to record something I am interested in.
 </description>
-    <link>http://localhost:5000/</link>
-    <atom:link href="http://localhost:5000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 01 Aug 2020 22:23:42 +0800</pubDate>
-    <lastBuildDate>Sat, 01 Aug 2020 22:23:42 +0800</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 03 Aug 2020 14:07:12 +0800</pubDate>
+    <lastBuildDate>Mon, 03 Aug 2020 14:07:12 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Rui Liu, Xiaochen Peng, Xiaoyu Sun, Win-San Khwa, Xin Si, Jia-Jing Chen, Jia-Fang Li, Meng-Fan Chang, and Shimeng Yu. 2018. Parallelizing SRAM arrays with customized bit-cell for binary neural networks. In Proceedings of the 55th Annual Design Automation Conference (DAC ’18). Association for Computing Machinery, New York, NY, USA, Article 21, 1–6. DOI:https://doi.org/10.1145/3195970.3196089.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The paper is &lt;a href=&quot;https://dl.acm.org/doi/pdf/10.1145/3195970.3196089,&quot; title=&quot;paper&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Abstract first:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Recent advances in deep neural networks (DNNs) have shown Binary Neural Networks (BNNs) are able to provide a reasonable accuracy on various image datasets with a significant reduction in computation and memory cost. In this paper, we explore two BNNs: hybrid BNN (HBNN) and XNOR-BNN, where the weights are binarized to +1/-1 while the neuron activations are binarized to 1/0 and +1/-1 respectively. Two SRAM bit cell designs are proposed, namely, 6T SRAM for HBNN and customized 8T SRAM for XNOR-BNN. In our design, the high-precision multiply-and-accumulate (MAC) is replaced by bitwise multiplication for HBNN or XNOR for XNOR-BNN plus bit-counting operations. To parallelize the weighted sum operation, we activate multiple word lines in the SRAM array simultaneously and digitize the analog voltage developed along the bit line by a multi-level sense amplifier (MLSA). In order to partition the large matrices in DNNs, we investigate the impact of sensing bit-levels of MLSA on the accuracy degradation for different sub-array sizes and propose using the nonlinear quantization technique to mitigate the accuracy degradation. With 64×64 sub-array size and 3-bit MLSA, HBNN and XNOR-BNN architectures can minimize the accuracy degradation to 2.37% and 0.88%, respectively, for an inspired VGG-16 network on the CIFAR-10 dataset. Design space exploration of SRAM based synaptic architectures with the conventional row-by-row access scheme and our proposed parallel access scheme are also performed, showing significant benefits in the area, latency and energy-efficiency. Finally, we have successfully taped-out and validated the proposed HBNN and XNOR-BNN designs in TSMC 65 nm process with measured silicon data, achieving energy-efficiency &amp;gt;100 TOPS/W for HBNN and &amp;gt;50 TOPS/W for XNOR-BNN.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;contributions&quot;&gt;Contributions:&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;XNOR-BNN complementary with costomized SRAM&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Peripheral circuits which allow parallel access for SRAM&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Low accuracy degration and high energy saving&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;background&quot;&gt;Background:&lt;/h2&gt;
+
+&lt;h3 id=&quot;hbnn-proposed&quot;&gt;HBNN (proposed)&lt;/h3&gt;
+
+&lt;p&gt;Feature:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Weights: +1 / -1&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Activations: 0 / 1&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;sram-cell&quot;&gt;SRAM Cell&lt;/h3&gt;
+
+&lt;p&gt;Directly refer to the explicit figure:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_SRAM_Cell.jpg&quot; alt=&quot;SRAM Cell&quot; width=&quot;500&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;parallel-architecture&quot;&gt;Parallel Architecture&lt;/h2&gt;
+
+&lt;p&gt;All the cells in the same column are opened by WLs.
+Currents are accumulated at BLs, and the MAC operation is implemented.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_MAC.jpg&quot; alt=&quot;MAC&quot; width=&quot;500&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;experiments--results&quot;&gt;Experiments &amp;amp; Results&lt;/h2&gt;
+
+&lt;h3 id=&quot;accuracy&quot;&gt;Accuracy&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_Accuracy.jpg&quot; alt=&quot;MAC&quot; width=&quot;900&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;performance&quot;&gt;Performance&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_Performance.jpg&quot; alt=&quot;MAC&quot; width=&quot;500&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;chip&quot;&gt;Chip&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_Chip.jpg&quot; alt=&quot;MAC&quot; width=&quot;900&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 03 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/reram_paper/2020/08/03/2_SRAM_BNN.html</link>
+        <guid isPermaLink="true">http://localhost:4000/reram_paper/2020/08/03/2_SRAM_BNN.html</guid>
+        
+        <category>analog computing</category>
+        
+        <category>analog signal processing</category>
+        
+        
+        <category>ReRAM_paper</category>
+        
+      </item>
+    
+      <item>
+        <title>GEM5- GEM5 中的 fatal 、 panic 、 warn</title>
+        <description>&lt;p&gt;除了可以使用 assert 外， GEM5 中提供了三个用于检查的函数：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;fatal / falal_if&lt;/p&gt;
+
+    &lt;p&gt;程序直接退出&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;panic / panic_ic&lt;/p&gt;
+
+    &lt;p&gt;程序退出当前函数，继续执行&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;warn / warn_if&lt;/p&gt;
+
+    &lt;p&gt;程序报 warning ，继续执行&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sun, 02 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/gem5/2020/08/02/6_GEM5_fatal_panic_warn.html</link>
+        <guid isPermaLink="true">http://localhost:4000/gem5/2020/08/02/6_GEM5_fatal_panic_warn.html</guid>
+        
+        <category>GEM5</category>
+        
+        <category>simulator</category>
+        
+        <category>cycle accurate</category>
+        
+        
+        <category>GEM5</category>
+        
+      </item>
+    
+      <item>
+        <title>GEM5- GEM5 中 VectorPort 的用法</title>
+        <description>&lt;p&gt;我的需求用到不确定个数的 port ，看了源码搞清了应该怎么用。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;在 SimObject 的 py 文件中添加：
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;masterports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;VectorMasterPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'master ports'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;slaveports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;VectorSlavePort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'slave ports'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在 SimObject 的 hh 文件中添加 port 的 vector 变量：&lt;/p&gt;
+
+    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;XXXMasterPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;XXXSlavePort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;SimObject 类中重写 getPort 函数：&lt;/p&gt;
+
+    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;Port&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;HyperTr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;if_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PortID&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+
+     &lt;span class=&quot;c1&quot;&gt;// This is the name from the Python SimObject declaration (SimpleMemobj.py)&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;if_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;masterports&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;if_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;slaveports&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+         &lt;span class=&quot;c1&quot;&gt;// pass it along to our super class&lt;/span&gt;
+         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SimObject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;if_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在 c++ class 的构造函数中添加 vector ports：&lt;/p&gt;
+
+    &lt;p&gt;port_xxx_connection_count 是自动生成的参数，是编译器根据 config.py 文件中连接了多少 port 确定的。
+ 在构造函数中，我们需要按照这个数量添加 port。&lt;/p&gt;
+    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;port_masterports_connection_count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;m_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push_back&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;XXXMasterPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;.m_port:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;port_slaveports_connection_count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;s_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push_back&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;XXXSlavePort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;.s_port:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;为了表示哪几个名字必须一样，哪几个名字不必一样，我特意将 c++ class 中 port 的名字与 python 中 port 的名字设置的不同。&lt;/p&gt;
+
+&lt;p&gt;另：啰嗦一句&lt;/p&gt;
+
+&lt;p&gt;其实重点在于 getPort 函数，这个函数用于定义 python 文件中的 port 名字与 c++ class 中的哪个 port 对应。
+c++ class 中的 port 可能不必定义成一个 vector 。
+只要能让 gem5 编译器找到对应的 port 即可。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 01 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/gem5/2020/08/01/5_GEM5_VectorPortUsage.html</link>
+        <guid isPermaLink="true">http://localhost:4000/gem5/2020/08/01/5_GEM5_VectorPortUsage.html</guid>
+        
+        <category>GEM5</category>
+        
+        <category>simulator</category>
+        
+        <category>cycle accurate</category>
+        
+        
+        <category>GEM5</category>
+        
+      </item>
     
       <item>
         <title>GEM5- GEM5 中 SimObject 多继承的问题</title>
@@ -23,8 +218,8 @@
 &lt;h2 id=&quot;不要用多继承&quot;&gt;&lt;strong&gt;不要用多继承&lt;/strong&gt;&lt;/h2&gt;
 </description>
         <pubDate>Sat, 01 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:5000/gem5/2020/08/01/4_GEM5_MultiInherent.html</link>
-        <guid isPermaLink="true">http://localhost:5000/gem5/2020/08/01/4_GEM5_MultiInherent.html</guid>
+        <link>http://localhost:4000/gem5/2020/08/01/4_GEM5_MultiInherent.html</link>
+        <guid isPermaLink="true">http://localhost:4000/gem5/2020/08/01/4_GEM5_MultiInherent.html</guid>
         
         <category>GEM5</category>
         
@@ -422,8 +617,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 &lt;/ol&gt;
 </description>
         <pubDate>Sat, 01 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:5000/gem5/2020/08/01/3_GEM5_Param.html</link>
-        <guid isPermaLink="true">http://localhost:5000/gem5/2020/08/01/3_GEM5_Param.html</guid>
+        <link>http://localhost:4000/gem5/2020/08/01/3_GEM5_Param.html</link>
+        <guid isPermaLink="true">http://localhost:4000/gem5/2020/08/01/3_GEM5_Param.html</guid>
         
         <category>GEM5</category>
         
@@ -497,8 +692,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 21 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:5000/gem5/2020/07/21/2_GEM5_Basic_Usage.html</link>
-        <guid isPermaLink="true">http://localhost:5000/gem5/2020/07/21/2_GEM5_Basic_Usage.html</guid>
+        <link>http://localhost:4000/gem5/2020/07/21/2_GEM5_Basic_Usage.html</link>
+        <guid isPermaLink="true">http://localhost:4000/gem5/2020/07/21/2_GEM5_Basic_Usage.html</guid>
         
         <category>GEM5</category>
         
@@ -568,7 +763,7 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
       &lt;/li&gt;
     &lt;/ul&gt;
 
-    &lt;p&gt;[2020-07-03 更新： setuptool会有版本问题，最新的版本不支持python2，要选择之前的版本]&lt;/p&gt;
+    &lt;p&gt;[2020-07-23 更新： setuptool会有版本问题，最新的版本不支持python2，要选择之前的版本]&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;修改pip源&lt;/p&gt;
@@ -628,7 +823,7 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
       &lt;/li&gt;
     &lt;/ul&gt;
 
-    &lt;p&gt;[2020-07-03 更新： scons 会有版本问题，最新的版本不支持 python2 ，要选择之前的版本，亲测 3.1.2 之前的版本可以]&lt;/p&gt;
+    &lt;p&gt;[2020-07-23 更新： scons 会有版本问题，最新的版本不支持 python2 ，要选择之前的版本，亲测 3.1.2 之前的版本可以]&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
@@ -821,8 +1016,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 
 </description>
         <pubDate>Mon, 20 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:5000/gem5/2020/07/20/1_GEM_Install.html</link>
-        <guid isPermaLink="true">http://localhost:5000/gem5/2020/07/20/1_GEM_Install.html</guid>
+        <link>http://localhost:4000/gem5/2020/07/20/1_GEM_Install.html</link>
+        <guid isPermaLink="true">http://localhost:4000/gem5/2020/07/20/1_GEM_Install.html</guid>
         
         <category>GEM5</category>
         
@@ -871,8 +1066,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 
 </description>
         <pubDate>Tue, 07 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:5000/others/2020/07/07/2_Net_wire.html</link>
-        <guid isPermaLink="true">http://localhost:5000/others/2020/07/07/2_Net_wire.html</guid>
+        <link>http://localhost:4000/others/2020/07/07/2_Net_wire.html</link>
+        <guid isPermaLink="true">http://localhost:4000/others/2020/07/07/2_Net_wire.html</guid>
         
         <category>net wire</category>
         
@@ -976,8 +1171,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 &lt;p&gt;至此，我们的第一个 candance project 仿真完成。&lt;/p&gt;
 </description>
         <pubDate>Tue, 07 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:5000/ic/design/2020/07/07/1_Candance_Intro.html</link>
-        <guid isPermaLink="true">http://localhost:5000/ic/design/2020/07/07/1_Candance_Intro.html</guid>
+        <link>http://localhost:4000/ic/design/2020/07/07/1_Candance_Intro.html</link>
+        <guid isPermaLink="true">http://localhost:4000/ic/design/2020/07/07/1_Candance_Intro.html</guid>
         
         <category>ic</category>
         
@@ -1027,326 +1222,13 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 &lt;p&gt;问题解决。&lt;/p&gt;
 </description>
         <pubDate>Mon, 06 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:5000/others/2020/07/06/1_Close_Hyper-V.html</link>
-        <guid isPermaLink="true">http://localhost:5000/others/2020/07/06/1_Close_Hyper-V.html</guid>
+        <link>http://localhost:4000/others/2020/07/06/1_Close_Hyper-V.html</link>
+        <guid isPermaLink="true">http://localhost:4000/others/2020/07/06/1_Close_Hyper-V.html</guid>
         
         <category>record</category>
         
         
         <category>others</category>
-        
-      </item>
-    
-      <item>
-        <title>FMNN 论文：A Switched Operation Approach to Sampled-Data Control Stabilization of Fuzzy Memristive Neural Networks With Time-Varying Delay</title>
-        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;authors:
-Xin Wang , Ju H. Park , Shouming Zhong , and Huilan Yang of Southwest University, Chongqing 400715, China&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;X. Wang, J. H. Park, S. Zhong and H. Yang, “A Switched Operation Approach to Sampled-Data Control Stabilization of Fuzzy Memristive Neural Networks With Time-Varying Delay,” in IEEE Transactions on Neural Networks and Learning Systems, vol. 31, no. 3, pp. 891-900, March 2020, doi: 10.1109/TNNLS.2019.2910574.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Here is abstract:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;This paper investigates the issue of sampled-data stabilization for Takagi-Sugeno fuzzy memristive neural networks (FMNNs) with time-varying delay. First, the concerned FMNNs are transformed into the tractable fuzzy NNs based on the excitatory and inhibitory of memristive synaptic weights using a new convex combination technique. Meanwhile, a switched fuzzy sampled-data controller is employed for the first time to tackle stability problems related to FMNNs. Then, the novel stabilization criteria of the FMNNs are established using the fuzzy membership functions (FMFs)-dependent Lyapunov-Krasovskii functional. This sufficiently utilizes information from not only the delayed state and the actual sampling pattern but also the FMFs. Two simulation examples are presented to demonstrate the feasibility and validity of the proposed method.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;background--takagisugeno-ts-fuzzy-model&quot;&gt;Background : Takagi–Sugeno (T–S) fuzzy model&lt;/h2&gt;
-
-&lt;p&gt;Refering: &lt;a href=&quot;https://wenku.baidu.com/view/5c66a4a5ad51f01dc281f178.html&quot;&gt;T-S模糊模型&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;contribution&quot;&gt;Contribution:&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;FMNNs were transformed into the tractable fuzzy NNs using a new convex combination
-technique by taking the excitatory and inhibitory of memristive synaptic weights into account.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;A switched FSDC (SFSDC) was designed for the first time to solve the stabilization problem of FMNNs.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;A switched FSDC (SFSDC) was designed for the first time to solve the stabilization problem of FMNNs.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;network-model&quot;&gt;Network Model:&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;(to be continued)&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 02 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:5000/mnn_paper/2020/07/02/1_FMNN.html</link>
-        <guid isPermaLink="true">http://localhost:5000/mnn_paper/2020/07/02/1_FMNN.html</guid>
-        
-        <category>analog computing</category>
-        
-        <category>MNN</category>
-        
-        
-        <category>MNN_paper</category>
-        
-      </item>
-    
-      <item>
-        <title>Time signal 论文：Analysis and Design of Energy Efficient Time Domain Signal Processing</title>
-        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Zhengyu Chen, Jie Gu, Analysis and Design of Energy Efficient Time Domain Signal Processing, International Symposium on Low Power Electronic Design (ISLPED), 2016.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The paper is &lt;a href=&quot;&amp;quot;dl.acm.org/citation.cfm?id=2934585&amp;quot;&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;My first time ever heard about using time signal for ReRAM accelerator. Found this paper to learn some details.&lt;/p&gt;
-
-&lt;p&gt;Let’s see abstract first：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Time domain signal processing (TDSP) encodes information into time rather than voltage with higher efficiency than conventional digital design. This paper performs systematical analysis on the design principle and energy efficiency of TDSP. Variation impact, which poses significant challenges to TDSP, is evaluated and a variation driven design methodology is proposed to achieve an optimum tradeoff between energy efficiency and design robustness. Several novel circuit level design techniques such as dual encoding strategy and bit-scalable design are also proposed in this work to significantly improve the energy efficiency of TDSP. Design example on a critical building block of facial recognition application was used to demonstrate the potential of the technique. The result in a 45nm technology shows 3.3X energy-delay product reduction and 34% area saving can be achieved using TDSP compared with conventional digital.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;1-time-signal-processing&quot;&gt;1. Time signal processing&lt;/h2&gt;
-
-&lt;h3 id=&quot;11-system&quot;&gt;1.1 system&lt;/h3&gt;
-
-&lt;p&gt;System is described in figure below. It’s composed of en/decoders and time domain logic.&lt;/p&gt;
-
-&lt;!--![System overview](/img/ReRAM_DNN_accelerator/1_figure_system.jpg)--&gt;
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_system.jpg&quot; alt=&quot;System overview&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;12-time-encoder&quot;&gt;1.2 Time Encoder&lt;/h3&gt;
-
-&lt;p&gt;Time encoder is also called DTC (Digital-to-Time Converter). Figure below shows some impementation of DTCs.&lt;/p&gt;
-
-&lt;!--![TE](/img/ReRAM_DNN_accelerator/1_figure_te.jpg)--&gt;
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_te.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Tech. (a) is proposed in &lt;a href=&quot;https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;amp;arnumber=6630119&quot;&gt;This Paper&lt;/a&gt;. &lt;script type=&quot;math/tex&quot;&gt;T_{in}&lt;/script&gt; is the time signal, such as &lt;em&gt;Step Signal&lt;/em&gt;. &lt;script type=&quot;math/tex&quot;&gt;D_{in}&lt;/script&gt; is the digital signal. By selecting different path with &lt;script type=&quot;math/tex&quot;&gt;D_{in}&lt;/script&gt;, delay of signal &lt;script type=&quot;math/tex&quot;&gt;T_{out}&lt;/script&gt; is decided. The design suffer from energy problem because of (1) multiple gates (2) signal returning to original stage which cause &lt;script type=&quot;math/tex&quot;&gt;2\times&lt;/script&gt; energy consumption.&lt;/p&gt;
-
-&lt;p&gt;Tech. (b) can encode multi-bit with a single inverter. (1) &lt;script type=&quot;math/tex&quot;&gt;3\times&lt;/script&gt; energy saving compared to (a). (2) energy consumption is a constant even if embedding multi-bit.&lt;/p&gt;
-
-&lt;p&gt;Tech. (c)(d) are “Cascade TE”. To be further discuess in the next sections.&lt;/p&gt;
-
-&lt;h3 id=&quot;13-dual-encoding-scheme&quot;&gt;1.3 Dual-encoding Scheme&lt;/h3&gt;
-
-&lt;p&gt;Compared to Tech. (a), which only encode information to only one kind of edge (raising or falling), this scheme means that encode information into both the two edges for energy saving. For more details, please refer to the paper.&lt;/p&gt;
-
-&lt;h3 id=&quot;14-time-logic-cell-tlc&quot;&gt;1.4 Time Logic Cell (TLC)&lt;/h3&gt;
-
-&lt;p&gt;No more words, see the figure below.&lt;/p&gt;
-
-&lt;!--![TLC](/img/ReRAM_DNN_accelerator/1_figure_TLC.jpg)--&gt;
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_TLC.jpg&quot; alt=&quot;TLC&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;15-time-decoder&quot;&gt;1.5 Time Decoder&lt;/h3&gt;
-
-&lt;p&gt;A technology is described in figure blew. It is explicit and no more words.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_TDC.jpg&quot; alt=&quot;TDC&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;2-variation-driven-design-methodology&quot;&gt;2. Variation-Driven Design Methodology&lt;/h2&gt;
-
-&lt;h3 id=&quot;21-variation-driven-design&quot;&gt;2.1 Variation driven design&lt;/h3&gt;
-
-&lt;p&gt;The auther introduces a energy-variation trade-off here. Consider the two kind of Tech. (c) (named cascade) and (d) (named cascode). As shown in figure below, cascade-type DTC has a larger energy but a smaller variation. Cascode-type DTC has an opposite characteristic. In order to trade off between energy and variation, a hybrid DTC is used.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_tradeoff.jpg&quot; alt=&quot;trade off&quot; width=&quot;500&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Details of energy consumption and variation is described with the following equations:&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{cascade\_TE}=\sqrt{2N}\sigma_1&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{cascode\_TE}=\sqrt{\sum_{i=1}^{n}\left(A+N_i\sigma_2\right)^2}&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{hybrid\_TE}=\sqrt{\sum_{i=1}^m\left(A+N_i\sigma_2\right)^2+\sum_{j=1}^{n-m}2^j\left(A+2^{m-1}\sigma_2\right)^2}&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;E_{cascade\_TE}=2N\cdot CV_{dd}^2&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;E_{cascode\_TE}=2nCV_{dd}^2&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;E_{hybrid\_TE}=\left(m+2^{n-m}\right)*2CV^2=\left(2m+2^{n-m+1}\right)CV^2&lt;/script&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;22-simulated-variation-impact&quot;&gt;2.2 Simulated Variation Impact&lt;/h3&gt;
-
-&lt;p&gt;Simulated variation compared to conventional adder is shown in the figure below. It is amazing that time signal computing can achieve a such low variation.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_variation_result.jpg&quot; alt=&quot;variation_res&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;3-case-study&quot;&gt;3. Case Study&lt;/h2&gt;
-
-&lt;p&gt;The following cases are studed in the origin paper:&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Big-scalable design&lt;/li&gt;
-  &lt;li&gt;Efficient MAX/MIN/CMP operation&lt;/li&gt;
-  &lt;li&gt;Parallel operation with short cirtical path&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;For more details, please refer to the origin paper.&lt;/p&gt;
-
-&lt;h2 id=&quot;4-conclusion&quot;&gt;4. Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Energy and area result is summrized in the following table:&lt;/p&gt;
-
-&lt;!--| | CPU | Conventional ASIC | TDSP |
-|:---:|:---:|:---:|:---:|
-|Technology||||--&gt;
-
-&lt;table align=&quot;center&quot; border=&quot;1&quot; frame=&quot;box&quot;&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;td&gt;&amp;nbsp;&lt;/td&gt; 
-        &lt;th&gt;CPU&lt;/th&gt; 
-        &lt;th&gt;Conventional ASIC&lt;/th&gt; 
-        &lt;th&gt;TDSP&lt;/th&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt; Technology &lt;/th&gt;
-        &lt;td colspan=&quot;3&quot;&gt; 45nm, 1.1V &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt; Energy (fJ)&lt;/th&gt;
-        &lt;td&gt; 2304 &lt;/td&gt;
-        &lt;td&gt; 323 &lt;/td&gt;
-        &lt;td&gt; 224.4 &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt; Area (&lt;span&gt;&lt;script type=&quot;math/tex&quot;&gt;\mu m^2&lt;/script&gt;&lt;/span&gt;)&lt;/th&gt;
-        &lt;td&gt; N/A &lt;/td&gt;
-        &lt;td&gt; 115 &lt;/td&gt;
-        &lt;td&gt; 75.6 &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt; Delay (ns)&lt;/th&gt;
-        &lt;td&gt; 3.2 &lt;/td&gt;
-        &lt;td&gt; 0.98 &lt;/td&gt;
-        &lt;td&gt; 0.43 &lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;thoughts&quot;&gt;Thoughts&lt;/h2&gt;
-
-&lt;p&gt;First ReRAM-based DNN accelerator that uses time signal is &lt;a href=&quot;&quot;&gt;Timely architecture&lt;/a&gt;. The author claims that TDC is much more energy efficient than ADC. This paper solve my confusion on how DTC and TDC works.&lt;/p&gt;
-
-&lt;p&gt;Actually, I think DAC and TDC can also be a conversion pair. With a capacitance used as integrator, along with a comparator, analog signal can be converted to time signal.&lt;/p&gt;
-
-&lt;p&gt;Moreover, the design in timely uses a circuit to store time signal, which is also what I am confused about.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 06 Jun 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:5000/reram_paper/2020/06/06/1_Time_signal.html</link>
-        <guid isPermaLink="true">http://localhost:5000/reram_paper/2020/06/06/1_Time_signal.html</guid>
-        
-        <category>analog computing</category>
-        
-        <category>analog signal processing</category>
-        
-        
-        <category>ReRAM_paper</category>
-        
-      </item>
-    
-      <item>
-        <title>如何在建好TF图后修改图</title>
-        <description>&lt;h1 id=&quot;如何在建好tf图后修改图&quot;&gt;如何在建好TF图后修改图&lt;/h1&gt;
-
-&lt;p&gt;网上大部分教程都说tensorflow的图建好后是不能修改的，但是实际上是可以的。&lt;/p&gt;
-
-&lt;h2 id=&quot;operation_update_input函数&quot;&gt;Operation._update_input()函数&lt;/h2&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_update_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;new_tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;此函数的作用是将op的第i个输入变成new_tensor。&lt;/p&gt;
-
-&lt;p&gt;下面的例子是用该函数将mul op的输入从b变成c。&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;tensorflow&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SaveGraph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tb_dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tb_dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;makedirs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tb_dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;g&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;graph&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;writer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;summary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FileWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tb_dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;writer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_graph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  
-    
-&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dtype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'a'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dtype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'b'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;placeholder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dtype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'c'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;#build graph  
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# save graph
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Session&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;SaveGraph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'tensorboard/before/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# reroute operation mul
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;op&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#&amp;lt;op here is the mul operation of d&amp;gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;op&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_update_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#&amp;lt;update the first input of op with c&amp;gt;
-&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# save new graph
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SaveGraph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'tensorboard/after/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在图建好后，tensorboard中的图如下所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:5000/img/Tensorflow/1/1_figure_before.jpg&quot; alt=&quot;reroute之前&quot; /&gt;
-&lt;!-- (https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_before.jpg)--&gt;&lt;/p&gt;
-
-&lt;p&gt;在修改图时，首先用consumers函数求b节点的所有下一级节点，即mul节点。随后用op._update_input()函数来将mul的第1个输入从b节点变成c节点。修改后图如下所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:5000/img/Tensorflow/1/1_figure_after.jpg&quot; alt=&quot;reroute之后&quot; /&gt;
-&lt;!-- (https://github.com/xiaoke0515/xiaoke0515.github.io/blob/master/content/Tensorflow/1-figure_after.jpg)--&gt;&lt;/p&gt;
-
-&lt;p&gt;这样，mul的输入从b节点变成了c节点。&lt;/p&gt;
-
-&lt;h2 id=&quot;在某个节点后插入op&quot;&gt;在某个节点后插入op&lt;/h2&gt;
-
-&lt;p&gt;这个是在看tensorflow.contrib.quantize模块的create_training_graph函数代码后学会的。实现了个简单的InsertOP函数来完成这个功能。&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;InsertOP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;in_tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;out_tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exclude_consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;consumers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in_tensor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;con&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;con&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exclude_consumers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;continue&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inp&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;enumerate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;con&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inp&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in_tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;con&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_update_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;out_tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;参数：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;in_tensor：在此tensor后插入op。&lt;/li&gt;
-  &lt;li&gt;out_tensor：插入的op的输出的tensor。&lt;/li&gt;
-  &lt;li&gt;exclude_consumers：是一个op的列表，表示in_tensor的所有consumer中，不希望插入out_tensor的。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;用法：&lt;/p&gt;
-
-&lt;p&gt;首先，定义一个要插入的op：&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;in_tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;out_tensor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NewOP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;in_tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;exclude_consumers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;out_tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exclude_consumers&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;它输出两个变量：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;out_tensor：NewOP输出的tensor。&lt;/li&gt;
-  &lt;li&gt;exclude_consumers：插入的NewOP给in_tensor带来的新的consumers，这是一个值得注意的地方。
-如果NewOP是一个节点，则exclude_consumers=[NewOP]；
-如果NewOP是一个子图，那么exclude_consumers则是NewOP子图中所有的in_tensor的consumer。
-如果不把这些consumer排除，那么在InsertOP后计算图会形成环。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;之后再用InsertOP函数插入NewOP。&lt;/p&gt;
-</description>
-        <pubDate>Wed, 03 Jun 2020 12:25:00 +0800</pubDate>
-        <link>http://localhost:5000/tensorflow/2020/06/03/1_Reroute_Tensor.html</link>
-        <guid isPermaLink="true">http://localhost:5000/tensorflow/2020/06/03/1_Reroute_Tensor.html</guid>
-        
-        <category>tensorflow</category>
-        
-        
-        <category>tensorflow</category>
         
       </item>
     
