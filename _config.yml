@@ -22,6 +22,8 @@ github_username:  xiaoke0515
 #auto: true
 markdown: kramdown
 
+intensedebate_identifier: 1026458b3a9d7f0542e1aa6b86d3ae05
+
 # collections
 collections:
   tag:
