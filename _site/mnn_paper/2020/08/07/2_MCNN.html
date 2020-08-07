@@ -110,7 +110,13 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+    <script type="text/javascript" async="" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+<!--<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>-->
 
 <p>authors:
 Shukai Duan, Member, IEEE, Xiaofang Hu, Student Member, IEEE, Zhekang Dong, Student Member, IEEE, Lidan Wang, Member, IEEE, and Pinaki Mazumder, Fellow, IEEE</p>
@@ -155,7 +161,7 @@ Where <script type="math/tex">M(q)</script> is <strong>memristance</strong> whic
 <p>Define a stage variable <script type="math/tex">x</script> which is the width of <em>Simmons tunnel barrier</em> and <em>tunnel barrier</em> determines the memristance magnitude. We can represent <script type="math/tex">x</script> by:
 <script type="math/tex">% <![CDATA[
 \dfrac{\mathrm{d}x(t)}{\mathrm{d}t}=\left\{\begin{matrix}c_{OFF}\sinh\left(\dfrac{i}{i_{OFF}}\right)\exp\left[-\exp\left(\dfrac{x-a_{OFF}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&i>0\\c_{ON}\sinh\left(\dfrac{i}{i_{ON}}\right)\exp\left[-\exp\left(-\dfrac{x-a_{ON}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&i<0\end{matrix}\right. %]]></script>
-where <script type="math/tex">c_{OFF}</script>, <script type="math/tex">c_{ON}</script>, <script type="math/tex">i_{OFF}</script>, <script type="math/tex">i_{ON}</script>, <script type="math/tex">a_{OFF}</script>, <script type="math/tex">a_{ON}</script>, <script type="math/tex">w_c</script>, and <script type="math/tex">b</script> are the fitting parameters, in which the parameters <script type="math/tex">c_{OFF}</script> and <script type="math/tex">c_{ON}</script> influence the change in magnitude of <script type="math/tex">x</script>, the parameters <script type="math/tex">i_{OFF}</script> and <script type="math/tex">i_{on}</script> reflect the current thresholds, and <script type="math/tex">a_{OFF}</script> and <script type="math/tex">a_{on}</script> are the upper and the lower bounds of <script type="math/tex">x</script>, respectively.</p>
+where $c_{OFF}$, $c_{ON}$, $i_{OFF}$, $i_{ON}$, $a_{OFF}$, $a_{ON}$, $w_c$, and $b$ are the fitting parameters, in which the parameters $c_{OFF}$ and $c_{ON}$ influence the change in magnitude of $x$, the parameters $i_{OFF}$ and $i_{on}$ reflect the current thresholds, and $a_{OFF}$ and $a_{on}$ are the upper and the lower bounds of $x$, respectively.</p>
 
   </div>
 

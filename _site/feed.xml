@@ -6,13 +6,19 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 07 Aug 2020 15:07:10 +0800</pubDate>
-    <lastBuildDate>Fri, 07 Aug 2020 15:07:10 +0800</lastBuildDate>
+    <pubDate>Fri, 07 Aug 2020 15:22:57 +0800</pubDate>
+    <lastBuildDate>Fri, 07 Aug 2020 15:22:57 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>MCNN 论文：Memristor-Based Cellular Nonlinear/Neural Network: Design, Analysis, and Applications</title>
-        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+        <description>&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/x-mathjax-config&quot;&gt;
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+&lt;/script&gt;
+
+&lt;!--&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;--&gt;
 
 &lt;p&gt;authors:
 Shukai Duan, Member, IEEE, Xiaofang Hu, Student Member, IEEE, Zhekang Dong, Student Member, IEEE, Lidan Wang, Member, IEEE, and Pinaki Mazumder, Fellow, IEEE&lt;/p&gt;
@@ -57,7 +63,7 @@ Where &lt;script type=&quot;math/tex&quot;&gt;M(q)&lt;/script&gt; is &lt;strong&
 &lt;p&gt;Define a stage variable &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; which is the width of &lt;em&gt;Simmons tunnel barrier&lt;/em&gt; and &lt;em&gt;tunnel barrier&lt;/em&gt; determines the memristance magnitude. We can represent &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; by:
 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 \dfrac{\mathrm{d}x(t)}{\mathrm{d}t}=\left\{\begin{matrix}c_{OFF}\sinh\left(\dfrac{i}{i_{OFF}}\right)\exp\left[-\exp\left(\dfrac{x-a_{OFF}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&amp;i&gt;0\\c_{ON}\sinh\left(\dfrac{i}{i_{ON}}\right)\exp\left[-\exp\left(-\dfrac{x-a_{ON}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&amp;i&lt;0\end{matrix}\right. %]]&gt;&lt;/script&gt;
-where &lt;script type=&quot;math/tex&quot;&gt;c_{OFF}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;c_{ON}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;i_{OFF}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;i_{ON}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;a_{OFF}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;a_{ON}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;w_c&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; are the fitting parameters, in which the parameters &lt;script type=&quot;math/tex&quot;&gt;c_{OFF}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;c_{ON}&lt;/script&gt; influence the change in magnitude of &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;, the parameters &lt;script type=&quot;math/tex&quot;&gt;i_{OFF}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;i_{on}&lt;/script&gt; reflect the current thresholds, and &lt;script type=&quot;math/tex&quot;&gt;a_{OFF}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;a_{on}&lt;/script&gt; are the upper and the lower bounds of &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;, respectively.&lt;/p&gt;
+where $c_{OFF}$, $c_{ON}$, $i_{OFF}$, $i_{ON}$, $a_{OFF}$, $a_{ON}$, $w_c$, and $b$ are the fitting parameters, in which the parameters $c_{OFF}$ and $c_{ON}$ influence the change in magnitude of $x$, the parameters $i_{OFF}$ and $i_{on}$ reflect the current thresholds, and $a_{OFF}$ and $a_{on}$ are the upper and the lower bounds of $x$, respectively.&lt;/p&gt;
 </description>
         <pubDate>Fri, 07 Aug 2020 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/mnn_paper/2020/08/07/2_MCNN.html</link>
