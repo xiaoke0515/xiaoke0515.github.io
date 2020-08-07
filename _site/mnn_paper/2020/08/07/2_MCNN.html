@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Candance 1： Candance的初步使用</title>
-  <meta name="description" content="Candance的安装">
+  <title>MCNN 论文：Memristor-Based Cellular Nonlinear/Neural Network: Design, Analysis, and Applications</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/icdesign/2020/07/07/1_Candance_Intro.html">
+  <link rel="canonical" href="http://localhost:4000/mnn_paper/2020/08/07/2_MCNN.html">
   <link rel="alternate" type="application/rss+xml" title="Y.L. Zhao" href="http://localhost:4000/feed.xml">
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
@@ -84,14 +84,14 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Candance 1： Candance的初步使用</h1>
-    <p class="post-meta"><time datetime="2020-07-07T00:00:00+08:00" itemprop="datePublished">Jul 7, 2020</time></p>
+    <h1 class="post-title" itemprop="name headline">MCNN 论文：Memristor-Based Cellular Nonlinear/Neural Network: Design, Analysis, and Applications</h1>
+    <p class="post-meta"><time datetime="2020-08-07T00:00:00+08:00" itemprop="datePublished">Aug 7, 2020</time></p>
   </header>
 
   <div class="categories">
     <small>Category:</small>
     <span class="category">
-      <small> <a href="/categories/">ICDesign</a></small>
+      <small> <a href="/categories/">MNN_paper</a></small>
     </span>
   </div>
 
@@ -100,111 +100,62 @@
     <small>Tags: </small>
     
       <span class="tag">
-        <small> <a href="/_posts/"> #candance</a> </small>
+        <small> <a href="/_posts/"> #MCNN</a> </small>
       </span>
     
       <span class="tag">
-        <small> <a href="/_posts/"> #ic</a> </small>
-      </span>
-    
-      <span class="tag">
-        <small> <a href="/_posts/"> #virtuoso</a> </small>
+        <small> <a href="/_posts/"> #analog computing</a> </small>
       </span>
     
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <h2 id="candance的安装">Candance的安装</h2>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
-<p>使用的是已经安装好的 candance ，没有涉及到安装问题，留出位置，以后遇到问题再补。</p>
-
-<h2 id="candance-启动">Candance 启动</h2>
-
-<p>命令：</p>
+<p>authors:
+Shukai Duan, Member, IEEE, Xiaofang Hu, Student Member, IEEE, Zhekang Dong, Student Member, IEEE, Lidan Wang, Member, IEEE, and Pinaki Mazumder, Fellow, IEEE</p>
 
 <blockquote>
-  <p>virtuoso &amp;</p>
+  <p>S. Duan, X. Hu, Z. Dong, L. Wang and P. Mazumder, “Memristor-Based Cellular Nonlinear/Neural Network: Design, Analysis, and Applications,” in IEEE Transactions on Neural Networks and Learning Systems, vol. 26, no. 6, pp. 1202-1213, June 2015, doi: 10.1109/TNNLS.2014.2334701.</p>
 </blockquote>
 
-<p>在我安装好的这个cadance中，virtuoso 打开的是6.1版本，icfb 打开的是5.1版本。6.1版本用的是oa库，5.1版本用的是cdb库，这两个库不兼容，使用时要注意。在此我用的是6.1版本。</p>
+<p>Here is abstract:</p>
 
-<h2 id="安装库">安装库</h2>
+<blockquote>
+  <p>Cellular nonlinear/neural network (CNN) has been recognized as a powerful massively parallel architecture capable of solving complex engineering problems by performing trillions of analog operations per second. The memristor was theoretically predicted in the late seventies, but it garnered nascent research interest due to the recent much-acclaimed discovery of nanocrossbar memories by engineers at the Hewlett-Packard Laboratory. The memristor is expected to be co-integrated with nanoscale CMOS technology to revolutionize conventional von Neumann as well as neuromorphic computing. In this paper, a compact CNN model based on memristors is presented along with its performance analysis and applications. In the new CNN design, the memristor bridge circuit acts as the synaptic circuit element and substitutes the complex multiplication circuit used in traditional CNN architectures. In addition, the negative differential resistance and nonlinear current–voltage characteristics of the memristor have been leveraged to replace the linear resistor in conventional CNNs. The proposed CNN design has several merits, for example, high density, nonvolatility, and programmability of synaptic weights. The proposed memristor-based CNN design operations for implementing several image processing functions are illustrated through simulation and contrasted with conventional CNNs. Monte-Carlo simulation has been used to demonstrate the behavior of the proposed CNN due to the variations in memristor synaptic weights.</p>
+</blockquote>
 
-<p>安装时要注意是 cdb 库还是 oa 库。在我电脑中的库中，SMIC_13mmrf_1P6M_30k 是 cdb 库，FreePDK-45 是 OA 库，所以这里我将安装FreePDK库。</p>
+<p>Note that the CNN here is <em>Cellular neural network</em>, not <em>Convolutional neural network</em>!</p>
 
-<p>Tools - Library Manager - File - New Library， Directory选择 /path/to/pdk/FreePDK45/ncsu_basekit/lib/，Name 输入NCSU_Devices_FreePDK45，之后 OK。</p>
+<h2 id="contribution">Contribution:</h2>
 
-<p><img src="/img/others/2_figure_New_Library.png" alt="" /></p>
+<ul>
+  <li>
+    <p>Proposed a novel type of M-CNN:</p>
 
-<p>在如下对话框中选择 Do not need process information 即可。</p>
+    <ol>
+      <li>
+        <p>The memristor bridge circuit is employed to realize the interactions between the neighbouring cells.</p>
+      </li>
+      <li>
+        <p>Memristor model is practical model based on experimental data.</p>
+      </li>
+    </ol>
+  </li>
+</ul>
 
-<p><img src="/img/others/2_figure_Technology_File_for_New_Library.png" alt="" /></p>
+<h2 id="memristor-basics">Memristor Basics</h2>
 
-<p>之后回到如下界面，在新的Library中出现 cell，即说明安装成功。每一个 cell 都有许多 View。双击一个 view 可浏览，如下图。</p>
+<p>Memristor: 
+<script type="math/tex">\dfrac{\mathrm{d}\phi}{\mathrm{d}t}=\dfrac{\mathrm{d}\phi(q)}{\mathrm{d}q}\cdot\dfrac{\mathrm{d}q}{\mathrm{d}t}</script>
+Where <script type="math/tex">\phi</script> is flux and <script type="math/tex">q</script> is charge. And we can derivate this:
+<script type="math/tex">v(t)=\dfrac{\mathrm{d}\phi(q)}{\mathrm{d}q}\cdot i(t)=M(q)i(t)</script>
+Where <script type="math/tex">M(q)</script> is <strong>memristance</strong> which is the resistance of a memristor.</p>
 
-<p><img src="/img/others/2_figure_Library_Install_Done.png" alt="" /></p>
-
-<h2 id="新建-cellview">新建 cellview</h2>
-
-<p>在安装好库后就可以画 cell 了。在画 cell 之前要新建一个库，用于存放我们画的 cell。步骤与上一节相同，只不过我们的路径选择一个空文件夹即可。在这里我新建的库的名字叫 proj1。</p>
-
-<p>File - New - CellView， Library 选择我们新建的库， cell 起一个名字（这里我要画一个反相器），Type 选择 schematic。OK 之后就会打开一个画图的界面。</p>
-
-<p><img src="/img/others/2_figure_New_File.png" alt="" /></p>
-
-<p>反相器由两个 mos 组成。接下来我们将画这两个 mos 。 Create - Instance， Library 选择 FreePDK 那个库， cell 选择一个mos， View 选择 Symbol， Name 随意取个名字。此时在光标处就会出现一个 mos 管的形状，点击就可以把它放在任何想要的位置。</p>
-
-<p><img src="/img/others/2_figure_Add_Instance.png" alt="" /></p>
-
-<p>画好两个 mos 后，接下来增加四个 pin， 分别对应 Vin 、 Vout 、 VDD 、 GND。 Create - Pin ，根据需要选择输入-输出类型，之后添加即可。最后将两个 mos 和四个 pin 用线连接起来。</p>
-
-<p><img src="/img/others/2_figure_Inverter_Done.png" alt="" /></p>
-
-<p>之后 File- Check and Save ，无 error 即可。</p>
-
-<h2 id="搭建-inverter-的仿真电路">搭建 inverter 的仿真电路</h2>
-
-<p>首先要给我们画的 inverter 创建一个 symbol。这里我们为方便进行自动生成。 Create - CellView - From CellView。 按如下默认设置即可，选择 OK 。</p>
-
-<p><img src="/img/others/2_figure_CellView_from_CellView.png" alt="" /></p>
-
-<p>此时在 Library Manager 中，我们发现我们画的 inverter 多了个 symbol 的 view，说明创建成功。</p>
-
-<p><img src="/img/others/2_figure_Add_Symbol_Done.png" alt="" /></p>
-
-<p>之后我们将搭建 inverter 的仿真电路。同样地，我们新建一个 cellview，我这里取名为 inverter_sim，按下图添加周边电路元件。下面的元件都可以在 basic 库中找到。</p>
-
-<p><img src="/img/others/2_fiugre_Inverter_sim.png" alt="" /></p>
-
-<p>同样地， check and save。</p>
-
-<h2 id="spectre-仿真">Spectre 仿真</h2>
-
-<p>在我们的 inverter_sim 的原理图界面，Launch - ADE L。</p>
-
-<p><img src="/img/others/2_figure_ADEL.png" alt="" /></p>
-
-<p>首先添加 model library。Setup - Model Library。 路径为 /path/to/pdk/FreePDK45/ncsu_basekit/models/hspice/tran_models ， 把所有的 .inc 文件添加进去。</p>
-
-<p><img src="/img/others/2_figure_Model_Library_Setup.png" alt="" /></p>
-
-<p>Analysis - choose， 这里就和 spice 一样了，选择一种 analysis 。</p>
-
-<p><img src="/img/others/2_figure_Choosing_Analysis.png" alt="" /></p>
-
-<p>Simulation - NetList and Run，弹出一个窗口，无 error 和 warning。</p>
-
-<p><img src="/img/others/2_figure_Simulation.png" alt="" /></p>
-
-<p>Results - Direct Plot - Main Form，按如下图选择并在原理图中选择一个点来 plot。我这里选择 inverter 的 Vout，直接在原理图上选择对应位置即可。</p>
-
-<p><img src="/img/others/2_figure_Direct_Plot_Form.png" alt="" /></p>
-
-<p>之后就会弹出一个窗口，就是绘制的曲线。</p>
-
-<p><img src="/img/others/2_figure_Visualization.png" alt="" /></p>
-
-<p>至此，我们的第一个 candance project 仿真完成。</p>
+<p>Define a stage variable <script type="math/tex">x</script> which is the width of <em>Simmons tunnel barrier</em> and <em>tunnel barrier</em> determines the memristance magnitude. We can represent <script type="math/tex">x</script> by:
+<script type="math/tex">% <![CDATA[
+\dfrac{\mathrm{d}x(t)}{\mathrm{d}t}=\left\{\begin{matrix}c_{OFF}\sinh\left(\dfrac{i}{i_{OFF}}\right)\exp\left[-\exp\left(\dfrac{x-a_{OFF}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&i>0\\c_{ON}\sinh\left(\dfrac{i}{i_{ON}}\right)\exp\left[-\exp\left(-\dfrac{x-a_{ON}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&i<0\end{matrix}\right. %]]></script>
+where <script type="math/tex">c_{OFF}</script>, <script type="math/tex">c_{ON}</script>, <script type="math/tex">i_{OFF}</script>, <script type="math/tex">i_{ON}</script>, <script type="math/tex">a_{OFF}</script>, <script type="math/tex">a_{ON}</script>, <script type="math/tex">w_c</script>, and <script type="math/tex">b</script> are the fitting parameters, in which the parameters <script type="math/tex">c_{OFF}</script> and <script type="math/tex">c_{ON}</script> influence the change in magnitude of <script type="math/tex">x</script>, the parameters <script type="math/tex">i_{OFF}</script> and <script type="math/tex">i_{on}</script> reflect the current thresholds, and <script type="math/tex">a_{OFF}</script> and <script type="math/tex">a_{on}</script> are the upper and the lower bounds of <script type="math/tex">x</script>, respectively.</p>
 
   </div>
 

@@ -6,9 +6,71 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 03 Aug 2020 15:19:31 +0800</pubDate>
-    <lastBuildDate>Mon, 03 Aug 2020 15:19:31 +0800</lastBuildDate>
+    <pubDate>Fri, 07 Aug 2020 15:07:10 +0800</pubDate>
+    <lastBuildDate>Fri, 07 Aug 2020 15:07:10 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>MCNN 论文：Memristor-Based Cellular Nonlinear/Neural Network: Design, Analysis, and Applications</title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;authors:
+Shukai Duan, Member, IEEE, Xiaofang Hu, Student Member, IEEE, Zhekang Dong, Student Member, IEEE, Lidan Wang, Member, IEEE, and Pinaki Mazumder, Fellow, IEEE&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;S. Duan, X. Hu, Z. Dong, L. Wang and P. Mazumder, “Memristor-Based Cellular Nonlinear/Neural Network: Design, Analysis, and Applications,” in IEEE Transactions on Neural Networks and Learning Systems, vol. 26, no. 6, pp. 1202-1213, June 2015, doi: 10.1109/TNNLS.2014.2334701.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Here is abstract:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Cellular nonlinear/neural network (CNN) has been recognized as a powerful massively parallel architecture capable of solving complex engineering problems by performing trillions of analog operations per second. The memristor was theoretically predicted in the late seventies, but it garnered nascent research interest due to the recent much-acclaimed discovery of nanocrossbar memories by engineers at the Hewlett-Packard Laboratory. The memristor is expected to be co-integrated with nanoscale CMOS technology to revolutionize conventional von Neumann as well as neuromorphic computing. In this paper, a compact CNN model based on memristors is presented along with its performance analysis and applications. In the new CNN design, the memristor bridge circuit acts as the synaptic circuit element and substitutes the complex multiplication circuit used in traditional CNN architectures. In addition, the negative differential resistance and nonlinear current–voltage characteristics of the memristor have been leveraged to replace the linear resistor in conventional CNNs. The proposed CNN design has several merits, for example, high density, nonvolatility, and programmability of synaptic weights. The proposed memristor-based CNN design operations for implementing several image processing functions are illustrated through simulation and contrasted with conventional CNNs. Monte-Carlo simulation has been used to demonstrate the behavior of the proposed CNN due to the variations in memristor synaptic weights.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Note that the CNN here is &lt;em&gt;Cellular neural network&lt;/em&gt;, not &lt;em&gt;Convolutional neural network&lt;/em&gt;!&lt;/p&gt;
+
+&lt;h2 id=&quot;contribution&quot;&gt;Contribution:&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Proposed a novel type of M-CNN:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;The memristor bridge circuit is employed to realize the interactions between the neighbouring cells.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Memristor model is practical model based on experimental data.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;memristor-basics&quot;&gt;Memristor Basics&lt;/h2&gt;
+
+&lt;p&gt;Memristor: 
+&lt;script type=&quot;math/tex&quot;&gt;\dfrac{\mathrm{d}\phi}{\mathrm{d}t}=\dfrac{\mathrm{d}\phi(q)}{\mathrm{d}q}\cdot\dfrac{\mathrm{d}q}{\mathrm{d}t}&lt;/script&gt;
+Where &lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; is flux and &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; is charge. And we can derivate this:
+&lt;script type=&quot;math/tex&quot;&gt;v(t)=\dfrac{\mathrm{d}\phi(q)}{\mathrm{d}q}\cdot i(t)=M(q)i(t)&lt;/script&gt;
+Where &lt;script type=&quot;math/tex&quot;&gt;M(q)&lt;/script&gt; is &lt;strong&gt;memristance&lt;/strong&gt; which is the resistance of a memristor.&lt;/p&gt;
+
+&lt;p&gt;Define a stage variable &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; which is the width of &lt;em&gt;Simmons tunnel barrier&lt;/em&gt; and &lt;em&gt;tunnel barrier&lt;/em&gt; determines the memristance magnitude. We can represent &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; by:
+&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\dfrac{\mathrm{d}x(t)}{\mathrm{d}t}=\left\{\begin{matrix}c_{OFF}\sinh\left(\dfrac{i}{i_{OFF}}\right)\exp\left[-\exp\left(\dfrac{x-a_{OFF}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&amp;i&gt;0\\c_{ON}\sinh\left(\dfrac{i}{i_{ON}}\right)\exp\left[-\exp\left(-\dfrac{x-a_{ON}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&amp;i&lt;0\end{matrix}\right. %]]&gt;&lt;/script&gt;
+where &lt;script type=&quot;math/tex&quot;&gt;c_{OFF}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;c_{ON}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;i_{OFF}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;i_{ON}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;a_{OFF}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;a_{ON}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;w_c&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; are the fitting parameters, in which the parameters &lt;script type=&quot;math/tex&quot;&gt;c_{OFF}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;c_{ON}&lt;/script&gt; influence the change in magnitude of &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;, the parameters &lt;script type=&quot;math/tex&quot;&gt;i_{OFF}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;i_{on}&lt;/script&gt; reflect the current thresholds, and &lt;script type=&quot;math/tex&quot;&gt;a_{OFF}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;a_{on}&lt;/script&gt; are the upper and the lower bounds of &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;, respectively.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 07 Aug 2020 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/mnn_paper/2020/08/07/2_MCNN.html</link>
+        <guid isPermaLink="true">http://localhost:4000/mnn_paper/2020/08/07/2_MCNN.html</guid>
+        
+        <category>analog computing</category>
+        
+        <category>MCNN</category>
+        
+        
+        <category>MNN_paper</category>
+        
+      </item>
     
       <item>
         <title>SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title>
@@ -1182,51 +1244,6 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
         
         
         <category>ICDesign</category>
-        
-      </item>
-    
-      <item>
-        <title>VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V</title>
-        <description>&lt;p&gt;前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;您的主机不满足在启用 Hyper-V 或 Device/Credential Guard 的情况下运行 VMware。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;打开 VMWare 官方文档就是让关闭 Hyper-V。但是其实在我的个人版 Windows 是没有 Hyper-V 选项的。在搜了半天 Hyper-V 是啥才想到可能是和我前几天打开的那个虚拟机功能有关。&lt;/p&gt;
-
-&lt;p&gt;在我关闭这个功能之后，事情并没有改善，我一度以为思路错了，直到我继续谷歌半天才确定就是这个辣鸡虚拟机功能搞的鬼。***&lt;/p&gt;
-
-&lt;h2 id=&quot;解决问题记录&quot;&gt;解决问题记录&lt;/h2&gt;
-
-&lt;p&gt;原因还是 Hyper-V 和 VMWare 不兼容。所以这里实际记录的实际上是如何彻底关闭 Hyper-V。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;小娜-&amp;gt;启用和关闭Windows功能-&amp;gt;关闭 虚拟机平台（或Hyper-V）&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/img/others/1_figure_windows_function.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;小娜-&amp;gt;计算机管理-&amp;gt;服务和应用程序-&amp;gt;服务-&amp;gt;把所有带 Hyper-V 的停止并禁用。&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/img/others/1_figure_windows_service.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;重启计算机&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;问题解决。&lt;/p&gt;
-</description>
-        <pubDate>Mon, 06 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/others/2020/07/06/1_Close_Hyper-V.html</link>
-        <guid isPermaLink="true">http://localhost:4000/others/2020/07/06/1_Close_Hyper-V.html</guid>
-        
-        <category>record</category>
-        
-        
-        <category>others</category>
         
       </item>
     
