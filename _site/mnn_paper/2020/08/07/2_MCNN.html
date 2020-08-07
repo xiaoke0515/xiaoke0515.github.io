@@ -82,6 +82,17 @@
     <div class="page-content">
       <div class="wrapper">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+  </head>
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">MCNN 论文：Memristor-Based Cellular Nonlinear/Neural Network: Design, Analysis, and Applications</h1>
@@ -110,12 +121,10 @@
   </div>
 
   <div class="post-content" itemprop="articleBody">
-    <script type="text/javascript" async="" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
+    <!--<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 </script>
-
 <!--<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>-->
 
 <p>authors:
@@ -152,16 +161,101 @@ Shukai Duan, Member, IEEE, Xiaofang Hu, Student Member, IEEE, Zhekang Dong, Stud
 
 <h2 id="memristor-basics">Memristor Basics</h2>
 
-<p>Memristor: 
-<script type="math/tex">\dfrac{\mathrm{d}\phi}{\mathrm{d}t}=\dfrac{\mathrm{d}\phi(q)}{\mathrm{d}q}\cdot\dfrac{\mathrm{d}q}{\mathrm{d}t}</script>
-Where <script type="math/tex">\phi</script> is flux and <script type="math/tex">q</script> is charge. And we can derivate this:
-<script type="math/tex">v(t)=\dfrac{\mathrm{d}\phi(q)}{\mathrm{d}q}\cdot i(t)=M(q)i(t)</script>
-Where <script type="math/tex">M(q)</script> is <strong>memristance</strong> which is the resistance of a memristor.</p>
+<p>Memristor:</p>
 
-<p>Define a stage variable <script type="math/tex">x</script> which is the width of <em>Simmons tunnel barrier</em> and <em>tunnel barrier</em> determines the memristance magnitude. We can represent <script type="math/tex">x</script> by:
-<script type="math/tex">% <![CDATA[
+<script type="math/tex; mode=display">\dfrac{\mathrm{d}\phi}{\mathrm{d}t}=\dfrac{\mathrm{d}\phi(q)}{\mathrm{d}q}\cdot\dfrac{\mathrm{d}q}{\mathrm{d}t}</script>
+
+<p>Where <script type="math/tex">\phi</script> is flux and <script type="math/tex">q</script> is charge. 
+And we can derivate this:</p>
+
+<script type="math/tex; mode=display">v(t)=\dfrac{\mathrm{d}\phi(q)}{\mathrm{d}q}\cdot i(t)=M(q)i(t)</script>
+
+<p>Where <script type="math/tex">M(q)</script> is <strong>memristance</strong> which is the resistance of a memristor.</p>
+
+<p>Define a stage variable <script type="math/tex">x</script> which is the width of <em>Simmons tunnel barrier</em> and <em>tunnel barrier</em> determines the memristance magnitude. 
+We can represent <script type="math/tex">x</script> by:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
 \dfrac{\mathrm{d}x(t)}{\mathrm{d}t}=\left\{\begin{matrix}c_{OFF}\sinh\left(\dfrac{i}{i_{OFF}}\right)\exp\left[-\exp\left(\dfrac{x-a_{OFF}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&i>0\\c_{ON}\sinh\left(\dfrac{i}{i_{ON}}\right)\exp\left[-\exp\left(-\dfrac{x-a_{ON}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&i<0\end{matrix}\right. %]]></script>
-where $c_{OFF}$, $c_{ON}$, $i_{OFF}$, $i_{ON}$, $a_{OFF}$, $a_{ON}$, $w_c$, and $b$ are the fitting parameters, in which the parameters $c_{OFF}$ and $c_{ON}$ influence the change in magnitude of $x$, the parameters $i_{OFF}$ and $i_{on}$ reflect the current thresholds, and $a_{OFF}$ and $a_{on}$ are the upper and the lower bounds of $x$, respectively.</p>
+
+<p>where $c_{OFF}$, $c_{ON}$, $i_{OFF}$, $i_{ON}$, $a_{OFF}$, $a_{ON}$, $w_c$, and $b$ are the fitting parameters, in which the parameters $c_{OFF}$ and $c_{ON}$ influence the change in magnitude of $x$, the parameters $i_{OFF}$ and $i_{on}$ reflect the current thresholds, and $a_{OFF}$ and $a_{on}$ are the upper and the lower bounds of $x$, respectively.</p>
+
+<p>To simplify the model:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\dfrac{\mathrm{d}x(t)}{\mathrm{d}t}=\left\{\begin{matrix}k_{OFF}\left(\dfrac{i(t)}{i_{OFF}}-1\right)^{\alpha_{OFF}}\cdot f_{OFF}(x),&0< i_{OFF}< i\\0,&i_{ON}< i< i_{OFF}\\k_{ON}\left(\dfrac{i(t)}{i_{ON}}-1\right)^{\alpha_{ON}}\cdot f_{ON}(x),&i< i_{ON}<0\end{matrix}\right. %]]></script>
+
+<p>where:</p>
+
+<script type="math/tex; mode=display">\begin{aligned}
+    f_{OFF}(x)=\exp\left[-\exp\left(\dfrac{x-\alpha_{OFF}}{w_c}\right)\right]\\
+    f_{ON}(x)=\exp\left[-\exp\left(\dfrac{x-\alpha_{ON}}{w_c}\right)\right]
+\end{aligned}</script>
+
+<p>Relationship between current and voltage:</p>
+
+<script type="math/tex; mode=display">v(t)=\left[R_{ON}+\dfrac{R_{OFF}-R_{ON}}{x_{OFF}-x_{ON}}(x-x_{ON})\right]\cdot i(t)</script>
+
+<p>where $M(x) = R_{ON} + (R_{OFF} − R_{ON}/x_{OFF} − x_{ON})(x − x_{ON})$. 
+$R_{ON}$ and $R_{OFF}$ denote the low and high resistance of memristor.</p>
+
+<p><strong>An Example:</strong></p>
+
+<p>$R_{OFF}=1k\Omega$, $R_{on}=50\Omega$, $i_{OFF}=115\mu A$, $i_{ON}=8.9\mu A$, $a_{OFF}=1.2nm$, $a_{ON}=1.8nm$, and $w_c=107pm$.</p>
+
+<p>Compulse a voltage: $v=\sin(2\pi f)$</p>
+
+<p><img src="/img/ReRAM_Neural_Computing/2_figure_mem_example.jpg" alt="TE" width="300" align="bottom" /></p>
+
+<h2 id="m-cnn">M-CNN</h2>
+
+<h3 id="topology">Topology</h3>
+
+<p>Topology of M-CNN:</p>
+
+<p><img src="/img/ReRAM_Neural_Computing/2_figure_CNN_topology.jpg" alt="TE" width="300" align="bottom" /></p>
+
+<p>$r$ denode the range of neighbourhood, and the number of neighbour is $(2r+1)^2$.</p>
+
+<p>And M-CNN cells is:</p>
+
+<p><img src="/img/ReRAM_Neural_Computing/2_figure_CNN_cell.jpg" alt="TE" width="300" align="bottom" /></p>
+
+<p>which is composed of a <em>capacitor</em>, a memristor state <em>resistor</em>, and two variable-gain
+voltage-controlled current sources (<em>VCCSs</em>). 
+Each <strong>dot</strong> represents current of two VCCSs from one neighbour.</p>
+
+<p>Parameters to represent the dynamic of a cell (suppose $r=1$):</p>
+
+<ol>
+  <li>Template elements, 18 weights, decide the connection between neighbours
+    <ul>
+      <li>$3\times3$ feedback template labeled by $A$</li>
+      <li>$3\times3$ control template labeled by $B$</li>
+    </ul>
+  </li>
+  <li>
+    <p>One independent current source  $I$</p>
+  </li>
+  <li>
+    <p>One independent voltage source  $u_{ij}$</p>
+  </li>
+  <li>Own state $x_{ij}$</li>
+</ol>
+
+<p>And output is $y_{ij}$.
+In the design of this paper, $y_{ij}=x_{ij}$.</p>
+
+<p>And we have: (derived from the figure above)</p>
+
+<script type="math/tex; mode=display">C\dfrac{\mathrm{d}x_{ij}(t)}{\mathrm{d}t}=-m(x_{ij}(t))+\sum_{c(k,l)}{(a_{ij,kl}x_{kl}(t)+b_{ij,kl}u_kl)}+I</script>
+
+<p>where $c(k,l)\in N_r(i,j)$ is the neighbour of cell $c(i,j)$.
+$m(\cdot)$ denotes the current flowing through the memristor:</p>
+
+<script type="math/tex; mode=display">m(x_{ij}(t))=\dfrac{v_M}{M(t)}=\dfrac{x_{ij}(t)}{M(t)}</script>
+
+<h3 id="connection">Connection</h3>
 
   </div>
 
