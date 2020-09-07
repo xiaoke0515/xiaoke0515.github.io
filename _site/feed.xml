@@ -148,6 +148,7 @@ $m(\cdot)$ denotes the current flowing through the memristor:&lt;/p&gt;
 
 &lt;h3 id=&quot;connection--memristor-bridge-circuits&quot;&gt;Connection – Memristor Bridge Circuits&lt;/h3&gt;
 
+<<<<<<< HEAD
 &lt;p&gt;Bridge circuit is shown in the figure below, and we have the output voltage as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;V_W=V_+-V_-=\omega V_{in}=\left(\dfrac{M_2}{M_1+M_2}-\dfrac{M_4}{M_3+M_4}\right)V_{in}&lt;/script&gt;
@@ -188,10 +189,12 @@ $m(\cdot)$ denotes the current flowing through the memristor:&lt;/p&gt;
 &lt;p&gt;step 1: prove the total Energy is below a maximum value.
 step 2: prove the Energy evolution will converge.
 step 3: prove the Energy convergence is stable with noise injected.&lt;/p&gt;
+=======
+>>>>>>> 0b478a1edd0467642fce6169fa778bb5fa924619
 </description>
         <pubDate>Fri, 07 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/mnn_paper/2020/08/07/2_MCNN.html</link>
-        <guid isPermaLink="true">http://localhost:4000/mnn_paper/2020/08/07/2_MCNN.html</guid>
+        <link>http://localhost:5001/mnn_paper/2020/08/07/2_MCNN.html</link>
+        <guid isPermaLink="true">http://localhost:5001/mnn_paper/2020/08/07/2_MCNN.html</guid>
         
         <category>analog computing</category>
         
@@ -275,8 +278,8 @@ Currents are accumulated at BLs, and the MAC operation is implemented.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_Chip.jpg&quot; alt=&quot;MAC&quot; width=&quot;900&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 03 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/reram_paper/2020/08/03/2_SRAM_BNN.html</link>
-        <guid isPermaLink="true">http://localhost:4000/reram_paper/2020/08/03/2_SRAM_BNN.html</guid>
+        <link>http://localhost:5001/reram_paper/2020/08/03/2_SRAM_BNN.html</link>
+        <guid isPermaLink="true">http://localhost:5001/reram_paper/2020/08/03/2_SRAM_BNN.html</guid>
         
         <category>analog computing</category>
         
@@ -310,8 +313,8 @@ Currents are accumulated at BLs, and the MAC operation is implemented.&lt;/p&gt;
 &lt;/ol&gt;
 </description>
         <pubDate>Sun, 02 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/gem5/2020/08/02/6_GEM5_fatal_panic_warn.html</link>
-        <guid isPermaLink="true">http://localhost:4000/gem5/2020/08/02/6_GEM5_fatal_panic_warn.html</guid>
+        <link>http://localhost:5001/gem5/2020/08/02/6_GEM5_fatal_panic_warn.html</link>
+        <guid isPermaLink="true">http://localhost:5001/gem5/2020/08/02/6_GEM5_fatal_panic_warn.html</guid>
         
         <category>GEM5</category>
         
@@ -383,8 +386,8 @@ c++ class 中的 port 可能不必定义成一个 vector 。
 只要能让 gem5 编译器找到对应的 port 即可。&lt;/p&gt;
 </description>
         <pubDate>Sat, 01 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/gem5/2020/08/01/5_GEM5_VectorPortUsage.html</link>
-        <guid isPermaLink="true">http://localhost:4000/gem5/2020/08/01/5_GEM5_VectorPortUsage.html</guid>
+        <link>http://localhost:5001/gem5/2020/08/01/5_GEM5_VectorPortUsage.html</link>
+        <guid isPermaLink="true">http://localhost:5001/gem5/2020/08/01/5_GEM5_VectorPortUsage.html</guid>
         
         <category>GEM5</category>
         
@@ -410,8 +413,8 @@ c++ class 中的 port 可能不必定义成一个 vector 。
 &lt;h2 id=&quot;不要用多继承&quot;&gt;&lt;strong&gt;不要用多继承&lt;/strong&gt;&lt;/h2&gt;
 </description>
         <pubDate>Sat, 01 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/gem5/2020/08/01/4_GEM5_MultiInherent.html</link>
-        <guid isPermaLink="true">http://localhost:4000/gem5/2020/08/01/4_GEM5_MultiInherent.html</guid>
+        <link>http://localhost:5001/gem5/2020/08/01/4_GEM5_MultiInherent.html</link>
+        <guid isPermaLink="true">http://localhost:5001/gem5/2020/08/01/4_GEM5_MultiInherent.html</guid>
         
         <category>GEM5</category>
         
@@ -809,8 +812,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 &lt;/ol&gt;
 </description>
         <pubDate>Sat, 01 Aug 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/gem5/2020/08/01/3_GEM5_Param.html</link>
-        <guid isPermaLink="true">http://localhost:4000/gem5/2020/08/01/3_GEM5_Param.html</guid>
+        <link>http://localhost:5001/gem5/2020/08/01/3_GEM5_Param.html</link>
+        <guid isPermaLink="true">http://localhost:5001/gem5/2020/08/01/3_GEM5_Param.html</guid>
         
         <category>GEM5</category>
         
@@ -884,8 +887,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 21 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/gem5/2020/07/21/2_GEM5_Basic_Usage.html</link>
-        <guid isPermaLink="true">http://localhost:4000/gem5/2020/07/21/2_GEM5_Basic_Usage.html</guid>
+        <link>http://localhost:5001/gem5/2020/07/21/2_GEM5_Basic_Usage.html</link>
+        <guid isPermaLink="true">http://localhost:5001/gem5/2020/07/21/2_GEM5_Basic_Usage.html</guid>
         
         <category>GEM5</category>
         
@@ -1208,8 +1211,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 
 </description>
         <pubDate>Mon, 20 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/gem5/2020/07/20/1_GEM_Install.html</link>
-        <guid isPermaLink="true">http://localhost:4000/gem5/2020/07/20/1_GEM_Install.html</guid>
+        <link>http://localhost:5001/gem5/2020/07/20/1_GEM_Install.html</link>
+        <guid isPermaLink="true">http://localhost:5001/gem5/2020/07/20/1_GEM_Install.html</guid>
         
         <category>GEM5</category>
         
@@ -1258,8 +1261,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 
 </description>
         <pubDate>Tue, 07 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/others/2020/07/07/2_Net_wire.html</link>
-        <guid isPermaLink="true">http://localhost:4000/others/2020/07/07/2_Net_wire.html</guid>
+        <link>http://localhost:5001/others/2020/07/07/2_Net_wire.html</link>
+        <guid isPermaLink="true">http://localhost:5001/others/2020/07/07/2_Net_wire.html</guid>
         
         <category>net wire</category>
         
@@ -1363,8 +1366,8 @@ c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&g
 &lt;p&gt;至此，我们的第一个 candance project 仿真完成。&lt;/p&gt;
 </description>
         <pubDate>Tue, 07 Jul 2020 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/icdesign/2020/07/07/1_Candance_Intro.html</link>
-        <guid isPermaLink="true">http://localhost:4000/icdesign/2020/07/07/1_Candance_Intro.html</guid>
+        <link>http://localhost:5001/icdesign/2020/07/07/1_Candance_Intro.html</link>
+        <guid isPermaLink="true">http://localhost:5001/icdesign/2020/07/07/1_Candance_Intro.html</guid>
         
         <category>ic</category>
         
