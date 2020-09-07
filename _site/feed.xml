@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 07 Aug 2020 17:02:34 +0800</pubDate>
-    <lastBuildDate>Fri, 07 Aug 2020 17:02:34 +0800</lastBuildDate>
+    <pubDate>Tue, 01 Sep 2020 21:35:14 +0800</pubDate>
+    <lastBuildDate>Tue, 01 Sep 2020 21:35:14 +0800</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -146,7 +146,48 @@ $m(\cdot)$ denotes the current flowing through the memristor:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;m(x_{ij}(t))=\dfrac{v_M}{M(t)}=\dfrac{x_{ij}(t)}{M(t)}&lt;/script&gt;
 
-&lt;h3 id=&quot;connection&quot;&gt;Connection&lt;/h3&gt;
+&lt;h3 id=&quot;connection--memristor-bridge-circuits&quot;&gt;Connection – Memristor Bridge Circuits&lt;/h3&gt;
+
+&lt;p&gt;Bridge circuit is shown in the figure below, and we have the output voltage as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;V_W=V_+-V_-=\omega V_{in}=\left(\dfrac{M_2}{M_1+M_2}-\dfrac{M_4}{M_3+M_4}\right)V_{in}&lt;/script&gt;
+
+&lt;p&gt;note that weight $\omega$ is within the range $[-0.9, 0.9]$, and is a constant during weight operation because the weighting signal amplitude is under threshold.&lt;/p&gt;
+
+&lt;p&gt;And the current is:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\left\{\begin{matrix}I_{o+}=-\dfrac{1}{2}g_mV_M=-\dfrac{1}{2}g_m\omega V_{in}\\I_{o-}=\dfrac{1}{2}g_mV_M=\dfrac{1}{2}g_m\omega V_{in}\end{matrix}\right.&lt;/script&gt;
+
+&lt;p&gt;where $g_m$ is transconductance.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_Neural_Computing/2_figure_bridge_circuit.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;m-cnn-cell-implementation&quot;&gt;M-CNN Cell Implementation&lt;/h2&gt;
+
+&lt;p&gt;The M-CNN cell circuit is shown in the following figure.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_Neural_Computing/2_figure_M-CNN_cell_cir.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And we have:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;I_0=g_m(\omega_1V_{in1}+\cdots+\omega kV_{ink})&lt;/script&gt;
+
+&lt;p&gt;where $I_0i$ is the output current of the differential amplifier connected with $i$th memristor bridge circuit.&lt;/p&gt;
+
+&lt;p&gt;The cell state:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;V_x=C_x\cdot M\left(\sum_k g_m\omega_kV_{ink}+I\right)&lt;/script&gt;
+
+&lt;p&gt;with constrains:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\left\{\begin{matrix}C_x\cdot(V_{dd}-2V_{th}), &amp; I_{total}\geq\dfrac{V_{dd}-2V_{th}}{R_{out}} \\ C_x\cdot M\cdot I_{total}, &amp; \dfrac{-V_{ss}+2V_{th}}{R_{out}}\leq I_{total}\leq\dfrac{V_{dd}-2V_{th}}{R_{out}} \\ C_x\cdot(-V_{ss}+2V_{th}), &amp; I_{total}\leq\dfrac{-V_{ss}+2V_{th}}{R_{out}}\end{matrix}\right. %]]&gt;&lt;/script&gt;
+
+&lt;h2 id=&quot;provement-of-stability&quot;&gt;Provement of Stability&lt;/h2&gt;
+
+&lt;p&gt;step 1: prove the total Energy is below a maximum value.
+step 2: prove the Energy evolution will converge.
+step 3: prove the Energy convergence is stable with noise injected.&lt;/p&gt;
 </description>
         <pubDate>Fri, 07 Aug 2020 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/mnn_paper/2020/08/07/2_MCNN.html</link>
