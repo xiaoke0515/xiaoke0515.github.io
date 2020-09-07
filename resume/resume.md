@@ -72,16 +72,20 @@ Shanghai, China
 
 ## Additional Relevant Experience
 
-### **Shanghai Jiao Tong University, Research Experiences for Undergraduate** `2015.12 - 2016.12`
+### **Shanghai Jiao Tong University, Advanced Computer Architecture Laboratory** `2019.4 - 2020.4`
+
+_Research Assistant_ <br>
+Worked with prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97), on **Research on Technology of Efficient and Reliable DNN Accelerator Based on ReRAM** project. Program a simulator on ReRAM based CNN accelerator by modifying GEM5 simulator.
+
+### **Shanghai Jiao Tong University, Laboratory of Quantum Nonlinear Photonics** `2017.6 - 2018.6`
+
+_Research Assistant_ <br>
+Worked with prof. [Guangqiang He](http://qnp.sjtu.edu.cn/content.aspx?info_lb=80&flag=39), on **Optimization design and numerical implementation of nonlinear Fourier transform algorithm** project. Program the nonlinear Fourier transform module of the system, and help to build the whole simulation system; Research the generation conditions of optical soliton in optical fiber, and analysis the eigenvalue and eigenspectrum of optical soliton.
+
+### **Shanghai Jiao Tong University, Research Experiences** `2015.12 - 2016.12`
 
 _Innovation program for College Students_ <br>
 Worked with prof. [Chunyu Zhao](http://www.ie.sjtu.edu.cn/Data/View/261), on **Development of DTU with Bluetooth interface** project. Develop a Bluetooth remotely controlled data transmission unit (DTU), responsible for circuit design and embedded programming.
-
-### **Shanghai Jiao Tong University, Research Experiences for Undergraduate** `2017.6 - 2018.6`
-
-_Research Assistant_ <br>
-Worked with prof. [Guangqiang He](http://qnp.sjtu.edu.cn/content.aspx?info_lb=80&flag=39), on **Optimization design and numerical implementation of nonlinear Fourier transform algorithm** project. Program the nonlinear Fourier transform module of the system, and it helps to build the whole simulation system; Research the generation conditions of optical soliton in optical fiber, and analysis the eigenvalue and eigenspectrum of optical soliton.
-
 
 ## Teaching
 
