@@ -7,7 +7,7 @@ email:
 phone: 15221833996
 ---
 
-# Yilong Zhao
+# 赵怿龙（Yilong Zhao） 
 
 <!--
 include contact information from the front matter
@@ -35,29 +35,29 @@ Supported arguments:
 
 </div>
 
-## Education
+## 教育经历
 
-### **Shanghai Jiao Tong University (SJTU)** `2018.9 -`
+### **上海交通大学 (SJTU)** `2018.9 -`
 
 ```
-Shanghai, China
+上海, 中国
 ```
 
-- Master in Computer Science and Technology
-- Advised by Prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)
+- 硕士专业：计算机技术
+- 导师：[蒋力](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)
 - GPA 3.49/4.0
 
-### **Shanghai Jiao Tong University (SJTU)** `2014.9 - 2018.6`
+### **上海交通大学(SJTU)** `2014.9 - 2018.6`
 
 ```
-Shanghai, China
+上海, 中国
 ```
 
-- B.S. in Electronics Science and Technology
-- 
+- 本科专业：电子科学与技术
+- 学积分 85.1/100
 
 
-## Publications
+## 论文
 
 1. Zhuoran Song, **Yilong Zhao**, Yanan Sun, Xiaoyao Liang and Li Jiang.**ESNreram: An Energy-Efficient Sparse Neural Network Based on Resistive Random-Access Memory**. To appear in ACM Great Lakes Symposium on VLSI, GLSVLSI, 2020
 
@@ -70,26 +70,24 @@ Shanghai, China
 
 1. Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in doubly resonant half-harmonic generation**," in Nonlinear Optics (NLO), OSA Technical Digest (Optical Society of America, 2019), paper NTu4A.18.
 
-## Additional Relevant Experience
+## 科研经历
 
-### **Shanghai Jiao Tong University, Advanced Computer Architecture Laboratory** `2019.4 - 2020.4`
+### **上海交通大学, 先进计算机体系结构实验室** `2019.4 - 2020.4`
 
-_Research Assistant_ <br>
-Worked with prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97), on **Research on Technology of Efficient and Reliable DNN Accelerator Based on ReRAM** project. Program a simulator on ReRAM based CNN accelerator by modifying GEM5 simulator.
+[蒋力](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97) 教授指导, 项目 **基于ReRAM的高效可靠DNN加速器技术研究**。 以GEM5仿真器为基础编写了一个ReRAM神经网络加速器架构的仿真器。
 
-### **Shanghai Jiao Tong University, Laboratory of Quantum Nonlinear Photonics** `2017.6 - 2018.6`
+### **上海交通大学，量子非线性光子学实验室** `2017.6 - 2018.6`
 
-_Research Assistant_ <br>
-Worked with prof. [Guangqiang He](http://qnp.sjtu.edu.cn/content.aspx?info_lb=80&flag=39), on **Optimization design and numerical implementation of nonlinear Fourier transform algorithm** project. Program the nonlinear Fourier transform module of the system, and help to build the whole simulation system; Research the generation conditions of optical soliton in optical fiber, and analysis the eigenvalue and eigenspectrum of optical soliton.
+[何广强](http://qnp.sjtu.edu.cn/content.aspx?info_lb=80&flag=39) 教授指导, 项目 **基于硅基微纳谐振腔的量子纠缠光频梳产生及传输问题研究**。 编写系统中的非线性傅里叶变换与反变换模块，并帮助调通整个系统; 研究光孤子在光纤微腔中的演化条件，并分析其非线性本征值与频谱。
 
-### **Shanghai Jiao Tong University, Research Experiences** `2015.12 - 2016.12`
+### **上海交通大学，科研经历** `2015.12 - 2016.12`
 
-_Innovation program for College Students_ <br>
-Worked with prof. [Chunyu Zhao](http://www.ie.sjtu.edu.cn/Data/View/261), on **Development of DTU with Bluetooth interface** project. Develop a Bluetooth remotely controlled data transmission unit (DTU), responsible for circuit design and embedded programming.
+_大学生创新计划_ <br>
+[赵春宇](http://www.ie.sjtu.edu.cn/Data/View/261)教授指导, 作为项目**带蓝牙接口的DTU的开发** 的负责人。 开发了一个带蓝牙接口的数据转发单元（DTU），蓝牙接口用于调试人员现场调试设备。主要负责电路设计、焊接与嵌入式编程。
 
-## Teaching
+## 教学经历
 
---Teaching Assistant, **Algorithm Design and Analysis (CS222)** `Shanghai Jiao Tong University, 2019-2020 fall` <br>
+--助教, **算法设计与分析 (CS222)** `上海交通大学, 2019-2020 秋` <br>
 
 
 
