@@ -7,7 +7,7 @@ email:
 phone: 15221833996
 ---
 
-<a href="{{"/resume/CV_Chinese.html" | prepend: site.baseurl}}" style="margin-left:0.5em">Chinese Version</a>
+<a href="{{"/resume/CV_Chinese/index.html" | prepend: site.baseurl}}" style="margin-left:0.5em">Chinese Version</a>
 
 
 # Yilong Zhao
