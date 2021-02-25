@@ -2,7 +2,7 @@
 #   Main Configs   #
 # ---------------- #
 baseurl:
-url: "http://xiaoke0515.github.io"
+url: "https://xiaoke0515.github.io"
 date_format: "ordinal"
 title: Yilong Zhao
 subtitle: ""
