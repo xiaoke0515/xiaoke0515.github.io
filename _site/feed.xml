@@ -1,179 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-25T00:55:34+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">MCNN 论文：Memristor-Based Cellular Nonlinear/Neural Network: Design, Analysis, and Applications</title><link href="http://localhost:4000/2020/08/07/2_MCNN/" rel="alternate" type="text/html" title="MCNN 论文：Memristor-Based Cellular Nonlinear/Neural Network: Design, Analysis, and Applications" /><published>2020-08-07T00:00:00+08:00</published><updated>2020-08-07T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/07/2_MCNN</id><content type="html" xml:base="http://localhost:4000/2020/08/07/2_MCNN/">&lt;!--&lt;script type=&quot;text/javascript&quot; async src=&quot;//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/x-mathjax-config&quot;&gt;
-  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-&lt;/script&gt;
-&lt;!--&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;--&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-25T21:42:25+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">神经网络二阶优化总结</title><link href="http://localhost:4000/2021/02/25/1_NN_2rd_optimal/" rel="alternate" type="text/html" title="神经网络二阶优化总结" /><published>2021-02-25T19:43:00+08:00</published><updated>2021-02-25T19:43:00+08:00</updated><id>http://localhost:4000/2021/02/25/1_NN_2rd_optimal</id><content type="html" xml:base="http://localhost:4000/2021/02/25/1_NN_2rd_optimal/">&lt;p&gt;最近在看神经网络的二阶优化，总结一下看过的现有技术。从牛顿法到自然梯度法，再到现在的 Mindspore框架。&lt;/p&gt;
 
-&lt;p&gt;authors:
-Shukai Duan, Member, IEEE, Xiaofang Hu, Student Member, IEEE, Zhekang Dong, Student Member, IEEE, Lidan Wang, Member, IEEE, and Pinaki Mazumder, Fellow, IEEE&lt;/p&gt;
+&lt;h1 id=&quot;牛顿法&quot;&gt;牛顿法&lt;/h1&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;S. Duan, X. Hu, Z. Dong, L. Wang and P. Mazumder, “Memristor-Based Cellular Nonlinear/Neural Network: Design, Analysis, and Applications,” in IEEE Transactions on Neural Networks and Learning Systems, vol. 26, no. 6, pp. 1202-1213, June 2015, doi: 10.1109/TNNLS.2014.2334701.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;h2 id=&quot;基础算法牛顿法&quot;&gt;基础算法：牛顿法&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;牛顿法&lt;/strong&gt;是一个比较传统的二阶优化方法，具体细节与推导可以参考一些教材 &lt;sup id=&quot;fnref:sun_optimal&quot;&gt;&lt;a href=&quot;#fn:sun_optimal&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;。
+由于在对参数更新时参考了二阶的梯度，因此相比于一阶优化算法，可以更快地找到梯度下降的方向。
+牛顿法的梯度下降更新公式为：&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;w_{k+1}=w_k+\alpha H_k^{-1} \nabla_w J_{k}&lt;/script&gt;&lt;br /&gt;
+其中， $w$ 为权值， $H$ 代表 Hessian 矩阵（二阶梯度）， $J$ 为Jacobian 矩阵（一阶梯度）， 角标 $k$ 表示迭代的次数。
+$\alpha$ 用于调节步长，也就是说，这个公式实际上已经是牛顿法的一个衍生算法，即&lt;strong&gt;带步长的牛顿法&lt;/strong&gt;。
+这是由于对于非二阶凸优化问题，原始的牛顿法不一定能直接到位，故由牛顿法得到优化方向，再另外设置步长。
+由于本文就针对的就是非二阶优化问题，因此在本文中我们就以这种带步长的牛顿法为基础算法进行讨论。&lt;/p&gt;
 
-&lt;p&gt;Here is abstract:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Cellular nonlinear/neural network (CNN) has been recognized as a powerful massively parallel architecture capable of solving complex engineering problems by performing trillions of analog operations per second. The memristor was theoretically predicted in the late seventies, but it garnered nascent research interest due to the recent much-acclaimed discovery of nanocrossbar memories by engineers at the Hewlett-Packard Laboratory. The memristor is expected to be co-integrated with nanoscale CMOS technology to revolutionize conventional von Neumann as well as neuromorphic computing. In this paper, a compact CNN model based on memristors is presented along with its performance analysis and applications. In the new CNN design, the memristor bridge circuit acts as the synaptic circuit element and substitutes the complex multiplication circuit used in traditional CNN architectures. In addition, the negative differential resistance and nonlinear current–voltage characteristics of the memristor have been leveraged to replace the linear resistor in conventional CNNs. The proposed CNN design has several merits, for example, high density, nonvolatility, and programmability of synaptic weights. The proposed memristor-based CNN design operations for implementing several image processing functions are illustrated through simulation and contrasted with conventional CNNs. Monte-Carlo simulation has been used to demonstrate the behavior of the proposed CNN due to the variations in memristor synaptic weights.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Note that the CNN here is &lt;em&gt;Cellular neural network&lt;/em&gt;, not &lt;em&gt;Convolutional neural network&lt;/em&gt;!&lt;/p&gt;
-
-&lt;h2 id=&quot;contribution&quot;&gt;Contribution:&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Proposed a novel type of M-CNN:&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;The memristor bridge circuit is employed to realize the interactions between the neighbouring cells.&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;Memristor model is practical model based on experimental data.&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;memristor-basics&quot;&gt;Memristor Basics&lt;/h2&gt;
-
-&lt;p&gt;Memristor:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\dfrac{\mathrm{d}\phi}{\mathrm{d}t}=\dfrac{\mathrm{d}\phi(q)}{\mathrm{d}q}\cdot\dfrac{\mathrm{d}q}{\mathrm{d}t}&lt;/script&gt;
-
-&lt;p&gt;Where &lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; is flux and &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; is charge. 
-And we can derivate this:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;v(t)=\dfrac{\mathrm{d}\phi(q)}{\mathrm{d}q}\cdot i(t)=M(q)i(t)&lt;/script&gt;
-
-&lt;p&gt;Where &lt;script type=&quot;math/tex&quot;&gt;M(q)&lt;/script&gt; is &lt;strong&gt;memristance&lt;/strong&gt; which is the resistance of a memristor.&lt;/p&gt;
-
-&lt;p&gt;Define a stage variable &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; which is the width of &lt;em&gt;Simmons tunnel barrier&lt;/em&gt; and &lt;em&gt;tunnel barrier&lt;/em&gt; determines the memristance magnitude. 
-We can represent &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; by:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\dfrac{\mathrm{d}x(t)}{\mathrm{d}t}=\left\{\begin{matrix}c_{OFF}\sinh\left(\dfrac{i}{i_{OFF}}\right)\exp\left[-\exp\left(\dfrac{x-a_{OFF}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&amp;i&gt;0\\c_{ON}\sinh\left(\dfrac{i}{i_{ON}}\right)\exp\left[-\exp\left(-\dfrac{x-a_{ON}}{w_c}-\dfrac{|i|}{b}\right)-\dfrac{x}{w_c}\right],&amp;i&lt;0\end{matrix}\right. %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;where $c_{OFF}$, $c_{ON}$, $i_{OFF}$, $i_{ON}$, $a_{OFF}$, $a_{ON}$, $w_c$, and $b$ are the fitting parameters, in which the parameters $c_{OFF}$ and $c_{ON}$ influence the change in magnitude of $x$, the parameters $i_{OFF}$ and $i_{on}$ reflect the current thresholds, and $a_{OFF}$ and $a_{on}$ are the upper and the lower bounds of $x$, respectively.&lt;/p&gt;
-
-&lt;p&gt;To simplify the model:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\dfrac{\mathrm{d}x(t)}{\mathrm{d}t}=\left\{\begin{matrix}k_{OFF}\left(\dfrac{i(t)}{i_{OFF}}-1\right)^{\alpha_{OFF}}\cdot f_{OFF}(x),&amp;0&lt; i_{OFF}&lt; i\\0,&amp;i_{ON}&lt; i&lt; i_{OFF}\\k_{ON}\left(\dfrac{i(t)}{i_{ON}}-1\right)^{\alpha_{ON}}\cdot f_{ON}(x),&amp;i&lt; i_{ON}&lt;0\end{matrix}\right. %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;where:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
-    f_{OFF}(x)=\exp\left[-\exp\left(\dfrac{x-\alpha_{OFF}}{w_c}\right)\right]\\
-    f_{ON}(x)=\exp\left[-\exp\left(\dfrac{x-\alpha_{ON}}{w_c}\right)\right]
-\end{aligned}&lt;/script&gt;
-
-&lt;p&gt;Relationship between current and voltage:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;v(t)=\left[R_{ON}+\dfrac{R_{OFF}-R_{ON}}{x_{OFF}-x_{ON}}(x-x_{ON})\right]\cdot i(t)&lt;/script&gt;
-
-&lt;p&gt;where $M(x) = R_{ON} + (R_{OFF} − R_{ON}/x_{OFF} − x_{ON})(x − x_{ON})$. 
-$R_{ON}$ and $R_{OFF}$ denote the low and high resistance of memristor.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;An Example:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;$R_{OFF}=1k\Omega$, $R_{on}=50\Omega$, $i_{OFF}=115\mu A$, $i_{ON}=8.9\mu A$, $a_{OFF}=1.2nm$, $a_{ON}=1.8nm$, and $w_c=107pm$.&lt;/p&gt;
-
-&lt;p&gt;Compulse a voltage: $v=\sin(2\pi f)$&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_Neural_Computing/2_figure_mem_example.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;m-cnn&quot;&gt;M-CNN&lt;/h2&gt;
-
-&lt;h3 id=&quot;topology&quot;&gt;Topology&lt;/h3&gt;
-
-&lt;p&gt;Topology of M-CNN:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_Neural_Computing/2_figure_CNN_topology.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;$r$ denode the range of neighbourhood, and the number of neighbour is $(2r+1)^2$.&lt;/p&gt;
-
-&lt;p&gt;And M-CNN cells is:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_Neural_Computing/2_figure_CNN_cell.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;which is composed of a &lt;em&gt;capacitor&lt;/em&gt;, a memristor state &lt;em&gt;resistor&lt;/em&gt;, and two variable-gain
-voltage-controlled current sources (&lt;em&gt;VCCSs&lt;/em&gt;). 
-Each &lt;strong&gt;dot&lt;/strong&gt; represents current of two VCCSs from one neighbour.&lt;/p&gt;
-
-&lt;p&gt;Parameters to represent the dynamic of a cell (suppose $r=1$):&lt;/p&gt;
+&lt;p&gt;牛顿法在实际应用时有一个重大缺陷，就是计算复杂度太大。
+这个问题就出在表示二阶梯度的 Hessian 矩阵上。
+问题可以总结为以下三点：&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Template elements, 18 weights, decide the connection between neighbours
-    &lt;ul&gt;
-      &lt;li&gt;$3\times3$ feedback template labeled by $A$&lt;/li&gt;
-      &lt;li&gt;$3\times3$ control template labeled by $B$&lt;/li&gt;
-    &lt;/ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;问题一： Hessian 矩阵大小过大&lt;/p&gt;
+
+    &lt;p&gt;根据 Hessian 阵的定义我们可以知道， Hessian 阵的大小为参数量的平方。
+ 以一个比较常见的神经网络 ResNet-50 为例， 它的参数量大概在 25MB 左右（这个数我只是简单搜了一下，具体多少待考证），那么对应的 Hessian 阵的大小就是 5PB 。
+ 这个参数量别说 GPU ，硬盘都放不下。&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;One independent current source  $I$&lt;/p&gt;
+    &lt;p&gt;问题二： Hessian 矩阵求逆困难&lt;/p&gt;
+
+    &lt;p&gt;这个问题有一部分原因是 Hessian 矩阵过大，然而矩阵求逆本身就是一个费计算资源的操作。
+ 无论是一些分解算法（如 SVG 分解），还是利用优化方法迭代，都需要大量计算。
+ 好在 Hessian 矩阵是一个对称方阵，但这似乎也不会改善任何现状。&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;One independent voltage source  $u_{ij}$&lt;/p&gt;
+    &lt;p&gt;问题三： 神经网络的 Hessian 矩阵本身求解困难&lt;/p&gt;
+
+    &lt;p&gt;一阶的 Jacobian 矩阵可以利用反向传播的方式求解，但二阶的 Hessian 矩阵就困难了。
+ 这是因为 Jacobian 矩阵在不同层之间是无关的，而 Hessian 不同。
+ 因此在计算 Hessian 阵时，只能以一个奇怪的顺序来传播&lt;sup id=&quot;fnref:Mizutani_second&quot;&gt;&lt;a href=&quot;#fn:Mizutani_second&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;。
+ 如果说一阶的 Jacobian 矩阵的反向传播的顺序是以一个一维的轴从右向左计算，那么二阶的 Hessian 矩阵的反向传播就是二维的平面从右下到左上传播。
+ 此外，传播过程中计算 Hessian 阵的复杂程度远超 Jacobian 矩阵。&lt;/p&gt;
   &lt;/li&gt;
-  &lt;li&gt;Own state $x_{ij}$&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;And output is $y_{ij}$.
-In the design of this paper, $y_{ij}=x_{ij}$.&lt;/p&gt;
+&lt;h2 id=&quot;拟牛顿法&quot;&gt;拟牛顿法&lt;/h2&gt;
 
-&lt;p&gt;And we have: (derived from the figure above)&lt;/p&gt;
+&lt;p&gt;上一节中提到的牛顿法在实际应用时有一个重大缺陷，就是
+现有的拟牛顿法主要有两种，分别为 &lt;strong&gt;DFP 法&lt;/strong&gt;和 &lt;strong&gt;BFGS 法&lt;/strong&gt;。
+两种方法也是传统的方法了，针对的就是后两个问题，作了如下优化：&lt;strong&gt;不直接求解 Hessian 阵，而是在每次迭代过程中估计一个新老 Hessian 阵的差值，且假定这个差值矩阵的秩为 2&lt;/strong&gt; &lt;sup id=&quot;fnref:sun_optimal:1&quot;&gt;&lt;a href=&quot;#fn:sun_optimal&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;。
+这样就可以减少计算 Hessian 阵的复杂度，且摆脱了求逆的困扰。
+其中， DFP 法直接在 Hessian 阵的逆阵上更新秩 2 矩阵， BFGS 在 Hessian 阵上更新秩 2 矩阵。
+由于 DFP 算法在收敛性证明上缺失，且在数值上有缺陷，因此 BFGS 应用更广泛 &lt;sup id=&quot;fnref:DFP_fault&quot;&gt;&lt;a href=&quot;#fn:DFP_fault&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C\dfrac{\mathrm{d}x_{ij}(t)}{\mathrm{d}t}=-m(x_{ij}(t))+\sum_{c(k,l)}{(a_{ij,kl}x_{kl}(t)+b_{ij,kl}u_kl)}+I&lt;/script&gt;
+&lt;p&gt;BFGS 算法依旧面临着 Hessian 矩阵过大的问题，因此衍生出了 &lt;strong&gt;L-BFGS 算法&lt;/strong&gt; &lt;sup id=&quot;fnref:sun_optimal:2&quot;&gt;&lt;a href=&quot;#fn:sun_optimal&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;。
+其中的 L 就表示所需的 memory 更 low 。
+它的思想是不存储 Hessian 阵，而是只存储 BFGS 算法中近几次迭代的秩 2 矩阵。
+之后，将这些秩 2 矩阵作用在单位阵上近似成 Hessian 阵。
+之所以可以减少存储，是因为秩 2 矩阵在存储时可以无损压缩得很少。
+（但这种方法没人用，我猜可能是效果不好吧，具体可能得试一下才能知道。）&lt;/p&gt;
 
-&lt;p&gt;where $c(k,l)\in N_r(i,j)$ is the neighbour of cell $c(i,j)$.
-$m(\cdot)$ denotes the current flowing through the memristor:&lt;/p&gt;
+&lt;h2 id=&quot;levenberg-marquardt-法&quot;&gt;Levenberg-Marquardt 法&lt;/h2&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;m(x_{ij}(t))=\dfrac{v_M}{M(t)}=\dfrac{x_{ij}(t)}{M(t)}&lt;/script&gt;
+&lt;p&gt;&lt;strong&gt;L-M 算法&lt;/strong&gt;是针对二阶回归问题的一种牛顿法，恰好适合于损失函数为交叉熵的神经网络。
+此方法中的 $H$ 矩阵被近似成了如下的形式：&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;H=\dfrac{1}{C}\mathcal{I} + \dfrac{1}{l}\sum_{i=1}^l\left(j^i\right)^TJ^i&lt;/script&gt;&lt;br /&gt;
+也就是说，不必求解 Hessian 阵，求得 Jacobian 矩阵就可以了。 
+但是这个方法的局限也很明显，效果也不如一阶算法 &lt;sup id=&quot;fnref:Wang_Distrubuted&quot;&gt;&lt;a href=&quot;#fn:Wang_Distrubuted&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 
-&lt;h3 id=&quot;connection--memristor-bridge-circuits&quot;&gt;Connection – Memristor Bridge Circuits&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;L-M 算法的推导&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;y=1&lt;/script&gt; 
+to be continue…&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;Bridge circuit is shown in the figure below, and we have the output voltage as:&lt;/p&gt;
+&lt;h1 id=&quot;自然梯度法&quot;&gt;自然梯度法&lt;/h1&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;V_W=V_+-V_-=\omega V_{in}=\left(\dfrac{M_2}{M_1+M_2}-\dfrac{M_4}{M_3+M_4}\right)V_{in}&lt;/script&gt;
+&lt;p&gt;自然梯度法是&lt;/p&gt;
 
-&lt;p&gt;note that weight $\omega$ is within the range $[-0.9, 0.9]$, and is a constant during weight operation because the weighting signal amplitude is under threshold.&lt;/p&gt;
-
-&lt;p&gt;And the current is:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\left\{\begin{matrix}I_{o+}=-\dfrac{1}{2}g_mV_M=-\dfrac{1}{2}g_m\omega V_{in}\\I_{o-}=\dfrac{1}{2}g_mV_M=\dfrac{1}{2}g_m\omega V_{in}\end{matrix}\right.&lt;/script&gt;
-
-&lt;p&gt;where $g_m$ is transconductance.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_Neural_Computing/2_figure_bridge_circuit.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;m-cnn-cell-implementation&quot;&gt;M-CNN Cell Implementation&lt;/h2&gt;
-
-&lt;p&gt;The M-CNN cell circuit is shown in the following figure.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_Neural_Computing/2_figure_M-CNN_cell_cir.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And we have:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;I_0=g_m(\omega_1V_{in1}+\cdots+\omega kV_{ink})&lt;/script&gt;
-
-&lt;p&gt;where $I_0i$ is the output current of the differential amplifier connected with $i$th memristor bridge circuit.&lt;/p&gt;
-
-&lt;p&gt;The cell state:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;V_x=C_x\cdot M\left(\sum_k g_m\omega_kV_{ink}+I\right)&lt;/script&gt;
-
-&lt;p&gt;with constrains:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\left\{\begin{matrix}C_x\cdot(V_{dd}-2V_{th}), &amp; I_{total}\geq\dfrac{V_{dd}-2V_{th}}{R_{out}} \\ C_x\cdot M\cdot I_{total}, &amp; \dfrac{-V_{ss}+2V_{th}}{R_{out}}\leq I_{total}\leq\dfrac{V_{dd}-2V_{th}}{R_{out}} \\ C_x\cdot(-V_{ss}+2V_{th}), &amp; I_{total}\leq\dfrac{-V_{ss}+2V_{th}}{R_{out}}\end{matrix}\right. %]]&gt;&lt;/script&gt;
-
-&lt;h2 id=&quot;provement-of-stability&quot;&gt;Provement of Stability&lt;/h2&gt;
-
-&lt;p&gt;step 1: prove the total Energy is below a maximum value.
-step 2: prove the Energy evolution will converge.
-step 3: prove the Energy convergence is stable with noise injected.&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="MNN_paper" /><category term="analog computing" /><category term="MCNN" /><summary type="html"></summary></entry><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:sun_optimal&quot;&gt;
+      &lt;p&gt;孙文瑜, 徐成贤, 朱德通. 最优化方法[M]. Gao deng jiao yu chu ban she, 2004. &lt;a href=&quot;#fnref:sun_optimal&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt; &lt;a href=&quot;#fnref:sun_optimal:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt; &lt;a href=&quot;#fnref:sun_optimal:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:Mizutani_second&quot;&gt;
+      &lt;p&gt;E. Mizutani, S. E. Dreyfus, and J. W. Demmel, “Second-order backpropagation algorithms for a stagewise-partitioned separable Hessian matrix,” in Proceedings. 2005 IEEE International Joint Conference on Neural Networks, 2005., 2005: IEEE, doi: 10.1109/ijcnn.2005.1555994. &lt;a href=&quot;#fnref:Mizutani_second&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:DFP_fault&quot;&gt;
+      &lt;p&gt;online: &lt;a href=&quot;https://zhuanlan.zhihu.com/p/144736223&quot;&gt;https://zhuanlan.zhihu.com/p/144736223&lt;/a&gt; &lt;a href=&quot;#fnref:DFP_fault&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:Wang_Distrubuted&quot;&gt;
+      &lt;p&gt;C.-C. Wang et al., “Distributed Newton Methods for Deep Neural Networks,” Neural Computation, vol. 30, no. 6, pp. 1673-1724, 2018-06-01 2018, doi: 10.1162/neco_a_01088. &lt;a href=&quot;#fnref:Wang_Distrubuted&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name>Yilong Zhao</name></author><category term="optimal_algorithm" /><summary type="html">最近在看神经网络的二阶优化，总结一下看过的现有技术。从牛顿法到自然梯度法，再到现在的 Mindspore框架。</summary></entry><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Rui Liu, Xiaochen Peng, Xiaoyu Sun, Win-San Khwa, Xin Si, Jia-Jing Chen, Jia-Fang Li, Meng-Fan Chang, and Shimeng Yu. 2018. Parallelizing SRAM arrays with customized bit-cell for binary neural networks. In Proceedings of the 55th Annual Design Automation Conference (DAC ’18). Association for Computing Machinery, New York, NY, USA, Article 21, 1–6. DOI:https://doi.org/10.1145/3195970.3196089.&lt;/p&gt;
@@ -1151,34 +1069,34 @@ c++ class 中的 port 可能不必定义成一个 vector 。
 
 &lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Visualization.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;至此，我们的第一个 candance project 仿真完成。&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="ICDesign" /><category term="ic" /><category term="candance" /><category term="virtuoso" /><summary type="html">Candance的安装</summary></entry><entry><title type="html">接网线</title><link href="http://localhost:4000/2020/07/07/2_Net_wire/" rel="alternate" type="text/html" title="接网线" /><published>2020-07-07T00:00:00+08:00</published><updated>2020-07-07T00:00:00+08:00</updated><id>http://localhost:4000/2020/07/07/2_Net_wire</id><content type="html" xml:base="http://localhost:4000/2020/07/07/2_Net_wire/">&lt;p&gt;人生中第一次接网线，踩了一些坑。记录一下。&lt;/p&gt;
+&lt;p&gt;至此，我们的第一个 candance project 仿真完成。&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="ICDesign" /><category term="ic" /><category term="candance" /><category term="virtuoso" /><summary type="html">Candance的安装</summary></entry><entry><title type="html">VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V</title><link href="http://localhost:4000/2020/07/06/1_Close_Hyper-V/" rel="alternate" type="text/html" title="VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V" /><published>2020-07-06T00:00:00+08:00</published><updated>2020-07-06T00:00:00+08:00</updated><id>http://localhost:4000/2020/07/06/1_Close_Hyper-V</id><content type="html" xml:base="http://localhost:4000/2020/07/06/1_Close_Hyper-V/">&lt;p&gt;前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;您的主机不满足在启用 Hyper-V 或 Device/Credential Guard 的情况下运行 VMware。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;打开 VMWare 官方文档就是让关闭 Hyper-V。但是其实在我的个人版 Windows 是没有 Hyper-V 选项的。在搜了半天 Hyper-V 是啥才想到可能是和我前几天打开的那个虚拟机功能有关。&lt;/p&gt;
+
+&lt;p&gt;在我关闭这个功能之后，事情并没有改善，我一度以为思路错了，直到我继续谷歌半天才确定就是这个辣鸡虚拟机功能搞的鬼。***&lt;/p&gt;
 
 &lt;h2 id=&quot;解决问题记录&quot;&gt;解决问题记录&lt;/h2&gt;
 
-&lt;h3 id=&quot;工具&quot;&gt;工具&lt;/h3&gt;
-
-&lt;p&gt;网线钳，水晶头若干（一定要买的足够多）&lt;/p&gt;
-
-&lt;h3 id=&quot;步骤&quot;&gt;步骤&lt;/h3&gt;
+&lt;p&gt;原因还是 Hyper-V 和 VMWare 不兼容。所以这里实际记录的实际上是如何彻底关闭 Hyper-V。&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;
-    &lt;p&gt;将外皮剥出足够长。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;解缠绕，拉直所有线。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;按照如下顺序排列：（不同协议可能不同，最好查一下。我这次是同一根网线所以顺序一样即可）&lt;/p&gt;
+    &lt;p&gt;小娜-&amp;gt;启用和关闭Windows功能-&amp;gt;关闭 虚拟机平台（或Hyper-V）&lt;/p&gt;
 
-    &lt;blockquote&gt;
-      &lt;p&gt;橙白-橙-绿白-蓝-蓝白-绿-棕白-棕&lt;/p&gt;
-    &lt;/blockquote&gt;
+    &lt;p&gt;&lt;img src=&quot;/img/others/1_figure_windows_function.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;不必剥线，夹断取齐，插入水晶头&lt;/p&gt;
+    &lt;p&gt;小娜-&amp;gt;计算机管理-&amp;gt;服务和应用程序-&amp;gt;服务-&amp;gt;把所有带 Hyper-V 的停止并禁用。&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/img/others/1_figure_windows_service.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;用网线钳夹紧，网线钳夹到完全合死即可。&lt;/p&gt;
+    &lt;p&gt;重启计算机&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Yilong Zhao</name></author><category term="others" /><category term="net wire" /><summary type="html">人生中第一次接网线，踩了一些坑。记录一下。</summary></entry></feed>
+&lt;/ol&gt;
+
+&lt;p&gt;问题解决。&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="others" /><category term="record" /><summary type="html">前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。</summary></entry></feed>
