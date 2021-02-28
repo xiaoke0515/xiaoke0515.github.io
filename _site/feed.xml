@@ -1,120 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-28T22:49:34+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">神经网络二阶优化总结</title><link href="http://localhost:4000/2021/02/25/1_NN_2rd_optimal/" rel="alternate" type="text/html" title="神经网络二阶优化总结" /><published>2021-02-25T19:43:00+08:00</published><updated>2021-02-25T19:43:00+08:00</updated><id>http://localhost:4000/2021/02/25/1_NN_2rd_optimal</id><content type="html" xml:base="http://localhost:4000/2021/02/25/1_NN_2rd_optimal/">&lt;p&gt;最近在看神经网络的二阶优化，总结一下看过的现有技术。
-从牛顿法到自然梯度法，再到现在的 Mindspore框架。
-在这里写的多为思想上的一些总结，技术细节引用了一些文章和博客。&lt;/p&gt;
-
-&lt;h1 id=&quot;牛顿法&quot;&gt;牛顿法&lt;/h1&gt;
-
-&lt;h2 id=&quot;基础算法牛顿法&quot;&gt;基础算法：牛顿法&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;牛顿法&lt;/strong&gt;是一个比较传统的二阶优化方法，具体细节与推导可以参考一些教材 &lt;sup id=&quot;fnref:sun_optimal&quot;&gt;&lt;a href=&quot;#fn:sun_optimal&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;。
-由于在对参数更新时参考了二阶的梯度，因此相比于一阶优化算法，可以更快地找到梯度下降的方向。
-牛顿法的梯度下降更新公式为：
-&lt;span id=&quot;eqn:1&quot;&gt;\begin{equation}
-    w_{k+1}=w_k+\alpha H_k^{-1} \nabla_w J_{k} \tag{1}
-    \label{eqn:1}
-\end{equation}&lt;/span&gt;
-其中， $w$ 为权值， $H$ 代表 Hessian 矩阵（二阶梯度）， $J$ 为Jacobian 矩阵（一阶梯度）， 角标 $k$ 表示迭代的次数。
-$\alpha$ 用于调节步长，也就是说，这个公式实际上已经是牛顿法的一个衍生算法，即&lt;strong&gt;带步长的牛顿法&lt;/strong&gt;。
-这是由于对于非二阶凸优化问题，原始的牛顿法不一定能直接到位，故由牛顿法得到优化方向，再另外设置步长。
-由于本文就针对的就是非二阶优化问题，因此在本文中我们就以这种带步长的牛顿法为基础算法进行讨论。&lt;/p&gt;
-
-&lt;p&gt;牛顿法在实际应用时有一个重大缺陷，就是计算复杂度太大。
-这个问题就出在表示二阶梯度的 Hessian 矩阵上。
-问题可以总结为以下三点：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;问题一： Hessian 矩阵大小过大&lt;/p&gt;
-
-    &lt;p&gt;根据 Hessian 阵的定义我们可以知道， Hessian 阵的大小为参数量的平方。
- 以一个比较常见的神经网络 ResNet-50 为例， 它的参数量大概在 25MB 左右（这个数我只是简单搜了一下，具体多少待考证），那么对应的 Hessian 阵的大小就是 5PB 。
- 这个参数量别说 GPU ，硬盘都放不下。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;问题二： Hessian 矩阵求逆困难&lt;/p&gt;
-
-    &lt;p&gt;这个问题有一部分原因是 Hessian 矩阵过大，然而矩阵求逆本身就是一个费计算资源的操作。
- 无论是一些分解算法（如 SVG 分解），还是利用优化方法迭代，都需要大量计算。
- 好在 Hessian 矩阵是一个对称方阵，但这似乎也不会改善任何现状。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;问题三： 神经网络的 Hessian 矩阵本身求解困难&lt;/p&gt;
-
-    &lt;p&gt;一阶的 Jacobian 矩阵可以利用反向传播的方式求解，但二阶的 Hessian 矩阵就困难了。
- 这是因为 Jacobian 矩阵在不同层之间是无关的，而 Hessian 不同。
- 因此在计算 Hessian 阵时，只能以一个奇怪的顺序来传播 &lt;sup id=&quot;fnref:Mizutani_second&quot;&gt;&lt;a href=&quot;#fn:Mizutani_second&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;。
- 如果说一阶的 Jacobian 矩阵的反向传播的顺序是以一个一维的轴从右向左计算，那么二阶的 Hessian 矩阵的反向传播就是二维的平面从右下到左上传播。
- 此外，传播过程中计算 Hessian 阵的复杂程度远超 Jacobian 矩阵。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;拟牛顿法&quot;&gt;拟牛顿法&lt;/h2&gt;
-
-&lt;p&gt;现有的拟牛顿法主要有两种，分别为 &lt;strong&gt;DFP 法&lt;/strong&gt;和 &lt;strong&gt;BFGS 法&lt;/strong&gt;。
-两种方法也是传统的方法了，针对的就是后两个问题，作了如下优化&lt;sup id=&quot;fnref:sun_optimal:1&quot;&gt;&lt;a href=&quot;#fn:sun_optimal&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;不直接求解 Hessian 阵，而是在每次迭代过程中估计一个新老 Hessian 阵的差值 $\Delta \hat{H}_{k}\approx \Delta H_k=H_{k+1}-H_k$ 。&lt;/li&gt;
-  &lt;li&gt;假定这个差值矩阵估计值 $\Delta \hat{H}_{k}$ 的秩为 2 。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;在这里我们在 $\Delta H_k$ 上加一个 $\hat{\cdot}$ 符号来表示它是一个估计值。
-那么如何估计这个 $\Delta \hat{H}_k$ 呢，这就要提到&lt;strong&gt;拟牛顿条件&lt;/strong&gt;了。
-这里简单说一下拟牛顿条件是怎么来的。
-从公式 &lt;a href=&quot;#eqn:1&quot;&gt;$(1)$&lt;/a&gt; 的基础上，我们定义， $s_k=w_{k+1}-w_k$ ， $y_k=\nabla_w J_{k+1}-\nabla_w J_{k}$ ， $B_k=H_k^{-1}$  。
-我们认为 $H_k$ 的变化是缓慢的（做了一个近似），因此可以得到拟牛顿条件的公式：
-&lt;span id=&quot;eqn:2&quot;&gt;\begin{equation}
-    y_k=B_{k+1}\cdot s_k \tag{2}
-\end{equation}&lt;/span&gt;
-我们认为 $H_k$ 只要满足拟牛顿条件，误差就可以接受。
-在此基础上我们可以得到 DFP 法和 BFGS 法的公式，具体推导可以参考引用的博文 &lt;sup id=&quot;fnref:BFGS&quot;&gt;&lt;a href=&quot;#fn:BFGS&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; ：&lt;/p&gt;
-
-&lt;p&gt;这样就可以减少计算 Hessian 阵的复杂度，且摆脱了求逆的困扰。
-其中， DFP 法直接在 Hessian 阵的逆阵上更新秩 2 矩阵， BFGS 在 Hessian 阵上更新秩 2 矩阵。
-由于 DFP 算法在收敛性证明上缺失，且在数值上有缺陷，因此 BFGS 应用更广泛 &lt;sup id=&quot;fnref:DFP_fault&quot;&gt;&lt;a href=&quot;#fn:DFP_fault&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
-
-&lt;p&gt;BFGS 算法依旧面临着 Hessian 矩阵过大的问题，因此衍生出了 &lt;strong&gt;L-BFGS 算法&lt;/strong&gt; &lt;sup id=&quot;fnref:sun_optimal:2&quot;&gt;&lt;a href=&quot;#fn:sun_optimal&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;。
-其中的 L 就表示所需的 memory 更 low 。
-它的思想是不存储 Hessian 阵，而是只存储 BFGS 算法中近几次迭代的秩 2 矩阵。
-之后，将这些秩 2 矩阵作用在单位阵上近似成 Hessian 阵。
-之所以可以减少存储，是因为秩 2 矩阵在存储时可以无损压缩得很少。
-（但这种方法没人用，我猜可能是效果不好吧，具体可能得试一下才能知道。）&lt;/p&gt;
-
-&lt;h2 id=&quot;levenberg-marquardt-法&quot;&gt;Levenberg-Marquardt 法&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;L-M 算法&lt;/strong&gt;是针对二阶回归问题的一种牛顿法，恰好适合于损失函数为交叉熵的神经网络。
-此方法中的 $H$ 矩阵被近似成了如下的形式：&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;H=\dfrac{1}{C}\mathcal{I} + \dfrac{1}{l}\sum_{i=1}^l\left(j^i\right)^TJ^i&lt;/script&gt;&lt;br /&gt;
-也就是说，不必求解 Hessian 阵，求得 Jacobian 矩阵就可以了。 
-但是这个方法的局限也很明显，效果也不如一阶算法 &lt;sup id=&quot;fnref:Wang_Distrubuted&quot;&gt;&lt;a href=&quot;#fn:Wang_Distrubuted&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;L-M 算法的推导&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;y=1&lt;/script&gt; 
-to be continue…&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&quot;自然梯度法&quot;&gt;自然梯度法&lt;/h1&gt;
-
-&lt;p&gt;自然梯度法是比牛顿&lt;/p&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:sun_optimal&quot;&gt;
-      &lt;p&gt;孙文瑜, 徐成贤, 朱德通. 最优化方法[M]. Gao deng jiao yu chu ban she, 2004. &lt;a href=&quot;#fnref:sun_optimal&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt; &lt;a href=&quot;#fnref:sun_optimal:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt; &lt;a href=&quot;#fnref:sun_optimal:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:Mizutani_second&quot;&gt;
-      &lt;p&gt;E. Mizutani, S. E. Dreyfus, and J. W. Demmel, “Second-order backpropagation algorithms for a stagewise-partitioned separable Hessian matrix,” in Proceedings. 2005 IEEE International Joint Conference on Neural Networks, 2005., 2005: IEEE, doi: 10.1109/ijcnn.2005.1555994. &lt;a href=&quot;#fnref:Mizutani_second&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:BFGS&quot;&gt;
-      &lt;p&gt;online: &lt;a href=&quot;https://zhuanlan.zhihu.com/p/29672873&quot;&gt;https://zhuanlan.zhihu.com/p/29672873&lt;/a&gt; &lt;a href=&quot;#fnref:BFGS&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:DFP_fault&quot;&gt;
-      &lt;p&gt;online: &lt;a href=&quot;https://zhuanlan.zhihu.com/p/144736223&quot;&gt;https://zhuanlan.zhihu.com/p/144736223&lt;/a&gt; &lt;a href=&quot;#fnref:DFP_fault&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:Wang_Distrubuted&quot;&gt;
-      &lt;p&gt;C.-C. Wang et al., “Distributed Newton Methods for Deep Neural Networks,” Neural Computation, vol. 30, no. 6, pp. 1673-1724, 2018-06-01 2018, doi: 10.1162/neco_a_01088. &lt;a href=&quot;#fnref:Wang_Distrubuted&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Yilong Zhao</name></author><category term="optimal_algorithm" /><summary type="html">最近在看神经网络的二阶优化，总结一下看过的现有技术。 从牛顿法到自然梯度法，再到现在的 Mindspore框架。 在这里写的多为思想上的一些总结，技术细节引用了一些文章和博客。</summary></entry><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-28T22:55:29+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Rui Liu, Xiaochen Peng, Xiaoyu Sun, Win-San Khwa, Xin Si, Jia-Jing Chen, Jia-Fang Li, Meng-Fan Chang, and Shimeng Yu. 2018. Parallelizing SRAM arrays with customized bit-cell for binary neural networks. In Proceedings of the 55th Annual Design Automation Conference (DAC ’18). Association for Computing Machinery, New York, NY, USA, Article 21, 1–6. DOI:https://doi.org/10.1145/3195970.3196089.&lt;/p&gt;
@@ -1122,4 +1006,141 @@ c++ class 中的 port 可能不必定义成一个 vector 。
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;问题解决。&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="others" /><category term="record" /><summary type="html">前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。</summary></entry></feed>
+&lt;p&gt;问题解决。&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="others" /><category term="record" /><summary type="html">前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。</summary></entry><entry><title type="html">Time signal 论文：Analysis and Design of Energy Efficient Time Domain Signal Processing</title><link href="http://localhost:4000/2020/06/06/1_Time_signal/" rel="alternate" type="text/html" title="Time signal 论文：Analysis and Design of Energy Efficient Time Domain Signal Processing" /><published>2020-06-06T00:00:00+08:00</published><updated>2020-06-06T00:00:00+08:00</updated><id>http://localhost:4000/2020/06/06/1_Time_signal</id><content type="html" xml:base="http://localhost:4000/2020/06/06/1_Time_signal/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;&lt;/script&gt;
+
+&lt;!--&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;--&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Zhengyu Chen, Jie Gu, Analysis and Design of Energy Efficient Time Domain Signal Processing, International Symposium on Low Power Electronic Design (ISLPED), 2016.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The paper is &lt;a href=&quot;https://dl.acm.org/citation.cfm?id=2934585,&quot; title=&quot;paper&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;My first time ever heard about using time signal for ReRAM accelerator. Found this paper to learn some details.&lt;/p&gt;
+
+&lt;p&gt;Let’s see abstract first：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Time domain signal processing (TDSP) encodes information into time rather than voltage with higher efficiency than conventional digital design. This paper performs systematical analysis on the design principle and energy efficiency of TDSP. Variation impact, which poses significant challenges to TDSP, is evaluated and a variation driven design methodology is proposed to achieve an optimum tradeoff between energy efficiency and design robustness. Several novel circuit level design techniques such as dual encoding strategy and bit-scalable design are also proposed in this work to significantly improve the energy efficiency of TDSP. Design example on a critical building block of facial recognition application was used to demonstrate the potential of the technique. The result in a 45nm technology shows 3.3X energy-delay product reduction and 34% area saving can be achieved using TDSP compared with conventional digital.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;1-time-signal-processing&quot;&gt;1. Time signal processing&lt;/h2&gt;
+
+&lt;h3 id=&quot;11-system&quot;&gt;1.1 system&lt;/h3&gt;
+
+&lt;p&gt;System is described in figure below. It’s composed of en/decoders and time domain logic.&lt;/p&gt;
+
+&lt;!--![System overview](/img/ReRAM_DNN_accelerator/1_figure_system.jpg)--&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_system.jpg&quot; alt=&quot;System overview&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;12-time-encoder&quot;&gt;1.2 Time Encoder&lt;/h3&gt;
+
+&lt;p&gt;Time encoder is also called DTC (Digital-to-Time Converter). Figure below shows some impementation of DTCs.&lt;/p&gt;
+
+&lt;!--![TE](/img/ReRAM_DNN_accelerator/1_figure_te.jpg)--&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_te.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tech. (a) is proposed in &lt;a href=&quot;https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;amp;arnumber=6630119&quot;&gt;This Paper&lt;/a&gt;. &lt;script type=&quot;math/tex&quot;&gt;T_{in}&lt;/script&gt; is the time signal, such as &lt;em&gt;Step Signal&lt;/em&gt;. &lt;script type=&quot;math/tex&quot;&gt;D_{in}&lt;/script&gt; is the digital signal. By selecting different path with &lt;script type=&quot;math/tex&quot;&gt;D_{in}&lt;/script&gt;, delay of signal &lt;script type=&quot;math/tex&quot;&gt;T_{out}&lt;/script&gt; is decided. The design suffer from energy problem because of (1) multiple gates (2) signal returning to original stage which cause &lt;script type=&quot;math/tex&quot;&gt;2\times&lt;/script&gt; energy consumption.&lt;/p&gt;
+
+&lt;p&gt;Tech. (b) can encode multi-bit with a single inverter. (1) &lt;script type=&quot;math/tex&quot;&gt;3\times&lt;/script&gt; energy saving compared to (a). (2) energy consumption is a constant even if embedding multi-bit.&lt;/p&gt;
+
+&lt;p&gt;Tech. (c)(d) are “Cascade TE”. To be further discuess in the next sections.&lt;/p&gt;
+
+&lt;h3 id=&quot;13-dual-encoding-scheme&quot;&gt;1.3 Dual-encoding Scheme&lt;/h3&gt;
+
+&lt;p&gt;Compared to Tech. (a), which only encode information to only one kind of edge (raising or falling), this scheme means that encode information into both the two edges for energy saving. For more details, please refer to the paper.&lt;/p&gt;
+
+&lt;h3 id=&quot;14-time-logic-cell-tlc&quot;&gt;1.4 Time Logic Cell (TLC)&lt;/h3&gt;
+
+&lt;p&gt;No more words, see the figure below.&lt;/p&gt;
+
+&lt;!--![TLC](/img/ReRAM_DNN_accelerator/1_figure_TLC.jpg)--&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_TLC.jpg&quot; alt=&quot;TLC&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;15-time-decoder&quot;&gt;1.5 Time Decoder&lt;/h3&gt;
+
+&lt;p&gt;A technology is described in figure blew. It is explicit and no more words.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_TDC.jpg&quot; alt=&quot;TDC&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;2-variation-driven-design-methodology&quot;&gt;2. Variation-Driven Design Methodology&lt;/h2&gt;
+
+&lt;h3 id=&quot;21-variation-driven-design&quot;&gt;2.1 Variation driven design&lt;/h3&gt;
+
+&lt;p&gt;The auther introduces a energy-variation trade-off here. Consider the two kind of Tech. (c) (named cascade) and (d) (named cascode). As shown in figure below, cascade-type DTC has a larger energy but a smaller variation. Cascode-type DTC has an opposite characteristic. In order to trade off between energy and variation, a hybrid DTC is used.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_tradeoff.jpg&quot; alt=&quot;trade off&quot; width=&quot;500&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Details of energy consumption and variation is described with the following equations:&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{cascade\_TE}=\sqrt{2N}\sigma_1&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{cascode\_TE}=\sqrt{\sum_{i=1}^{n}\left(A+N_i\sigma_2\right)^2}&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{hybrid\_TE}=\sqrt{\sum_{i=1}^m\left(A+N_i\sigma_2\right)^2+\sum_{j=1}^{n-m}2^j\left(A+2^{m-1}\sigma_2\right)^2}&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;E_{cascade\_TE}=2N\cdot CV_{dd}^2&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;E_{cascode\_TE}=2nCV_{dd}^2&lt;/script&gt;&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;E_{hybrid\_TE}=\left(m+2^{n-m}\right)*2CV^2=\left(2m+2^{n-m+1}\right)CV^2&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;22-simulated-variation-impact&quot;&gt;2.2 Simulated Variation Impact&lt;/h3&gt;
+
+&lt;p&gt;Simulated variation compared to conventional adder is shown in the figure below. It is amazing that time signal computing can achieve a such low variation.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_variation_result.jpg&quot; alt=&quot;variation_res&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;3-case-study&quot;&gt;3. Case Study&lt;/h2&gt;
+
+&lt;p&gt;The following cases are studed in the origin paper:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Big-scalable design&lt;/li&gt;
+  &lt;li&gt;Efficient MAX/MIN/CMP operation&lt;/li&gt;
+  &lt;li&gt;Parallel operation with short cirtical path&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;For more details, please refer to the origin paper.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-conclusion&quot;&gt;4. Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Energy and area result is summrized in the following table:&lt;/p&gt;
+
+&lt;!--| | CPU | Conventional ASIC | TDSP |
+|:---:|:---:|:---:|:---:|
+|Technology||||--&gt;
+
+&lt;table align=&quot;center&quot; border=&quot;1&quot; frame=&quot;box&quot;&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;td&gt;&amp;nbsp;&lt;/td&gt; 
+        &lt;th&gt;CPU&lt;/th&gt; 
+        &lt;th&gt;Conventional ASIC&lt;/th&gt; 
+        &lt;th&gt;TDSP&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt; Technology &lt;/th&gt;
+        &lt;td colspan=&quot;3&quot;&gt; 45nm, 1.1V &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt; Energy (fJ)&lt;/th&gt;
+        &lt;td&gt; 2304 &lt;/td&gt;
+        &lt;td&gt; 323 &lt;/td&gt;
+        &lt;td&gt; 224.4 &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt; Area (&lt;span&gt;&lt;script type=&quot;math/tex&quot;&gt;\mu m^2&lt;/script&gt;&lt;/span&gt;)&lt;/th&gt;
+        &lt;td&gt; N/A &lt;/td&gt;
+        &lt;td&gt; 115 &lt;/td&gt;
+        &lt;td&gt; 75.6 &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr align=&quot;center&quot;&gt;
+        &lt;th&gt; Delay (ns)&lt;/th&gt;
+        &lt;td&gt; 3.2 &lt;/td&gt;
+        &lt;td&gt; 0.98 &lt;/td&gt;
+        &lt;td&gt; 0.43 &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;thoughts&quot;&gt;Thoughts&lt;/h2&gt;
+
+&lt;p&gt;First ReRAM-based DNN accelerator that uses time signal is &lt;a href=&quot;&quot;&gt;Timely architecture&lt;/a&gt;. The author claims that TDC is much more energy efficient than ADC. This paper solve my confusion on how DTC and TDC works.&lt;/p&gt;
+
+&lt;p&gt;Actually, I think DAC and TDC can also be a conversion pair. With a capacitance used as integrator, along with a comparator, analog signal can be converted to time signal.&lt;/p&gt;
+
+&lt;p&gt;Moreover, the design in timely uses a circuit to store time signal, which is also what I am confused about.&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="ReRAM_paper" /><category term="analog computing" /><category term="analog signal processing" /><summary type="html"></summary></entry></feed>
