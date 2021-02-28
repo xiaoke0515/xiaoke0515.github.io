@@ -1,3 +1,43 @@
-- name: 
+- name: Software Engineer
   keywords:
+    - C/C++
+    - Python
 
+- name: Deep Learning
+  keywords:
+    - Tensorflow
+    - Pytorch
+    - Caffe
+
+- name: Simulation
+  keywords:
+    - Matlab
+    - GEM5
+    - CACTI
+    - NVSim
+    - NeuroSim
+
+- name: Embedded System
+  keywords:
+    - STM32
+    - Keil
+
+- name: Circuit/Layout Design
+  keywords:
+    - Altium Designer
+    - Cadence
+    - HSpice
+    - VHDL
+
+- name: Document
+  keywords:
+    - LaTeX
+
+- name: Language
+  keywords:
+    - English CET6
+
+- name: Research Interest
+  keywords:
+    - Process-In-Memory
+    - AI Accelerator

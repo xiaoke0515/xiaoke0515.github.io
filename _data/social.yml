@@ -9,3 +9,19 @@
 - sitename: WeChat
   name: QRCode
   url: https://xiaoke0515.github.io/img/siteimage/WechatQRCode.png
+
+- sitename: Blog
+  name: Link
+  url: /
+
+- sitename: Personal Page
+  name: Link
+  url: /page/
+
+- sitename: Google Scholar
+  name: Profile
+  url: https://scholar.google.com/citations?user=Pt-6rPkAAAAJ
+
+- sitename: Research Gate
+  name: Profile
+  url: https://www.researchgate.net/profile/Yilong-Zhao-3
