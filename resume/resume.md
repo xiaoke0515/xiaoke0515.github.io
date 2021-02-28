@@ -5,6 +5,9 @@ email:
   url: mailto:sjtuzyl@sjtu.edu.cn
   text: sjtuzyl@sjtu.edu.cn
 phone: 15221833996
+homepage: 
+  url: https://xiaoke0515.github.io/page/
+  text: https://xiaoke0515.github.io/page/
 ---
 
 <a href="{{"/resume/CV_Chinese/index.html" | prepend: site.baseurl}}" style="margin-left:0.5em">Chinese Version</a>
@@ -40,31 +43,42 @@ Supported arguments:
 
 ## Education
 
-### **Shanghai Jiao Tong University (SJTU)** `2018.9 -`
+### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `2018.9 -`
 
 ```
 Shanghai, China
 ```
 
-- Master in Computer Science and Technology
-- Advised by Prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)
+- M.Eng. in Computer Science and Technology
+- Supervised by Prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)
 - GPA 3.49/4.0
 
-### **Shanghai Jiao Tong University (SJTU)** `2014.9 - 2018.6`
+### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `2014.9 - 2018.6`
 
 ```
 Shanghai, China
 ```
 
-- B.S. in Electronics Science and Technology
-- 
+- B.Eng. in Electronics Science and Technology
+- GPA 3.51/4.3
 
 
 ## Publications
 
-1. Zhuoran Song, **Yilong Zhao**, Yanan Sun, Xiaoyao Liang and Li Jiang.**ESNreram: An Energy-Efficient Sparse Neural Network Based on Resistive Random-Access Memory**. To appear in ACM Great Lakes Symposium on VLSI, GLSVLSI, 2020
+Yanan Sun, Chang Ma, Zhi Li, **Yilong Zhao**, Jiachen Jiang, Weikang Qian, Rui Yang, Zhezhi He and Li Jiang, "Unary Coding and Variation-Aware Optimal Mapping Scheme for Reliable ReRAM-based Neuromorphic Computing," in IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, 2021
 
-1. Chaoqun Chu, Yanzhi Wang, **Yilong Zhao**, Xiaolong Ma, Shaokai Ye, Yunyan Hong, Xiaoyao Liang, Yinhe Han and Li Jiang. **PIM-Prune: Fine-Grain DCNN pruning for Crossbar-based Process-In-Memory architecture.** ACM/IEEE Design Automation Conference, DAC, 2020
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/9323041.txt)]
+  [[url](https://ieeexplore.ieee.org/document/9323041)]
+
+Zhuoran Song, **Yilong Zhao**, Yanan Sun, Xiaoyao Liang and Li Jiang.**ESNreram: An Energy-Efficient Sparse Neural Network Based on Resistive Random-Access Memory**. Proceedings of the 2020 on Great Lakes Symposium on VLSI, GLSVLSI. 2020: 291-296.
+
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3386263.3406897.txt)]
+  [[url](https://dl.acm.org/doi/abs/10.1145/3386263.3406897)]
+
+Chaoqun Chu, Yanzhi Wang, **Yilong Zhao**, Xiaolong Ma, Shaokai Ye, Yunyan Hong, Xiaoyao Liang, Yinhe Han and Li Jiang. **PIM-Prune: Fine-Grain DCNN pruning for Crossbar-based Process-In-Memory architecture.** ACM/IEEE Design Automation Conference, DAC, 2020
+
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/92185237.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/9218523)]
 
 1. Jia Wang, **Yilong Zhao**, Xin Huang and Guangqiang He. **High Speed Polarization-Division Multiplexing Transmissions Based on the Nonlinear Fourier Transform**, ZTE COMMUNICATIONS 17, 3  (2019).
 

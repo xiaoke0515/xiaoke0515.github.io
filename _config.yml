@@ -78,6 +78,7 @@ navs:
     href: /about/
     label: About
 
+
 # ---------------- #
 #       RSS        #
 # ---------------- #
@@ -156,3 +157,26 @@ google:
         sidebar: true 
         content_header: true
         content_footer: false
+        
+
+# ---------------- #
+#  Personal site   #
+# ---------------- #
+psurl: /page
+ps:
+    navs:
+        -
+            href: /page/
+            label: Home
+        
+        -
+            href: /page/CV/
+            label: CV/Resume
+
+        -
+            href: /page/publications/
+            label: Publications
+
+        -
+            href: /page/projects/
+            label: Projects

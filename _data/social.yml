@@ -1,3 +1,11 @@
 - sitename: GitHub
-  name: xiaoke0515 
+  name: "@xiaoke0515"
   url: https://github.com/xiaoke0515
+
+- sitename: E-Mail
+  name: ylzhao2018@gmail.com
+  url: mailto:ylzhao2018@gmail.com
+
+- sitename: WeChat
+  name: QRCode
+  url: https://xiaoke0515.github.io/img/siteimage/WechatQRCode.png

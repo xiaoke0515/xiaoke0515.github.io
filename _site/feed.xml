@@ -1,12 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-25T21:42:25+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">神经网络二阶优化总结</title><link href="http://localhost:4000/2021/02/25/1_NN_2rd_optimal/" rel="alternate" type="text/html" title="神经网络二阶优化总结" /><published>2021-02-25T19:43:00+08:00</published><updated>2021-02-25T19:43:00+08:00</updated><id>http://localhost:4000/2021/02/25/1_NN_2rd_optimal</id><content type="html" xml:base="http://localhost:4000/2021/02/25/1_NN_2rd_optimal/">&lt;p&gt;最近在看神经网络的二阶优化，总结一下看过的现有技术。从牛顿法到自然梯度法，再到现在的 Mindspore框架。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-28T22:49:34+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">神经网络二阶优化总结</title><link href="http://localhost:4000/2021/02/25/1_NN_2rd_optimal/" rel="alternate" type="text/html" title="神经网络二阶优化总结" /><published>2021-02-25T19:43:00+08:00</published><updated>2021-02-25T19:43:00+08:00</updated><id>http://localhost:4000/2021/02/25/1_NN_2rd_optimal</id><content type="html" xml:base="http://localhost:4000/2021/02/25/1_NN_2rd_optimal/">&lt;p&gt;最近在看神经网络的二阶优化，总结一下看过的现有技术。
+从牛顿法到自然梯度法，再到现在的 Mindspore框架。
+在这里写的多为思想上的一些总结，技术细节引用了一些文章和博客。&lt;/p&gt;
 
 &lt;h1 id=&quot;牛顿法&quot;&gt;牛顿法&lt;/h1&gt;
 
 &lt;h2 id=&quot;基础算法牛顿法&quot;&gt;基础算法：牛顿法&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;牛顿法&lt;/strong&gt;是一个比较传统的二阶优化方法，具体细节与推导可以参考一些教材 &lt;sup id=&quot;fnref:sun_optimal&quot;&gt;&lt;a href=&quot;#fn:sun_optimal&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;。
 由于在对参数更新时参考了二阶的梯度，因此相比于一阶优化算法，可以更快地找到梯度下降的方向。
-牛顿法的梯度下降更新公式为：&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;w_{k+1}=w_k+\alpha H_k^{-1} \nabla_w J_{k}&lt;/script&gt;&lt;br /&gt;
+牛顿法的梯度下降更新公式为：
+&lt;span id=&quot;eqn:1&quot;&gt;\begin{equation}
+    w_{k+1}=w_k+\alpha H_k^{-1} \nabla_w J_{k} \tag{1}
+    \label{eqn:1}
+\end{equation}&lt;/span&gt;
 其中， $w$ 为权值， $H$ 代表 Hessian 矩阵（二阶梯度）， $J$ 为Jacobian 矩阵（一阶梯度）， 角标 $k$ 表示迭代的次数。
 $\alpha$ 用于调节步长，也就是说，这个公式实际上已经是牛顿法的一个衍生算法，即&lt;strong&gt;带步长的牛顿法&lt;/strong&gt;。
 这是由于对于非二阶凸优化问题，原始的牛顿法不一定能直接到位，故由牛顿法得到优化方向，再另外设置步长。
@@ -36,7 +41,7 @@ $\alpha$ 用于调节步长，也就是说，这个公式实际上已经是牛�
 
     &lt;p&gt;一阶的 Jacobian 矩阵可以利用反向传播的方式求解，但二阶的 Hessian 矩阵就困难了。
  这是因为 Jacobian 矩阵在不同层之间是无关的，而 Hessian 不同。
- 因此在计算 Hessian 阵时，只能以一个奇怪的顺序来传播&lt;sup id=&quot;fnref:Mizutani_second&quot;&gt;&lt;a href=&quot;#fn:Mizutani_second&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;。
+ 因此在计算 Hessian 阵时，只能以一个奇怪的顺序来传播 &lt;sup id=&quot;fnref:Mizutani_second&quot;&gt;&lt;a href=&quot;#fn:Mizutani_second&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;。
  如果说一阶的 Jacobian 矩阵的反向传播的顺序是以一个一维的轴从右向左计算，那么二阶的 Hessian 矩阵的反向传播就是二维的平面从右下到左上传播。
  此外，传播过程中计算 Hessian 阵的复杂程度远超 Jacobian 矩阵。&lt;/p&gt;
   &lt;/li&gt;
@@ -44,12 +49,27 @@ $\alpha$ 用于调节步长，也就是说，这个公式实际上已经是牛�
 
 &lt;h2 id=&quot;拟牛顿法&quot;&gt;拟牛顿法&lt;/h2&gt;
 
-&lt;p&gt;上一节中提到的牛顿法在实际应用时有一个重大缺陷，就是
-现有的拟牛顿法主要有两种，分别为 &lt;strong&gt;DFP 法&lt;/strong&gt;和 &lt;strong&gt;BFGS 法&lt;/strong&gt;。
-两种方法也是传统的方法了，针对的就是后两个问题，作了如下优化：&lt;strong&gt;不直接求解 Hessian 阵，而是在每次迭代过程中估计一个新老 Hessian 阵的差值，且假定这个差值矩阵的秩为 2&lt;/strong&gt; &lt;sup id=&quot;fnref:sun_optimal:1&quot;&gt;&lt;a href=&quot;#fn:sun_optimal&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;。
-这样就可以减少计算 Hessian 阵的复杂度，且摆脱了求逆的困扰。
+&lt;p&gt;现有的拟牛顿法主要有两种，分别为 &lt;strong&gt;DFP 法&lt;/strong&gt;和 &lt;strong&gt;BFGS 法&lt;/strong&gt;。
+两种方法也是传统的方法了，针对的就是后两个问题，作了如下优化&lt;sup id=&quot;fnref:sun_optimal:1&quot;&gt;&lt;a href=&quot;#fn:sun_optimal&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;不直接求解 Hessian 阵，而是在每次迭代过程中估计一个新老 Hessian 阵的差值 $\Delta \hat{H}_{k}\approx \Delta H_k=H_{k+1}-H_k$ 。&lt;/li&gt;
+  &lt;li&gt;假定这个差值矩阵估计值 $\Delta \hat{H}_{k}$ 的秩为 2 。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;在这里我们在 $\Delta H_k$ 上加一个 $\hat{\cdot}$ 符号来表示它是一个估计值。
+那么如何估计这个 $\Delta \hat{H}_k$ 呢，这就要提到&lt;strong&gt;拟牛顿条件&lt;/strong&gt;了。
+这里简单说一下拟牛顿条件是怎么来的。
+从公式 &lt;a href=&quot;#eqn:1&quot;&gt;$(1)$&lt;/a&gt; 的基础上，我们定义， $s_k=w_{k+1}-w_k$ ， $y_k=\nabla_w J_{k+1}-\nabla_w J_{k}$ ， $B_k=H_k^{-1}$  。
+我们认为 $H_k$ 的变化是缓慢的（做了一个近似），因此可以得到拟牛顿条件的公式：
+&lt;span id=&quot;eqn:2&quot;&gt;\begin{equation}
+    y_k=B_{k+1}\cdot s_k \tag{2}
+\end{equation}&lt;/span&gt;
+我们认为 $H_k$ 只要满足拟牛顿条件，误差就可以接受。
+在此基础上我们可以得到 DFP 法和 BFGS 法的公式，具体推导可以参考引用的博文 &lt;sup id=&quot;fnref:BFGS&quot;&gt;&lt;a href=&quot;#fn:BFGS&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; ：&lt;/p&gt;
+
+&lt;p&gt;这样就可以减少计算 Hessian 阵的复杂度，且摆脱了求逆的困扰。
 其中， DFP 法直接在 Hessian 阵的逆阵上更新秩 2 矩阵， BFGS 在 Hessian 阵上更新秩 2 矩阵。
-由于 DFP 算法在收敛性证明上缺失，且在数值上有缺陷，因此 BFGS 应用更广泛 &lt;sup id=&quot;fnref:DFP_fault&quot;&gt;&lt;a href=&quot;#fn:DFP_fault&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+由于 DFP 算法在收敛性证明上缺失，且在数值上有缺陷，因此 BFGS 应用更广泛 &lt;sup id=&quot;fnref:DFP_fault&quot;&gt;&lt;a href=&quot;#fn:DFP_fault&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 
 &lt;p&gt;BFGS 算法依旧面临着 Hessian 矩阵过大的问题，因此衍生出了 &lt;strong&gt;L-BFGS 算法&lt;/strong&gt; &lt;sup id=&quot;fnref:sun_optimal:2&quot;&gt;&lt;a href=&quot;#fn:sun_optimal&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;。
 其中的 L 就表示所需的 memory 更 low 。
@@ -64,7 +84,7 @@ $\alpha$ 用于调节步长，也就是说，这个公式实际上已经是牛�
 此方法中的 $H$ 矩阵被近似成了如下的形式：&lt;br /&gt;
 &lt;script type=&quot;math/tex&quot;&gt;H=\dfrac{1}{C}\mathcal{I} + \dfrac{1}{l}\sum_{i=1}^l\left(j^i\right)^TJ^i&lt;/script&gt;&lt;br /&gt;
 也就是说，不必求解 Hessian 阵，求得 Jacobian 矩阵就可以了。 
-但是这个方法的局限也很明显，效果也不如一阶算法 &lt;sup id=&quot;fnref:Wang_Distrubuted&quot;&gt;&lt;a href=&quot;#fn:Wang_Distrubuted&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+但是这个方法的局限也很明显，效果也不如一阶算法 &lt;sup id=&quot;fnref:Wang_Distrubuted&quot;&gt;&lt;a href=&quot;#fn:Wang_Distrubuted&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;L-M 算法的推导&lt;br /&gt;
@@ -74,7 +94,7 @@ to be continue…&lt;/p&gt;
 
 &lt;h1 id=&quot;自然梯度法&quot;&gt;自然梯度法&lt;/h1&gt;
 
-&lt;p&gt;自然梯度法是&lt;/p&gt;
+&lt;p&gt;自然梯度法是比牛顿&lt;/p&gt;
 
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
@@ -84,6 +104,9 @@ to be continue…&lt;/p&gt;
     &lt;li id=&quot;fn:Mizutani_second&quot;&gt;
       &lt;p&gt;E. Mizutani, S. E. Dreyfus, and J. W. Demmel, “Second-order backpropagation algorithms for a stagewise-partitioned separable Hessian matrix,” in Proceedings. 2005 IEEE International Joint Conference on Neural Networks, 2005., 2005: IEEE, doi: 10.1109/ijcnn.2005.1555994. &lt;a href=&quot;#fnref:Mizutani_second&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
+    &lt;li id=&quot;fn:BFGS&quot;&gt;
+      &lt;p&gt;online: &lt;a href=&quot;https://zhuanlan.zhihu.com/p/29672873&quot;&gt;https://zhuanlan.zhihu.com/p/29672873&lt;/a&gt; &lt;a href=&quot;#fnref:BFGS&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
     &lt;li id=&quot;fn:DFP_fault&quot;&gt;
       &lt;p&gt;online: &lt;a href=&quot;https://zhuanlan.zhihu.com/p/144736223&quot;&gt;https://zhuanlan.zhihu.com/p/144736223&lt;/a&gt; &lt;a href=&quot;#fnref:DFP_fault&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
@@ -91,7 +114,7 @@ to be continue…&lt;/p&gt;
       &lt;p&gt;C.-C. Wang et al., “Distributed Newton Methods for Deep Neural Networks,” Neural Computation, vol. 30, no. 6, pp. 1673-1724, 2018-06-01 2018, doi: 10.1162/neco_a_01088. &lt;a href=&quot;#fnref:Wang_Distrubuted&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Yilong Zhao</name></author><category term="optimal_algorithm" /><summary type="html">最近在看神经网络的二阶优化，总结一下看过的现有技术。从牛顿法到自然梯度法，再到现在的 Mindspore框架。</summary></entry><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+&lt;/div&gt;</content><author><name>Yilong Zhao</name></author><category term="optimal_algorithm" /><summary type="html">最近在看神经网络的二阶优化，总结一下看过的现有技术。 从牛顿法到自然梯度法，再到现在的 Mindspore框架。 在这里写的多为思想上的一些总结，技术细节引用了一些文章和博客。</summary></entry><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Rui Liu, Xiaochen Peng, Xiaoyu Sun, Win-San Khwa, Xin Si, Jia-Jing Chen, Jia-Fang Li, Meng-Fan Chang, and Shimeng Yu. 2018. Parallelizing SRAM arrays with customized bit-cell for binary neural networks. In Proceedings of the 55th Annual Design Automation Conference (DAC ’18). Association for Computing Machinery, New York, NY, USA, Article 21, 1–6. DOI:https://doi.org/10.1145/3195970.3196089.&lt;/p&gt;

@@ -1,0 +1,17 @@
+@inproceedings{10.1145/3386263.3406897,
+author = {Song, Zhuoran and Zhao, Yilong and Sun, Yanan and Liang, Xiaoyao and Jiang, Li},
+title = {ESNreram: An Energy-Efficient Sparse Neural Network Based on Resistive Random-Access Memory},
+year = {2020},
+isbn = {9781450379441},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3386263.3406897},
+doi = {10.1145/3386263.3406897},
+abstract = {The sparsity in the deep neural networks (DNNs) can be leveraged by methods such as pruning and quantization to assist the energy-efficient deployment of large-scale deep neural networks onto hardware platforms, such as GPU and ASIC, for better performance and power efficiency. However, for the metal-oxide resistive random access memory (ReRAM) architecture, the study of energy-efficient methods still shrink the model size or constrain the precision of DNN by leveraging the DNN sparsity. Due to the circuit features of ReRAM, reading bit-0 naturally consumes less energy than reading bit-1. In this paper, we exploit the fine-grained tuning method on the bit-level to reduce energy consumption of ReRAM. Specifically, we present the gradient-search and the weight-group update algorithm, which can significantly unbalance the proportion of bit-1 and bit-0 inside the weights of DNN with negligible NN accuracy loss. Experiments demonstrate that the percentage of bit-0, in some typical convolutional neural networks (CNNs), increases to 33.8%, with less than 0.5% degradation in NN accuracy. The energy reduction can be up to 65%.},
+booktitle = {Proceedings of the 2020 on Great Lakes Symposium on VLSI},
+pages = {291–296},
+numpages = {6},
+keywords = {energy-efficiency, neural network, ReRAM},
+location = {Virtual Event, China},
+series = {GLSVLSI '20}
+}

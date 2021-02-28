@@ -8,13 +8,17 @@ menu: 关于
 permalink: /about/
 ---
 
-<p>About <a href="{{"/resume/resume/index.html" | prepend: site.baseurl}}">ME</a></p> 
+<!--<p>About <a href="{{"/resume/resume/index.html" | prepend: site.baseurl}}">ME</a></p>-->
+## About Me
 
-## 联系
+<p>My name is Yilong Zhao, and I am pursuing a Master degree at Shanghai Jiao Tong University.</p>
+<p>My <a href="{{"/page/" | prepend: site.baseurl}}">Personal Page</a></p>
+
+## Contact Me
 
 <ul>
 {% for website in site.data.social %}
-<li>{{website.sitename }}：<a href="{{ website.url }}" target="_blank">@{{ website.name }}</a></li>
+<li>{{website.sitename }}：<a href="{{ website.url }}" target="_blank">{{ website.name }}</a></li>
 {% endfor %}
 </ul>
 

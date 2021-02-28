@@ -1,0 +1,25 @@
+@ARTICLE{9323041,
+
+  author={Y. {Sun} and C. {Ma} and Z. {Li} and Z. {Li} and Z. {Li} and Y. {Zhao} and J. {Jiang} and W. {Qian} and W. {Qian} and R. {Yang} and Z. {He} and L. {Jiang} and L. {Jiang}},
+
+  journal={IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems}, 
+
+  title={Unary Coding and Variation-Aware Optimal Mapping Scheme for Reliable ReRAM-based Neuromorphic Computing}, 
+
+  year={2021},
+
+  volume={},
+
+  number={},
+
+  pages={1-1},
+
+  abstract={Neural network (NN) computing contains a large number of Multiply-and-ACcumulate (MAC) operations. The performance of NN accelerator is limited inwith the traditional von Neumann architecture due to the tremendous off-chip memory accesses. Resistive Random-Access Memory (ReRAM)-based crossbars can naturally perform Matrix-Vector Multiplication (MVM) operations and is well suitable for NN accelerators. In the existing ReRAM-based NNsNN accelerators, the synaptic weights represented by the conductances of ReRAMs are mainly based on the binary coding. However, the imperfect fabrication process combined with stochastic filament-based switching leads to resistance variations of ReRAMs, which can significantly affectalter the weights in binary synapses and degrade the NN accuracy. Moreover, the NN accuracy further deteriorates with Multi-Level Cells (MLCs) used for reducing hardware overhead. In this paper, a novel unary coding of synaptic weights is proposed to overcome the resistance variations of MLCs and achieve reliable ReRAM-based neuromorphic computing. A variation-aware optimal mapping scheme is also proposed in compliance with the unary coding to guarantee high accuracy by leveraging a unique feature of unary coding—the existence of multiple ways to represent the same value. The optimal mapping obtains very small errors for weights with resistance variations of MLCs. Our simulation results show that under resistance variations, the proposed method providesachieves less than 0.08% and 3.43% accuracy loss on CIFAR10 and ImageNet, respectively, compared to the ideal accuracy considering the resistance variations. With each synaptic weight represented by four 2-bit MLCs, the proposed method improves the accuracy over traditional binary coding scheme by 83.39% and 87.6% for CIFAR10 and ImageNet, respectively.},
+
+  keywords={Resistance;Encoding;Training;Artificial neural networks;Fabrication;Integrated circuit modeling;Hardware;Neural network;ReRAM;crossbar;MLC;variation;unary coding;optimal mapping.},
+
+  doi={10.1109/TCAD.2021.3051856},
+
+  ISSN={1937-4151},
+
+  month={},}
