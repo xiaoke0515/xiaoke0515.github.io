@@ -1,0 +1,25 @@
+@INPROCEEDINGS{8749866,
+
+  author={A. {Sheng} and Y. {Zhao} and G. {He}},
+
+  booktitle={2019 Conference on Lasers and Electro-Optics (CLEO)}, 
+
+  title={Characterization of Kerr Solitons in Microresonators with Parameter Optimization and Nonlinear Fourier Spectrum}, 
+
+  year={2019},
+
+  volume={},
+
+  number={},
+
+  pages={1-2},
+
+  abstract={We investigate the influence of pump power and the number of driving modes on the soliton step and use nonlinear Fourier transform to characterize the Kerr soliton in the microresonator driven by pulses.},
+
+  keywords={Fourier transforms;micromechanical resonators;optical Kerr effect;optical resonators;optical solitons;soliton step;driving modes;pump power;nonlinear Fourier spectrum;parameter optimization;microresonator;Kerr soliton;Solitons;Microcavities;Fourier transforms;Robustness;Eigenvalues and eigenfunctions;Optimization},
+
+  doi={10.1364/CLEO_AT.2019.JW2A.47},
+
+  ISSN={2160-8989},
+
+  month={May},}

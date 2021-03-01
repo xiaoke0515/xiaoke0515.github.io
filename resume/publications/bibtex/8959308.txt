@@ -1,0 +1,25 @@
+@ARTICLE{8959308,
+
+  author={A. {Sheng} and C. {Xi} and Z. {Yang} and X. {Jiang} and G. {He}},
+
+  journal={IEEE Photonics Journal}, 
+
+  title={Quadratic Soliton Combs in Doubly Resonant Dispersive Optical Parametric Oscillators}, 
+
+  year={2020},
+
+  volume={12},
+
+  number={2},
+
+  pages={1-7},
+
+  abstract={We present temporal quadratic solitons in doubly resonant temporal dispersive optical parametric oscillators without a walk-off in numerical simulations. In frequency domain, these cavity solitons correspond to coherent dual-combs with smooth envelopes in half-harmonic and pump fields. We also investigate the soliton existence region, and the soliton behavior with parameters in this cavity system. We believe our work offers valuable insights into the practical generation of quadratic soliton combs in optical parametric oscillators.},
+
+  keywords={optical dispersion;optical parametric oscillators;optical pumping;optical solitons;doubly resonant dispersive optical parametric oscillators;doubly resonant temporal dispersive optical parametric oscillators;cavity solitons;coherent dual-combs;temporal quadratic soliton combs;pump fields;half-harmonic fields;Cascading style sheets;Dispersion;Nonlinear optics;Optical pumping;Optical solitons;Oscillators;Quadratic solitons;frequency combs;optical parametric oscillators},
+
+  doi={10.1109/JPHOT.2020.2966533},
+
+  ISSN={1943-0655},
+
+  month={April},}

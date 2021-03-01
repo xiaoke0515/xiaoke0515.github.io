@@ -43,7 +43,7 @@ Supported arguments:
 
 ## Education
 
-### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `2018.9 -`
+### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `Step. 2018 -`
 
 ```
 Shanghai, China
@@ -53,13 +53,14 @@ Shanghai, China
 - Supervised by Prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)
 - GPA 3.49/4.0
 
-### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `2014.9 - 2018.6`
+### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `Step. 2014 - June. 2018`
 
 ```
 Shanghai, China
 ```
 
 - B.Eng. in Electronics Science and Technology
+- Minor in Business Administration
 - GPA 3.51/4.3
 
 
@@ -80,36 +81,66 @@ Chaoqun Chu, Yanzhi Wang, **Yilong Zhao**, Xiaolong Ma, Shaokai Ye, Yunyan Hong,
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/92185237.txt)]
   [[url](https://ieeexplore.ieee.org/abstract/document/9218523)]
 
-1. Jia Wang, **Yilong Zhao**, Xin Huang and Guangqiang He. **High Speed Polarization-Division Multiplexing Transmissions Based on the Nonlinear Fourier Transform**, ZTE COMMUNICATIONS 17, 3  (2019).
+Jia Wang, **Yilong Zhao**, Xin Huang and Guangqiang He. **High Speed Polarization-Division Multiplexing Transmissions Based on the Nonlinear Fourier Transform**, ZTE COMMUNICATIONS 17, 3  (2019).
 
-1. Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Characterization of Kerr Solitons in Microresonators with Parameter Optimization and Nonlinear Fourier Spectrum**," in Conference on Lasers and Electro-Optics, OSA Technical Digest (Optical Society of America, 2019), paper JW2A.47.
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/jia2019high.txt)]
+  [[url](http://tech-en.zte.com.cn/CN/abstract/abstract140.shtml)]
+  [[pdf](http://qnp.sjtu.edu.cn/userfiles/files/High%20Speed%20Polarization-Division%20Multiplexing%20Transmissions%20Based%20on%20the%20Nonlinear%20Fourier%20Transform(1).pdf)]
+
+Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Characterization of Kerr Solitons in Microresonators with Parameter Optimization and Nonlinear Fourier Spectrum**," in Conference on Lasers and Electro-Optics, OSA Technical Digest (Optical Society of America, 2019), paper JW2A.47.
+
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/8749866.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/8749866)]
 <!--[[BibTeX]({{ page.homepage.url }}/assets/siggraph20-penrose.txt)]-->
 
-1. Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in doubly resonant half-harmonic generation**," in Nonlinear Optics (NLO), OSA Technical Digest (Optical Society of America, 2019), paper NTu4A.18.
+Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in doubly resonant half-harmonic generation**," in Nonlinear Optics (NLO), OSA Technical Digest (Optical Society of America, 2019), paper NTu4A.18.
 
-## Additional Relevant Experience
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/8959308.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/8959308)]
 
-### **Shanghai Jiao Tong University, Advanced Computer Architecture Laboratory** `2019.4 - 2020.4`
+## Patents
+
+Li Jiang, **Yilong Zhao**, "Reconfigurable Architecture, Accelerator,Circuit Deployment and Dataflow Methods," Application No.202010910280.5
+
+Li Jiang, **Yilong Zhao**, Xiaosong Cui, Yun Chen, Jianxing Liao, "Neural Network Circuit," Application No.202010729402.0
+
+
+## Experience
+
+### **Shanghai Yiyu Electronic Technology Co., Ltd.** `Jul. 2020 - `
+_Research Intern_ <br>
+
+### **Advanced Computer Architecture Laboratory, SJTU** `Apr. 2019 - Dec. 2020`
 
 _Research Assistant_ <br>
-Worked with prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97), on **Research on Technology of Efficient and Reliable DNN Accelerator Based on ReRAM** project. Program a simulator on ReRAM based CNN accelerator by modifying GEM5 simulator.
+Supervised by prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)
 
-### **Shanghai Jiao Tong University, Laboratory of Quantum Nonlinear Photonics** `2017.6 - 2018.6`
+Research **A Reconfigurable ReRAM-based DNN Accelerator**. Design an energy-efficient ReRAM-based DNN Accelerator.
+
+Project **Research on Technology of Efficient and Reliable DNN Accelerator Based on ReRAM**. Program a simulator on ReRAM based CNN accelerator based on GEM5 simulator.
+
+### **Shanghai Jiao Tong University, Laboratory of Quantum Nonlinear Photonics** `Jun. 2017 - Jun. 2018`
 
 _Research Assistant_ <br>
-Worked with prof. [Guangqiang He](http://qnp.sjtu.edu.cn/content.aspx?info_lb=80&flag=39), on **Optimization design and numerical implementation of nonlinear Fourier transform algorithm** project. Program the nonlinear Fourier transform module of the system, and help to build the whole simulation system; Research the generation conditions of optical soliton in optical fiber, and analysis the eigenvalue and eigenspectrum of optical soliton.
+Supervised by prof. [Guangqiang He](http://qnp.sjtu.edu.cn/content.aspx?info_lb=80&flag=39)
 
-### **Shanghai Jiao Tong University, Research Experiences** `2015.12 - 2016.12`
+Project **Optimization design and numerical implementation of nonlinear Fourier transform algorithm**. Program the nonlinear Fourier transform module of the system, and help to build the whole simulation system; Research the generation conditions of optical soliton in optical fiber, and analysis the eigenvalue and eigenspectrum of optical soliton.
+
+### **Shanghai Jiao Tong University, Research Experiences** `Dec. 2015 - Dec. 2016`
 
 _Innovation program for College Students_ <br>
-Worked with prof. [Chunyu Zhao](http://www.ie.sjtu.edu.cn/Data/View/261), on **Development of DTU with Bluetooth interface** project. Develop a Bluetooth remotely controlled data transmission unit (DTU), responsible for circuit design and embedded programming.
+Supervised by prof. [Chunyu Zhao](http://www.ie.sjtu.edu.cn/Data/View/261)
+
+Project **Development of DTU with Bluetooth interface**. Develop a Bluetooth remotely controlled data transmission unit (DTU), responsible for circuit design and embedded programming.
+
+### **LiveSine Electric (Shanghai) Co., Ltd.** `Jul. 2016 - Aug. 2016`
+_Research Intern_ <br>
 
 ## Teaching
 
---Teaching Assistant, **Algorithm Design and Analysis (CS222)** `Shanghai Jiao Tong University, 2019-2020 fall` <br>
+Teaching Assistant, **Algorithm Design and Analysis (CS222)** `Shanghai Jiao Tong University, 2019-2020 fall` <br>
 
 
-
-
+## --
 <hr style=" height:2px;border:none;border-top:2px dotted #185598;" /> 
-Last updated: Steptember, 2020 
+Last updated: Mar. 2021 

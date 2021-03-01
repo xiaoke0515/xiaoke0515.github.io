@@ -5,8 +5,15 @@ email:
   url: mailto:sjtuzyl@sjtu.edu.cn
   text: sjtuzyl@sjtu.edu.cn
 phone: 15221833996
+homepage: 
+  url: https://xiaoke0515.github.io/page/
+  text: https://xiaoke0515.github.io/page/
 ---
-# 赵怿龙（Yilong Zhao） 
+
+<a href="{{"/resume/resume/index.html" | prepend: site.baseurl}}" style="margin-left:0.5em">英文版</a>
+
+
+# 赵怿龙
 
 <!--
 include contact information from the front matter
@@ -38,46 +45,64 @@ Supported arguments:
 
 ### **上海交通大学 (SJTU)** `2018.9 - 至今`
 
-<!--```
+```
 上海, 中国
-```-->
+```
 
-- 硕士专业：计算机技术
+- 计算机技术 工程硕士
 - 导师：[蒋力](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97) 教授
 - GPA 3.49/4.0
 
 ### **上海交通大学(SJTU)** `2014.9 - 2018.6`
 
-<!--```
+```
 上海, 中国
-```-->
+```
 
-- 本科专业：电子科学与技术
-- 学积分 85.1/100
+- 电子科学与技术 工学学士
+- 工商管理（第二专业）
+- GPA 3.51/4.3
 
 
 ## 论文
 
-1. Zhuoran Song, **Yilong Zhao**, Yanan Sun, Xiaoyao Liang and Li Jiang.**ESNreram: An Energy-Efficient Sparse Neural Network Based on Resistive Random-Access Memory**. To appear in ACM Great Lakes Symposium on VLSI, GLSVLSI, 2020
+Yanan Sun, Chang Ma, Zhi Li, **Yilong Zhao**, Jiachen Jiang, Weikang Qian, Rui Yang, Zhezhi He and Li Jiang, "Unary Coding and Variation-Aware Optimal Mapping Scheme for Reliable ReRAM-based Neuromorphic Computing," in IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, 2021
 
-1. Chaoqun Chu, Yanzhi Wang, **Yilong Zhao**, Xiaolong Ma, Shaokai Ye, Yunyan Hong, Xiaoyao Liang, Yinhe Han and Li Jiang. **PIM-Prune: Fine-Grain DCNN pruning for Crossbar-based Process-In-Memory architecture.** ACM/IEEE Design Automation Conference, DAC, 2020
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/9323041.txt)]
+  [[url](https://ieeexplore.ieee.org/document/9323041)]
 
-1. Jia Wang, **Yilong Zhao**, Xin Huang and Guangqiang He. **High Speed Polarization-Division Multiplexing Transmissions Based on the Nonlinear Fourier Transform**, ZTE COMMUNICATIONS 17, 3  (2019).
+Zhuoran Song, **Yilong Zhao**, Yanan Sun, Xiaoyao Liang and Li Jiang.**ESNreram: An Energy-Efficient Sparse Neural Network Based on Resistive Random-Access Memory**. Proceedings of the 2020 on Great Lakes Symposium on VLSI, GLSVLSI. 2020: 291-296.
 
-1. Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Characterization of Kerr Solitons in Microresonators with Parameter Optimization and Nonlinear Fourier Spectrum**," in Conference on Lasers and Electro-Optics, OSA Technical Digest (Optical Society of America, 2019), paper JW2A.47.
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3386263.3406897.txt)]
+  [[url](https://dl.acm.org/doi/abs/10.1145/3386263.3406897)]
+
+Chaoqun Chu, Yanzhi Wang, **Yilong Zhao**, Xiaolong Ma, Shaokai Ye, Yunyan Hong, Xiaoyao Liang, Yinhe Han and Li Jiang. **PIM-Prune: Fine-Grain DCNN pruning for Crossbar-based Process-In-Memory architecture.** ACM/IEEE Design Automation Conference, DAC, 2020
+
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/92185237.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/9218523)]
+
+Jia Wang, **Yilong Zhao**, Xin Huang and Guangqiang He. **High Speed Polarization-Division Multiplexing Transmissions Based on the Nonlinear Fourier Transform**, ZTE COMMUNICATIONS 17, 3  (2019).
+
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/jia2019high.txt)]
+  [[url](http://tech-en.zte.com.cn/CN/abstract/abstract140.shtml)]
+  [[pdf](http://qnp.sjtu.edu.cn/userfiles/files/High%20Speed%20Polarization-Division%20Multiplexing%20Transmissions%20Based%20on%20the%20Nonlinear%20Fourier%20Transform(1).pdf)]
+
+Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Characterization of Kerr Solitons in Microresonators with Parameter Optimization and Nonlinear Fourier Spectrum**," in Conference on Lasers and Electro-Optics, OSA Technical Digest (Optical Society of America, 2019), paper JW2A.47.
+
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/8749866.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/8749866)]
 <!--[[BibTeX]({{ page.homepage.url }}/assets/siggraph20-penrose.txt)]-->
 
-1. Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in doubly resonant half-harmonic generation**," in Nonlinear Optics (NLO), OSA Technical Digest (Optical Society of America, 2019), paper NTu4A.18.
+Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in doubly resonant half-harmonic generation**," in Nonlinear Optics (NLO), OSA Technical Digest (Optical Society of America, 2019), paper NTu4A.18.
 
-### **在投/准备中论文**
-
-1. Weidong Cao, **Yilong Zhao**(共同一作), Adith Boloor, Yinhe Han, Xuan Zhang, and Li Jiang, **Neural-PIM: Efficient Processing-In-Memory with Neural Approximation of Peripherals**, in IEEE Transactions on Computers, 在投
-
-1. **Yilong Zhao**, Li Jiang, **A reconfigurable ReRAM-based Process-in-memory Accelerator**, 准备中
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/8959308.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/8959308)]
 
 ### **专利**
 
-1. 一种基于NVM Crossbar的可重构加速器架构。发明专利，申请号： CN202010910280.5
+蒋力，**赵怿龙**，“可重构架构、加速器、电路部署和计算数据流方法”。发明专利，申请号：202010910280.5
+
+蒋力，**赵怿龙**，崔晓松，陈云，廖健行，“神经网络电路”。发明专利，申请号：202010729402.05
  
 
 ## 科研经历
@@ -117,13 +142,7 @@ ___基于ReRAM的可重构CNN加速器架构设计___`2019.8 - 至今`
 
   - **算法设计与分析 (CS222)** `上海交通大学, 2019-2020 秋` <br>
 
-## 专业技能
-
-**计算机技能**: Python, C++; MatLab; Tensorflow, PyTorch; LaTeX; MS Office; LabVIEW;
-
-**电路/系统仿真**: GEM5, CACTI, NVSim; HSpice, Cadence;
-
-**电路开发**: Altium Designer; Keil uvision; Xilinx ISE;
+## --
 
 <hr style=" height:2px;border:none;border-top:2px dotted #185598;" /> 
-Last updated: Steptember, 2020 
+Last updated: Mar. 2021 
