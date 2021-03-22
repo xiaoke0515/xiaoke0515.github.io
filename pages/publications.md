@@ -12,7 +12,7 @@ permalink: /page/publications/
 
 
 
-## Publications
+##  Publications
 
 Yanan Sun, Chang Ma, Zhi Li, **Yilong Zhao**, Jiachen Jiang, Weikang Qian, Rui Yang, Zhezhi He and Li Jiang, "Unary Coding and Variation-Aware Optimal Mapping Scheme for Reliable ReRAM-based Neuromorphic Computing," in IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, 2021
 
