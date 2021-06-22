@@ -1,0 +1,17 @@
+@inproceedings{10.1145/3453688.3461494,
+author = {Zhao, Yilong and He, Zhezhi and Jing, Naifeng and Liang, Xiaoyao and Jiang, Li},
+title = {Re2PIM: A Reconfigurable ReRAM-Based PIM Design for Variable-Sized Vector-Matrix Multiplication},
+year = {2021},
+isbn = {9781450383936},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3453688.3461494},
+doi = {10.1145/3453688.3461494},
+abstract = {ReRAM-based deep neural network (DNN) accelerator shows enormous potential because of ReRAM's high computational-density and power-efficiency. A typical feature of DNNs is that weight matrix size varies across diverse DNNs and DNN layers. However, current ReRAM-based DNN accelerators adopt a fixed-sized compute unit (CU) design, resulting in a dilemma of trading off between throughput and energy-efficiency: when computing large vector-matrix multiplication with small CUs, the overhead of the peripheral circuits is relatively high; when computing small vector-matrix multiplication with large CUs, the low utilization of ReRAM crossbars damages the throughput. In this work, we propose Re2PIM, a reconfigurable ReRAM-based DNN accelerator. Each tile of Re2PIM is composed of reconfigurable units (RUs), which can be reconfigured as vector-vatrix multiplier (VMM), digital-to-analog converter (DAC), or analog shift-and-add (AS+A). We can reconfigure RUs and obtain CUs of various sizes according to the DNN's weight matrices. It hence assures a high energy-efficiency without damaging throughput given various DNN benchmarks. Evaluations on different DNN benchmarks show that Re2PIM can achieve 27\texttimes{}/34\texttimes{}/1.5\texttimes{} and 5.7\texttimes{}/17\texttimes{}/8.2\texttimes{} improvement in energy efficiency and computational throughput respectively compared to the state-of-art accelerators (PRIME / ISAAC / TIMELY).},
+booktitle = {Proceedings of the 2021 on Great Lakes Symposium on VLSI},
+pages = {15–20},
+numpages = {6},
+keywords = {energy-efficient, reram-based accelerator, neural networks, reconfigurable},
+location = {Virtual Event, USA},
+series = {GLSVLSI '21}
+}

@@ -1,7 +1,8 @@
 ---
 layout: post
 title: Time signal 论文：Analysis and Design of Energy Efficient Time Domain Signal Processing
-categories: ReRAM_paper
+categories: 
+    - "基于 ReRAM 的 DNN 加速器"
 tags:
     - "analog computing"
     - "analog signal processing"

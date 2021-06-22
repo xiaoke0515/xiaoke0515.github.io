@@ -1,4 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-03-22T23:47:16+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-03-24T23:13:20+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">基于 ReRAM 的神经网络加速器综述（一）——介绍</title><link href="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/" rel="alternate" type="text/html" title="基于 ReRAM 的神经网络加速器综述（一）——介绍" /><published>2021-03-24T22:02:00+08:00</published><updated>2021-03-24T22:02:00+08:00</updated><id>http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1</id><content type="html" xml:base="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/">&lt;p&gt;筹划了一段时间，终于开始写这个综述了。也算是对研究生阶段研究的东西做个总结吧。
+这个综述将聚焦于基于 ReRAM 的存算一体的 DNN 加速器设计。&lt;/p&gt;
+
+&lt;h2 id=&quot;存算一体-pim-&quot;&gt;存算一体（ PIM ）&lt;/h2&gt;
+
+&lt;p&gt;存算一体（ Process-in-Memory, PIM ； 也有称为 Compute-in-Memory 或 In-Memory-Computing 的，但都是一个东西）是一个比较“古老”的概念了。
+在这里我们就简单定性地介绍一下这个 PIM &lt;sup id=&quot;fnref:pim&quot;&gt;&lt;a href=&quot;#fn:pim&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+
+&lt;p&gt;在介绍 PIM 之前要提一下冯$\cdot$诺依曼架构，也就是现在普遍应用的架构，的一个特点。
+这个特点就是存储和计算单元是分离的。
+也就是说在计算时要先将数据从存储器中读取到计算单元中，再由计算单元执行计算。
+这样就会产生数据读写和搬移的功耗。
+目前的大部分的 workload 都是计算密集（ CPU Bound ）的，即计算量远大于存储的读写量，因此体现不出这个数据搬移带来的开销的影响。
+但是，随着深度神经网络（ Deep-Neural-Network ， DNN ）的崛起，情况开始变得不同了。
+DNN 中存在大量的矩阵运算，而矩阵运算是存储密集的（ Memory Bound ），因此数据搬移的的开销就成为了一个问题。&lt;/p&gt;
+
+&lt;p&gt;PIM ，顾名思义，就是直接在存储器内执行计算。
+这样就省去了数据搬移的开销。
+目前我了解的 PIM 有如下几种路径：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;近存计算&lt;/p&gt;
+
+    &lt;p&gt;近存计算就是在存储器旁边直接放置计算电路。
+ 这样数据就不用搬到计算单元中计算，就直接在存储器旁边计算。
+ 这种方式实现非常简单，直接在 FPGA 上实现就可以，也没什么人去研究。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于 SRAM 、 DRAM 等已知器件的存内计算&lt;/p&gt;
+
+    &lt;p&gt;这一类方法开发了这些存储器件的计算潜力。
+ 比如，直接在字线上进行电荷共享&lt;sup id=&quot;fnref:3CSRAM&quot;&gt;&lt;a href=&quot;#fn:3CSRAM&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;、逻辑计算&lt;sup id=&quot;fnref:TCAM&quot;&gt;&lt;a href=&quot;#fn:TCAM&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; &lt;sup id=&quot;fnref:DrAcc&quot;&gt;&lt;a href=&quot;#fn:DrAcc&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;，或在 cell 内执行多比特相乘&lt;sup id=&quot;fnref:Conv-RAM&quot;&gt;&lt;a href=&quot;#fn:Conv-RAM&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于新器件的存内计算&lt;/p&gt;
+
+    &lt;p&gt;这个方式是利用一些新兴的阻性器件构成的阵列来计算，其中就包括了本文的主角——ReRAM。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:pim&quot;&gt;
+      &lt;p&gt;online: &lt;a href=&quot;https://zhuanlan.zhihu.com/p/98912754&quot;&gt;https://zhuanlan.zhihu.com/p/98912754&lt;/a&gt; &lt;a href=&quot;#fnref:pim&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3CSRAM&quot;&gt;
+      &lt;p&gt;Z. Jiang, S. Yin, J. Seo, and M. Seok, “&lt;a href=&quot;https://ieeexplore.ieee.org/abstract/document/8877969/&quot;&gt;C3SRAM: In-Memory-Computing SRAM Macro Based on Capacitive-Coupling Computing&lt;/a&gt;,” IEEE Solid-State Circuits Letters, vol. 2, no. 9, pp. 131-134, 2019, doi: 10.1109/LSSC.2019.2934831. &lt;a href=&quot;#fnref:3CSRAM&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:TCAM&quot;&gt;
+      &lt;p&gt;S. Jeloka, N. B. Akesh, D. Sylvester, and D. Blaauw, “&lt;a href=&quot;https://ieeexplore.ieee.org/document/7400984/&quot;&gt;A 28 nm Configurable Memory (TCAM/BCAM/SRAM) Using Push-Rule 6T Bit Cell Enabling Logic-in-Memory&lt;/a&gt;,” IEEE Journal of Solid-State Circuits, vol. 51, no. 4, pp. 1009-1021, 2016-04-01 2016, doi: 10.1109/jssc.2016.2515510. &lt;a href=&quot;#fnref:TCAM&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:DrAcc&quot;&gt;
+      &lt;p&gt;Q. Deng, L. Jiang, Y. Zhang, M. Zhang, and J. Yang, “&lt;a href=&quot;https://dl.acm.org/doi/abs/10.1145/3195970.3196029&quot;&gt;DrAcc: a DRAM based Accelerator for Accurate CNN Inference&lt;/a&gt;,” in 2018 55th ACM/ESDA/IEEE Design Automation Conference (DAC), 24-28 June 2018 2018, vol. 77, no. DRAM  PIM, p. 6, doi: 10.1109/DAC.2018.8465866. &lt;a href=&quot;#fnref:DrAcc&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:Conv-RAM&quot;&gt;
+      &lt;p&gt;A. Biswas and A. P. Chandrakasan, “&lt;a href=&quot;https://ieeexplore.ieee.org/abstract/document/8310397/&quot;&gt;Conv-RAM: An energy-efficient SRAM with embedded convolution computation for low-power CNN-based machine learning applications&lt;/a&gt;,” in 2018 IEEE International Solid - State Circuits Conference - (ISSCC), 11-15 Feb. 2018 2018, pp. 488-490, doi: 10.1109/ISSCC.2018.8310397. &lt;a href=&quot;#fnref:Conv-RAM&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name>Yilong Zhao</name></author><category term="基于 ReRAM 的 DNN 加速器" /><summary type="html">筹划了一段时间，终于开始写这个综述了。也算是对研究生阶段研究的东西做个总结吧。 这个综述将聚焦于基于 ReRAM 的存算一体的 DNN 加速器设计。</summary></entry><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Rui Liu, Xiaochen Peng, Xiaoyu Sun, Win-San Khwa, Xin Si, Jia-Jing Chen, Jia-Fang Li, Meng-Fan Chang, and Shimeng Yu. 2018. Parallelizing SRAM arrays with customized bit-cell for binary neural networks. In Proceedings of the 55th Annual Design Automation Conference (DAC ’18). Association for Computing Machinery, New York, NY, USA, Article 21, 1–6. DOI:https://doi.org/10.1145/3195970.3196089.&lt;/p&gt;
@@ -66,7 +125,7 @@ Currents are accumulated at BLs, and the MAC operation is implemented.&lt;/p&gt;
 
 &lt;h3 id=&quot;chip&quot;&gt;Chip&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_Chip.jpg&quot; alt=&quot;MAC&quot; width=&quot;900&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="ReRAM_paper" /><category term="analog computing" /><category term="analog signal processing" /><summary type="html"></summary></entry><entry><title type="html">GEM5- GEM5 中的 fatal 、 panic 、 warn</title><link href="http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn/" rel="alternate" type="text/html" title="GEM5- GEM5 中的 fatal 、 panic 、 warn" /><published>2020-08-02T00:00:00+08:00</published><updated>2020-08-02T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn</id><content type="html" xml:base="http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn/">&lt;p&gt;除了可以使用 assert 外， GEM5 中提供了三个用于检查的函数：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_Chip.jpg&quot; alt=&quot;MAC&quot; width=&quot;900&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="基于 ReRAM 的 DNN 加速器" /><category term="analog computing" /><category term="analog signal processing" /><summary type="html"></summary></entry><entry><title type="html">GEM5- GEM5 中的 fatal 、 panic 、 warn</title><link href="http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn/" rel="alternate" type="text/html" title="GEM5- GEM5 中的 fatal 、 panic 、 warn" /><published>2020-08-02T00:00:00+08:00</published><updated>2020-08-02T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn</id><content type="html" xml:base="http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn/">&lt;p&gt;除了可以使用 assert 外， GEM5 中提供了三个用于检查的函数：&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;
@@ -1006,141 +1065,4 @@ c++ class 中的 port 可能不必定义成一个 vector 。
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;问题解决。&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="others" /><category term="record" /><summary type="html">前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。</summary></entry><entry><title type="html">Time signal 论文：Analysis and Design of Energy Efficient Time Domain Signal Processing</title><link href="http://localhost:4000/2020/06/06/1_Time_signal/" rel="alternate" type="text/html" title="Time signal 论文：Analysis and Design of Energy Efficient Time Domain Signal Processing" /><published>2020-06-06T00:00:00+08:00</published><updated>2020-06-06T00:00:00+08:00</updated><id>http://localhost:4000/2020/06/06/1_Time_signal</id><content type="html" xml:base="http://localhost:4000/2020/06/06/1_Time_signal/">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;&lt;/script&gt;
-
-&lt;!--&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;--&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Zhengyu Chen, Jie Gu, Analysis and Design of Energy Efficient Time Domain Signal Processing, International Symposium on Low Power Electronic Design (ISLPED), 2016.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The paper is &lt;a href=&quot;https://dl.acm.org/citation.cfm?id=2934585,&quot; title=&quot;paper&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;My first time ever heard about using time signal for ReRAM accelerator. Found this paper to learn some details.&lt;/p&gt;
-
-&lt;p&gt;Let’s see abstract first：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Time domain signal processing (TDSP) encodes information into time rather than voltage with higher efficiency than conventional digital design. This paper performs systematical analysis on the design principle and energy efficiency of TDSP. Variation impact, which poses significant challenges to TDSP, is evaluated and a variation driven design methodology is proposed to achieve an optimum tradeoff between energy efficiency and design robustness. Several novel circuit level design techniques such as dual encoding strategy and bit-scalable design are also proposed in this work to significantly improve the energy efficiency of TDSP. Design example on a critical building block of facial recognition application was used to demonstrate the potential of the technique. The result in a 45nm technology shows 3.3X energy-delay product reduction and 34% area saving can be achieved using TDSP compared with conventional digital.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;1-time-signal-processing&quot;&gt;1. Time signal processing&lt;/h2&gt;
-
-&lt;h3 id=&quot;11-system&quot;&gt;1.1 system&lt;/h3&gt;
-
-&lt;p&gt;System is described in figure below. It’s composed of en/decoders and time domain logic.&lt;/p&gt;
-
-&lt;!--![System overview](/img/ReRAM_DNN_accelerator/1_figure_system.jpg)--&gt;
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_system.jpg&quot; alt=&quot;System overview&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;12-time-encoder&quot;&gt;1.2 Time Encoder&lt;/h3&gt;
-
-&lt;p&gt;Time encoder is also called DTC (Digital-to-Time Converter). Figure below shows some impementation of DTCs.&lt;/p&gt;
-
-&lt;!--![TE](/img/ReRAM_DNN_accelerator/1_figure_te.jpg)--&gt;
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_te.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Tech. (a) is proposed in &lt;a href=&quot;https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;amp;arnumber=6630119&quot;&gt;This Paper&lt;/a&gt;. &lt;script type=&quot;math/tex&quot;&gt;T_{in}&lt;/script&gt; is the time signal, such as &lt;em&gt;Step Signal&lt;/em&gt;. &lt;script type=&quot;math/tex&quot;&gt;D_{in}&lt;/script&gt; is the digital signal. By selecting different path with &lt;script type=&quot;math/tex&quot;&gt;D_{in}&lt;/script&gt;, delay of signal &lt;script type=&quot;math/tex&quot;&gt;T_{out}&lt;/script&gt; is decided. The design suffer from energy problem because of (1) multiple gates (2) signal returning to original stage which cause &lt;script type=&quot;math/tex&quot;&gt;2\times&lt;/script&gt; energy consumption.&lt;/p&gt;
-
-&lt;p&gt;Tech. (b) can encode multi-bit with a single inverter. (1) &lt;script type=&quot;math/tex&quot;&gt;3\times&lt;/script&gt; energy saving compared to (a). (2) energy consumption is a constant even if embedding multi-bit.&lt;/p&gt;
-
-&lt;p&gt;Tech. (c)(d) are “Cascade TE”. To be further discuess in the next sections.&lt;/p&gt;
-
-&lt;h3 id=&quot;13-dual-encoding-scheme&quot;&gt;1.3 Dual-encoding Scheme&lt;/h3&gt;
-
-&lt;p&gt;Compared to Tech. (a), which only encode information to only one kind of edge (raising or falling), this scheme means that encode information into both the two edges for energy saving. For more details, please refer to the paper.&lt;/p&gt;
-
-&lt;h3 id=&quot;14-time-logic-cell-tlc&quot;&gt;1.4 Time Logic Cell (TLC)&lt;/h3&gt;
-
-&lt;p&gt;No more words, see the figure below.&lt;/p&gt;
-
-&lt;!--![TLC](/img/ReRAM_DNN_accelerator/1_figure_TLC.jpg)--&gt;
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_TLC.jpg&quot; alt=&quot;TLC&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;15-time-decoder&quot;&gt;1.5 Time Decoder&lt;/h3&gt;
-
-&lt;p&gt;A technology is described in figure blew. It is explicit and no more words.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_TDC.jpg&quot; alt=&quot;TDC&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;2-variation-driven-design-methodology&quot;&gt;2. Variation-Driven Design Methodology&lt;/h2&gt;
-
-&lt;h3 id=&quot;21-variation-driven-design&quot;&gt;2.1 Variation driven design&lt;/h3&gt;
-
-&lt;p&gt;The auther introduces a energy-variation trade-off here. Consider the two kind of Tech. (c) (named cascade) and (d) (named cascode). As shown in figure below, cascade-type DTC has a larger energy but a smaller variation. Cascode-type DTC has an opposite characteristic. In order to trade off between energy and variation, a hybrid DTC is used.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_tradeoff.jpg&quot; alt=&quot;trade off&quot; width=&quot;500&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Details of energy consumption and variation is described with the following equations:&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{cascade\_TE}=\sqrt{2N}\sigma_1&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{cascode\_TE}=\sqrt{\sum_{i=1}^{n}\left(A+N_i\sigma_2\right)^2}&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\Delta T_{hybrid\_TE}=\sqrt{\sum_{i=1}^m\left(A+N_i\sigma_2\right)^2+\sum_{j=1}^{n-m}2^j\left(A+2^{m-1}\sigma_2\right)^2}&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;E_{cascade\_TE}=2N\cdot CV_{dd}^2&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;E_{cascode\_TE}=2nCV_{dd}^2&lt;/script&gt;&lt;br /&gt;
-&lt;script type=&quot;math/tex&quot;&gt;E_{hybrid\_TE}=\left(m+2^{n-m}\right)*2CV^2=\left(2m+2^{n-m+1}\right)CV^2&lt;/script&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;22-simulated-variation-impact&quot;&gt;2.2 Simulated Variation Impact&lt;/h3&gt;
-
-&lt;p&gt;Simulated variation compared to conventional adder is shown in the figure below. It is amazing that time signal computing can achieve a such low variation.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/1_figure_variation_result.jpg&quot; alt=&quot;variation_res&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;3-case-study&quot;&gt;3. Case Study&lt;/h2&gt;
-
-&lt;p&gt;The following cases are studed in the origin paper:&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Big-scalable design&lt;/li&gt;
-  &lt;li&gt;Efficient MAX/MIN/CMP operation&lt;/li&gt;
-  &lt;li&gt;Parallel operation with short cirtical path&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;For more details, please refer to the origin paper.&lt;/p&gt;
-
-&lt;h2 id=&quot;4-conclusion&quot;&gt;4. Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Energy and area result is summrized in the following table:&lt;/p&gt;
-
-&lt;!--| | CPU | Conventional ASIC | TDSP |
-|:---:|:---:|:---:|:---:|
-|Technology||||--&gt;
-
-&lt;table align=&quot;center&quot; border=&quot;1&quot; frame=&quot;box&quot;&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;td&gt;&amp;nbsp;&lt;/td&gt; 
-        &lt;th&gt;CPU&lt;/th&gt; 
-        &lt;th&gt;Conventional ASIC&lt;/th&gt; 
-        &lt;th&gt;TDSP&lt;/th&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt; Technology &lt;/th&gt;
-        &lt;td colspan=&quot;3&quot;&gt; 45nm, 1.1V &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt; Energy (fJ)&lt;/th&gt;
-        &lt;td&gt; 2304 &lt;/td&gt;
-        &lt;td&gt; 323 &lt;/td&gt;
-        &lt;td&gt; 224.4 &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt; Area (&lt;span&gt;&lt;script type=&quot;math/tex&quot;&gt;\mu m^2&lt;/script&gt;&lt;/span&gt;)&lt;/th&gt;
-        &lt;td&gt; N/A &lt;/td&gt;
-        &lt;td&gt; 115 &lt;/td&gt;
-        &lt;td&gt; 75.6 &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt; Delay (ns)&lt;/th&gt;
-        &lt;td&gt; 3.2 &lt;/td&gt;
-        &lt;td&gt; 0.98 &lt;/td&gt;
-        &lt;td&gt; 0.43 &lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;thoughts&quot;&gt;Thoughts&lt;/h2&gt;
-
-&lt;p&gt;First ReRAM-based DNN accelerator that uses time signal is &lt;a href=&quot;&quot;&gt;Timely architecture&lt;/a&gt;. The author claims that TDC is much more energy efficient than ADC. This paper solve my confusion on how DTC and TDC works.&lt;/p&gt;
-
-&lt;p&gt;Actually, I think DAC and TDC can also be a conversion pair. With a capacitance used as integrator, along with a comparator, analog signal can be converted to time signal.&lt;/p&gt;
-
-&lt;p&gt;Moreover, the design in timely uses a circuit to store time signal, which is also what I am confused about.&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="ReRAM_paper" /><category term="analog computing" /><category term="analog signal processing" /><summary type="html"></summary></entry></feed>
+&lt;p&gt;问题解决。&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="others" /><category term="record" /><summary type="html">前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。</summary></entry></feed>
