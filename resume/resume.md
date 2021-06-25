@@ -66,7 +66,7 @@ Shanghai, China
 
 ## Publications
 
-**Yilong Zhao**, Zhezhi He, Naifeng Jing, Xiaoyao Liang, and Li Jiang. 2021. Re2PIM: A Reconfigurable ReRAM-Based PIM Design for Variable-Sized Vector-Matrix Multiplication. In Proceedings of the 2021 on Great Lakes Symposium on VLSI (GLSVLSI '21). Association for Computing Machinery, New York, NY, USA, 15–20. 
+**Yilong Zhao**, Zhezhi He, Naifeng Jing, Xiaoyao Liang, and Li Jiang. 2021. **Re2PIM: A Reconfigurable ReRAM-Based PIM Design for Variable-Sized Vector-Matrix Multiplication**. In Proceedings of the 2021 on Great Lakes Symposium on VLSI (GLSVLSI '21). Association for Computing Machinery, New York, NY, USA, 15–20. 
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3453688.3461494.txt)]
   [[url](https://dl.acm.org/doi/10.1145/3453688.3461494)]

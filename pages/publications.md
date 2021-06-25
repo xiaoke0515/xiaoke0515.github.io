@@ -14,7 +14,13 @@ permalink: /page/publications/
 
 ##  Publications
 
-Yanan Sun, Chang Ma, Zhi Li, **Yilong Zhao**, Jiachen Jiang, Weikang Qian, Rui Yang, Zhezhi He and Li Jiang, "Unary Coding and Variation-Aware Optimal Mapping Scheme for Reliable ReRAM-based Neuromorphic Computing," in IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, 2021
+
+**Yilong Zhao**, Zhezhi He, Naifeng Jing, Xiaoyao Liang, and Li Jiang. 2021. **Re2PIM: A Reconfigurable ReRAM-Based PIM Design for Variable-Sized Vector-Matrix Multiplication**. In Proceedings of the 2021 on Great Lakes Symposium on VLSI (GLSVLSI '21). Association for Computing Machinery, New York, NY, USA, 15–20. 
+
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3453688.3461494.txt)]
+  [[url](https://dl.acm.org/doi/10.1145/3453688.3461494)]
+
+Yanan Sun, Chang Ma, Zhi Li, **Yilong Zhao**, Jiachen Jiang, Weikang Qian, Rui Yang, Zhezhi He and Li Jiang, "**Unary Coding and Variation-Aware Optimal Mapping Scheme for Reliable ReRAM-based Neuromorphic Computing**," in IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, 2021
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/9323041.txt)]
   [[url](https://ieeexplore.ieee.org/document/9323041)]
