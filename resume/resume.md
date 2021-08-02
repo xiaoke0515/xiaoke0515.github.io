@@ -89,7 +89,7 @@ Chaoqun Chu, Yanzhi Wang, **Yilong Zhao**, Xiaolong Ma, Shaokai Ye, Yunyan Hong,
 Jia Wang, **Yilong Zhao**, Xin Huang and Guangqiang He. **High Speed Polarization-Division Multiplexing Transmissions Based on the Nonlinear Fourier Transform**, ZTE COMMUNICATIONS 17, 3  (2019).
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/jia2019high.txt)]
-  [[url](http://tech-en.zte.com.cn/CN/abstract/abstract140.shtml)]
+  [[url](https://www.zte.com.cn/global/about/magazine/zte-communications/2019/en201903/researchpaper/008.html)]
   [[pdf](http://qnp.sjtu.edu.cn/userfiles/files/High%20Speed%20Polarization-Division%20Multiplexing%20Transmissions%20Based%20on%20the%20Nonlinear%20Fourier%20Transform(1).pdf)]
 
 Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Characterization of Kerr Solitons in Microresonators with Parameter Optimization and Nonlinear Fourier Spectrum**," in Conference on Lasers and Electro-Optics, OSA Technical Digest (Optical Society of America, 2019), paper JW2A.47.

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-03-24T23:13:20+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">基于 ReRAM 的神经网络加速器综述（一）——介绍</title><link href="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/" rel="alternate" type="text/html" title="基于 ReRAM 的神经网络加速器综述（一）——介绍" /><published>2021-03-24T22:02:00+08:00</published><updated>2021-03-24T22:02:00+08:00</updated><id>http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1</id><content type="html" xml:base="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/">&lt;p&gt;筹划了一段时间，终于开始写这个综述了。也算是对研究生阶段研究的东西做个总结吧。
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-08-02T21:00:48+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">基于 ReRAM 的神经网络加速器综述（一）——介绍</title><link href="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/" rel="alternate" type="text/html" title="基于 ReRAM 的神经网络加速器综述（一）——介绍" /><published>2021-03-24T22:02:00+08:00</published><updated>2021-03-24T22:02:00+08:00</updated><id>http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1</id><content type="html" xml:base="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/">&lt;p&gt;筹划了一段时间，终于开始写这个综述了。也算是做个总结吧。
 这个综述将聚焦于基于 ReRAM 的存算一体的 DNN 加速器设计。&lt;/p&gt;
 
 &lt;h2 id=&quot;存算一体-pim-&quot;&gt;存算一体（ PIM ）&lt;/h2&gt;
@@ -24,7 +24,7 @@ DNN 中存在大量的矩阵运算，而矩阵运算是存储密集的（ Memory
 
     &lt;p&gt;近存计算就是在存储器旁边直接放置计算电路。
  这样数据就不用搬到计算单元中计算，就直接在存储器旁边计算。
- 这种方式实现非常简单，直接在 FPGA 上实现就可以，也没什么人去研究。&lt;/p&gt;
+ 这种方式实现非常简单，直接在 FPGA 上实现就可以。&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;基于 SRAM 、 DRAM 等已知器件的存内计算&lt;/p&gt;
@@ -35,9 +35,101 @@ DNN 中存在大量的矩阵运算，而矩阵运算是存储密集的（ Memory
   &lt;li&gt;
     &lt;p&gt;基于新器件的存内计算&lt;/p&gt;
 
-    &lt;p&gt;这个方式是利用一些新兴的阻性器件构成的阵列来计算，其中就包括了本文的主角——ReRAM。&lt;/p&gt;
+    &lt;p&gt;这个方式是利用一些新兴的阻性器件构成的阵列来计算，其中就包括了本文的主角——ReRAM。
+ 除了ReRAM之外，还有FeRAM、PCM等器件，它们的计算原理基本相同。
+ 计算原理我们接下来会说。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;h2 id=&quot;基于-reram-的存算一体电路计算原理&quot;&gt;基于 ReRAM 的存算一体电路计算原理&lt;/h2&gt;
+
+&lt;p&gt;ReRAM 阵列其实加速的只是向量-矩阵乘法。
+它的原理如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/3_figure_rram_xb.jpg&quot; alt=&quot;TE&quot; width=&quot;600&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;一列模拟电压信号输入到 ReRAM 阵列的 wordline 上，在每个 ReRAM 单元（ cell ）中，对应行的电压与 ReRAM 器件的电导相乘，得到一个小的模拟电路。
+这个小的模拟电流在 bitline 上汇聚，并输出一行模拟电流信号。
+这样，就完成了一个向量与一个矩阵的“乘累加”，即向量-矩阵相乘。
+右面的公式表示了这个过程。
+因此，要利用它进行计算，我们只需要将矩阵写在阵列上，再将向量以模拟电压的形式输入到 wordline 上，这样 bitline 上得到的结果就是计算结果。
+&lt;!--但我们发现，计算过程中，输入的信号与输出的信号都是模拟信号，但计算机都是数字的，所以需要信号转换电路 ADC （ Analog-to-Digital Converter ）和 DAC （ Digital-to-Analog Converter ）。--&gt;
+这样，每个 ReRAM 单元都是一个乘法器，面积只有一个晶体管的大小（因为 ReRAM 是在金属层，可以直接做在晶体管上面，几乎不占面积），这比乘法器省了很多的面积。
+同时 bitline 作用等同于一个组加法器树，将同一列的结果加起来，这与加法器相比面积也小得多。
+总得来说，$28\mathrm{nm}$ 工艺下一个 $128\times128$ 的阵列的面积仅有 $25\mathrm{\mu m^2}$ &lt;sup id=&quot;fnref:Dot&quot;&gt;&lt;a href=&quot;#fn:Dot&quot; class=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;，可以算一下它的面积效率，再和 V100 GPU比较一下（15.7$\mathrm{TFLOPS}$, 815$\mathrm{mm^2}$），就能知道它的潜力有多大了。&lt;/p&gt;
+
+&lt;p&gt;但是，在实际使用的过程中，这个东西完全没我们想象的那么好，主要是如下的几点理由。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;这个阵列完全是模拟计算，而我们的计算机中存储和传输的数据都是数字形式的，进一步地，是二进制的。
+&lt;!--这就需要引入两个开销极大的电路————模-数转换器（ Analog-to-Digital Converter ， ADC ）和数-模转换器（ Digital-to-Analog Converter ， DAC ）。
+一些早期的架构文章中， ADC 和 DAC 的开销能占到总体的 90%。--&gt;&lt;/li&gt;
+  &lt;li&gt;受 ReRAM 工艺的限制，每个 ReRAM 单元只能写有限个比特，比如，2比特。我见过的最高的文章有能写6-8比特的，但我并不太相信。
+这就导致了低精度的问题。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这里详细讨论一下为什么这个比特数会有限制。
+这是因为 ReRAM 写有限的比特是因为它本身的阻值是写不准的，写上去的和期望的值有一个偏移（ Variation ），这个偏移有可能会导致相邻的两个阻态间有重叠。
+比如下面那张图。
+在下图这种情况下如果我们写四种电阻，那么我们很容易画三条竖线将这四种阻态分开，如果我们增加阻态个数，在$10^3$那里再“强行”塞入一个阻态，那个这个阻态就会和红色或紫色的阻态间重叠，被判决成这两种阻态，就不正确了。
+这还是一个电阻的情况。
+如果我们是$128\times128$这么大的阵列一列的电流相加，那么根据概率论知识，每个累积概率的线都会被横向拉伸，每个状态间更容易重叠。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/3_figure_resistance_overlap.jpg&quot; alt=&quot;TE&quot; width=&quot;400&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;由于这两个原因，我们就需要一些周边电路来支持它来实现我们期望的高精度的矩阵乘法。&lt;/p&gt;
+
+&lt;h2 id=&quot;基于-reram-的存算一体的周边电路&quot;&gt;基于 ReRAM 的存算一体的周边电路&lt;/h2&gt;
+
+&lt;h3 id=&quot;数-模模-数转换电路&quot;&gt;数-模/模-数转换电路&lt;/h3&gt;
+
+&lt;p&gt;为了解决问题一，我们要引入两个电路————模-数转换器（ Analog-to-Digital Converter ， ADC ）和数-模转换器（ Digital-to-Analog Converter ， DAC ）————作为 ReRAM 阵列内的模拟域和外部数字域间的“桥梁”。&lt;/p&gt;
+
+&lt;p&gt;但这两个电路仍面临很严重的精度问题。
+首先，如果我们想要实现一个16比特的计算，我们就需要一个16-比特的DAC，这个东西并做不出来。
+其次， DAC 和 ADC 的精度间是耦合的，这导致了功耗与精度的取舍问题。
+就算我们只算4比特的计算， 4 比特的 DAC 有 16 种电平， 4 比特的 ReRAM 每个单元也有 16 种电阻，这一乘就是 256 种电流输出。
+再加上同一列的 128 个 cell 输出电流的汇聚，就是 $2^{15}$ 种电流。
+我们需要一个 15 比特的 ADC 来量化这个模拟电流。
+且不说这么高比特的 ADC 能不能做出来，就算能做出来，想想 ADC 的功耗和分辨率可是成指数关系 &lt;sup id=&quot;fnref:ADC&quot;&gt;&lt;a href=&quot;#fn:ADC&quot; class=&quot;footnote&quot;&gt;7&lt;/a&gt;&lt;/sup&gt;，这么高比特的 ADC 功耗也是难以接受的。
+这就限制了我们必需用低比特的 DAC ，每个 ReRAM 单元上写更少的比特。&lt;/p&gt;
+
+&lt;h3 id=&quot;sh-电路&quot;&gt;S&amp;amp;H 电路&lt;/h3&gt;
+
+&lt;p&gt;ADC 的频率可以远快于 ReRAM 阵列的计算速度，但面积比较大。
+因此我们可以选择在 bitline 间共享 ADC 。
+这就需要暂存模拟信号，我们可以用一种叫采样-保持（ Sample-and-Hold ， S&amp;amp;H ）的电路 &lt;sup id=&quot;fnref:SH&quot;&gt;&lt;a href=&quot;#fn:SH&quot; class=&quot;footnote&quot;&gt;8&lt;/a&gt;&lt;/sup&gt; 实现这个功能。
+这个电路实际上就是一个电容，存储一下电平，之后再将这个电平读出来。&lt;/p&gt;
+
+&lt;h3 id=&quot;bit-slice-方法和移加电路&quot;&gt;bit-slice 方法和移加电路&lt;/h3&gt;
+
+&lt;p&gt;为了 ADC 、 DAC 和问题二共同导致的精度问题，我们要引入 bit-slice 技术。
+这个技术分两步，如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/3_figure_bit_slice.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;首先，对于 ReRAM 单元的精度问题，我们将原本设计中的 ReRAM 阵列的一列代表矩阵的一列，变成用相邻的多列来代表矩阵的一列。
+将矩阵的每个数按比特由高到低从左到右写在这相邻的列上。
+假设我们的阵列每个 cell 是 2 个比特，那么图中写一个 8 比特的数就要 4 列。
+ReRAM 阵列的每一列完成对应位的乘累加后，我们将这些列的结果移位相加即可。&lt;/p&gt;
+
+&lt;p&gt;之后，对于 DAC 的精度问题，我们将输入的多个比特分周期依次从 DAC 输入进去。
+假设我们的 DAC 分辨率为 1 比特，那么我们如果要输入一个 8 比特的输入，就需要 8 个周期。
+在这之后，我们同样将结果移位相加即可。&lt;/p&gt;
+
+&lt;p&gt;可以看到，这两个步骤我们都需要对结果进行移位相加，因此我们需要引入一个数字的移位-相加器（ Shift-and-Add ， S+A ）来实现这个功能。&lt;/p&gt;
+
+&lt;h3 id=&quot;基于-reram-阵列的向量-矩阵乘法器&quot;&gt;基于 ReRAM 阵列的向量-矩阵乘法器&lt;/h3&gt;
+
+&lt;p&gt;综合我们以上的分析，再加上一些 I/OR （ Input/Output Register ），就可以得到一个典型的 ReRAM 矩阵乘法器的结构图了。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/3_figure_rram_vmm.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;本文从原理上介绍了 ReRAM 阵列的计算原理以及一个基础的周边电路设置。
+在接下来的章节中我们将介绍几个完整的架构设计。
+&lt;!--从 ReRAM 阵列的结构来看--&gt;&lt;/p&gt;
 
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
@@ -56,8 +148,17 @@ DNN 中存在大量的矩阵运算，而矩阵运算是存储密集的（ Memory
     &lt;li id=&quot;fn:Conv-RAM&quot;&gt;
       &lt;p&gt;A. Biswas and A. P. Chandrakasan, “&lt;a href=&quot;https://ieeexplore.ieee.org/abstract/document/8310397/&quot;&gt;Conv-RAM: An energy-efficient SRAM with embedded convolution computation for low-power CNN-based machine learning applications&lt;/a&gt;,” in 2018 IEEE International Solid - State Circuits Conference - (ISSCC), 11-15 Feb. 2018 2018, pp. 488-490, doi: 10.1109/ISSCC.2018.8310397. &lt;a href=&quot;#fnref:Conv-RAM&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
+    &lt;li id=&quot;fn:Dot&quot;&gt;
+      &lt;p&gt;M. Hu et al., “Dot-product engine for neuromorphic computing: programming 1T1M crossbar to accelerate matrix-vector multiplication,” in Proceedings of the 53rd annual design automation conference, 2016: ACM, p. 19. [Online]. Available: https://dl.acm.org/citation.cfm?id=2898010. [Online]. Available: https://dl.acm.org/citation.cfm?id=2898010 &lt;a href=&quot;#fnref:Dot&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:ADC&quot;&gt;
+      &lt;p&gt;L. Kull et al., “A 3.1 mW 8b 1.2 GS/s Single-Channel Asynchronous SAR ADC With Alternate Comparators for Enhanced Speed in 32 nm Digital SOI CMOS,” IEEE Journal of Solid-State Circuits, vol. 48, no. 12, pp. 3049-3058, 2013, doi: 10.1109/JSSC.2013.2279571. &lt;a href=&quot;#fnref:ADC&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:SH&quot;&gt;
+      &lt;p&gt;M. O. Halloran and R. Sarpeshkar, “A 10-nW 12-bit accurate analog storage cell with 10-aA leakage,” IEEE Journal of Solid-State Circuits, vol. 39, no. 11, pp. 1985-1996, 2004, doi: 10.1109/JSSC.2004.835817. &lt;a href=&quot;#fnref:SH&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Yilong Zhao</name></author><category term="基于 ReRAM 的 DNN 加速器" /><summary type="html">筹划了一段时间，终于开始写这个综述了。也算是对研究生阶段研究的东西做个总结吧。 这个综述将聚焦于基于 ReRAM 的存算一体的 DNN 加速器设计。</summary></entry><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+&lt;/div&gt;</content><author><name>Yilong Zhao</name></author><category term="基于 ReRAM 的 DNN 加速器" /><summary type="html">筹划了一段时间，终于开始写这个综述了。也算是做个总结吧。 这个综述将聚焦于基于 ReRAM 的存算一体的 DNN 加速器设计。</summary></entry><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Rui Liu, Xiaochen Peng, Xiaoyu Sun, Win-San Khwa, Xin Si, Jia-Jing Chen, Jia-Fang Li, Meng-Fan Chang, and Shimeng Yu. 2018. Parallelizing SRAM arrays with customized bit-cell for binary neural networks. In Proceedings of the 55th Annual Design Automation Conference (DAC ’18). Association for Computing Machinery, New York, NY, USA, Article 21, 1–6. DOI:https://doi.org/10.1145/3195970.3196089.&lt;/p&gt;
