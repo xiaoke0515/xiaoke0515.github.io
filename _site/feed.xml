@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-08-02T21:00:48+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">基于 ReRAM 的神经网络加速器综述（一）——介绍</title><link href="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/" rel="alternate" type="text/html" title="基于 ReRAM 的神经网络加速器综述（一）——介绍" /><published>2021-03-24T22:02:00+08:00</published><updated>2021-03-24T22:02:00+08:00</updated><id>http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1</id><content type="html" xml:base="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/">&lt;p&gt;筹划了一段时间，终于开始写这个综述了。也算是做个总结吧。
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-19T18:09:42+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">基于 ReRAM 的神经网络加速器综述（一）——介绍</title><link href="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/" rel="alternate" type="text/html" title="基于 ReRAM 的神经网络加速器综述（一）——介绍" /><published>2021-03-24T22:02:00+08:00</published><updated>2021-03-24T22:02:00+08:00</updated><id>http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1</id><content type="html" xml:base="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/">&lt;p&gt;筹划了一段时间，终于开始写这个综述了。也算是做个总结吧。
 这个综述将聚焦于基于 ReRAM 的存算一体的 DNN 加速器设计。&lt;/p&gt;
 
 &lt;h2 id=&quot;存算一体-pim-&quot;&gt;存算一体（ PIM ）&lt;/h2&gt;
@@ -104,6 +104,7 @@ DNN 中存在大量的矩阵运算，而矩阵运算是存储密集的（ Memory
 &lt;h3 id=&quot;bit-slice-方法和移加电路&quot;&gt;bit-slice 方法和移加电路&lt;/h3&gt;
 
 &lt;p&gt;为了 ADC 、 DAC 和问题二共同导致的精度问题，我们要引入 bit-slice 技术。
+这个技术的目标是将多个低比特的向量-矩阵乘组合成一个高精度的向量-矩阵乘。
 这个技术分两步，如下图所示：&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/3_figure_bit_slice.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
@@ -117,6 +118,16 @@ ReRAM 阵列的每一列完成对应位的乘累加后，我们将这些列的�
 假设我们的 DAC 分辨率为 1 比特，那么我们如果要输入一个 8 比特的输入，就需要 8 个周期。
 在这之后，我们同样将结果移位相加即可。&lt;/p&gt;
 
+&lt;p&gt;这两个过程或许用数学公式会更好理解。
+假设每个 ReRAM 单元可以写 $R_c$ 比特， DAC 的分辨率分别为 $R_{DAC}$ ，如果我们要计算一个 16 比特的乘法（矩阵 $A$ 和向量 $b$ 均为 16 比特），那么我们就要对这两个操作数进行 bit-slice ：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;A=\sum_{i=0}^{16/R_c-1}A_i\cdot2^{-iR_c}, b=\sum_{i=0}^{16/R_{DAC}-1}b_i\cdot2^{-iR_{DAC}}&lt;/script&gt;
+
+&lt;p&gt;其中， $A_i$ 和 $b_i$ 均代表一个 slice 。
+那么，我们的高比特乘法就可以写为：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;A\cdot b = \sum_{i,j=0}^{i=16/R_c-1, j=16/R_{DAC}-1}A_i\cdot b_i\cdot2^{-iR_c+jR_{DAC}}&lt;/script&gt;
+
 &lt;p&gt;可以看到，这两个步骤我们都需要对结果进行移位相加，因此我们需要引入一个数字的移位-相加器（ Shift-and-Add ， S+A ）来实现这个功能。&lt;/p&gt;
 
 &lt;h3 id=&quot;基于-reram-阵列的向量-矩阵乘法器&quot;&gt;基于 ReRAM 阵列的向量-矩阵乘法器&lt;/h3&gt;
@@ -128,7 +139,10 @@ ReRAM 阵列的每一列完成对应位的乘累加后，我们将这些列的�
 &lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
 
 &lt;p&gt;本文从原理上介绍了 ReRAM 阵列的计算原理以及一个基础的周边电路设置。
-在接下来的章节中我们将介绍几个完整的架构设计。
+在接下来的章节中我们将介绍几个完整的架构设计。&lt;/p&gt;
+
+&lt;p&gt;下一章链接：
+&lt;a href=&quot;http://localhost:4000/2021/08/03/4_ReRAM_DNN_Review_2/&quot;&gt;基于 ReRAM 的神经网络加速器综述（二）——早期的加速器&lt;/a&gt;
 &lt;!--从 ReRAM 阵列的结构来看--&gt;&lt;/p&gt;
 
 &lt;div class=&quot;footnotes&quot;&gt;

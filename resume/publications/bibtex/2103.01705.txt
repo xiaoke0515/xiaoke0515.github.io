@@ -1,0 +1,6 @@
+@article{liu2021sme,
+  title={SME: ReRAM-based Sparse-Multiplication-Engine to Squeeze-Out Bit Sparsity of Neural Network},
+  author={Liu, Fangxin and Zhao, Wenbo and Zhao, Yilong and Wang, Zongwu and Yang, Tao and He, Zhezhi and Jing, Naifeng and Liang, Xiaoyao and Jiang, Li},
+  journal={arXiv preprint arXiv:2103.01705},
+  year={2021}
+}

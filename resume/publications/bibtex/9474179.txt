@@ -1,0 +1,25 @@
+@INPROCEEDINGS{9474179,
+
+  author={Meng, Ziqi and Oian, Weikanu and Zhao, Yilonz and Sun, Yanan and Yang, Rui and Jiang, Li},
+
+  booktitle={2021 Design, Automation   Test in Europe Conference   Exhibition (DATE)}, 
+
+  title={Digital Offset for RRAM-based Neuromorphic Computing: A Novel Solution to Conquer Cycle-to-cycle Variation}, 
+
+  year={2021},
+
+  volume={},
+
+  number={},
+
+  pages={1078-1083},
+
+  abstract={Resistance variation in memristor device hinders the practical use of resistive random access memory (RRAM) crossbars as neural network (NN) accelerators. Previous fault-tolerant methods cannot effectively handle cycle-to-cycle variation (CCV). Many of them also use a pair of positive-weight and negative-weight crossbars to store a weight matrix, which implicitly enhances the fault tolerance but doubles the hardware cost. This paper proposes a novel solution that dramatically reduces the NN accuracy loss under CCV, while still using a single crossbar to store a weight matrix. The key idea is to introduce digital offsets into the crossbar, which further enables two techniques to conquer CCV. The first is a variation-aware weight optimization method that determines the optimal target weights to be written into the crossbar; the second is a post-writing tuning method that optimally sets the digital offsets to recover the accuracy loss due to variation. Simulation results show that the accuracy maintains the ideal value for LeNet with MNIST and only drops by 2.77% over the ideal value for ResNet-18 with CIFAR-10 under a large resistance variation. Moreover, compared to state-of-the-art fault-tolerant methods, our method achieves a better NN accuracy with at least 50% fewer crossbars.},
+
+  keywords={},
+
+  doi={10.23919/DATE51398.2021.9474179},
+
+  ISSN={1558-1101},
+
+  month={Feb},}

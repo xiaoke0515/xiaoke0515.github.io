@@ -8,6 +8,7 @@
     - Tensorflow
     - Pytorch
     - Caffe
+    - Mindspore
 
 - name: Simulation
   keywords:

@@ -1,17 +1,24 @@
 ---
 layout: page_ps
-title: Projects
+title: Experiences
 description: About Me
 keywords: Yilong Zhao
 comments: false
-menu: projects
+menu: experiences
 permalink: /page/projects/
 ---
 
 <!--<p>About <a href="{{"/resume/resume/index.html" | prepend: site.baseurl}}">ME</a></p>-->
 
 
-#### **Shanghai Yiyu Electronic Technology Co., Ltd.** `Jul. 2020 - `
+### **Shanghai Qizhi Institute.** `Jul. 2021 - Now`
+_Research Assistant_ <br>
+
+Research **A Reconfigurable ReRAM-based DNN AcceleratorA PIM based Second-Order Trainning Accelerator**.
+
+Project **PIM Implementation Towards Optical Communication**. 
+
+#### **Shanghai Yiyu Electronic Technology Co., Ltd.** `Jul. 2020 - Jul. 2021`
 _Research Intern_ <br>
 
 #### **Advanced Computer Architecture Laboratory, SJTU** `Apr. 2019 - Dec. 2020`

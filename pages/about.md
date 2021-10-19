@@ -11,7 +11,7 @@ permalink: /about/
 <!--<p>About <a href="{{"/resume/resume/index.html" | prepend: site.baseurl}}">ME</a></p>-->
 ## About Me
 
-<p>My name is Yilong Zhao, and I am pursuing a Master degree at Shanghai Jiao Tong University.</p>
+<p>My name is Yilong Zhao, and I am working as a research assistant in Shanghai Qizhi Institute.</p>
 <p>My <a href="{{"/page/" | prepend: site.baseurl}}"><u>Personal Page</u></a></p>
 
 ## Contact Me
