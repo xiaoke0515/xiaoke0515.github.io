@@ -5,7 +5,7 @@ description: 按年份归档
 keywords: 归档
 comments: false
 menu: Archive
-permalink: /archives/
+permalink: /blog/archives/
 ---
 
 <section class="container posts-content">

@@ -1,0 +1,13 @@
+@ARTICLE{9591330,
+  author={Cao, Weidong and Zhao, Yilong and Boloor, Adith and Han, Yinhe and Zhang, Xuan and Jiang, Li},
+  journal={IEEE Transactions on Computers}, 
+  title={Neural-PIM: Efficient Processing-In-Memory With Neural Approximation of Peripherals}, 
+  year={2022},
+  volume={71},
+  number={9},
+  pages={2142-2155},
+  abstract={Processing-in-memory (PIM) architectures have demonstrated great potential in accelerating numerous deep learning tasks. Particularly, resistive random-access memory (RRAM) devices provide a promising hardware substrate to build PIM accelerators due to their abilities to realize efficient in-situ vector-matrix multiplications (VMMs). However, existing PIM accelerators suffer from frequent and energy-intensive analog-to-digital (A/D) conversions, severely limiting their performance. This paper presents a new PIM architecture to efficiently accelerate deep learning tasks by minimizing the required A/D conversions with analog accumulation and neural approximated peripheral circuits. We first characterize the different dataflows employed by existing PIM accelerators, based on which a new dataflow is proposed to remarkably reduce the required A/D conversions for VMMs by extending shift and add (S+A) operations into the analog domain before the final quantizations. We then leverage a neural approximation method to design both analog accumulation circuits (S+A) and quantization circuits (ADCs) with RRAM crossbar arrays in a highly-efficient manner. Finally, we apply them to build a RRAM-based PIM accelerator (i.e., Neural-PIM) upon the proposed analog dataflow and evaluate its system-level performance. Evaluations on different benchmarks demonstrate that Neural-PIM can improve energy efficiency by $5.36\times$5.36× ($1.73\times$1.73×) and speed up throughput by $3.43\times$3.43× ($1.59\times$1.59×) without losing accuracy, compared to the state-of-the-art RRAM-based PIM accelerators, i.e., ISAAC [1] (CASCADE [2]).},
+  keywords={Analog-digital conversion;Virtual machine monitors;Computer architecture;Throughput;Quantization (signal);Logic gates;Kernel;Deep neural networks;processing-in-memory;analog computing;hardware acceleration},
+  doi={10.1109/TC.2021.3122905},
+  ISSN={1557-9956},
+  month={Sep.},}

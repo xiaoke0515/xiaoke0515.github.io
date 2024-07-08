@@ -88,7 +88,7 @@
 <body class="{{ page.class }}" data-mz="{{ page.class }}">
   <header class="site-header">
     <div class="container">
-      <h1><a href="{{ site.psurl }}/" title="{{ site.title }}"><span class="icon-logo_pure"></span> {{
+      <h1><a href="{{ site.url }}/" title="{{ site.title }}"><span class="icon-logo_pure"></span> {{
           site.title }}</a></h1>
       <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
         <span class="icon-bar"></span>
@@ -96,7 +96,7 @@
         <span class="icon-bar"></span>
       </button>
       <nav class="site-header-nav" role="navigation">
-        {% for nav in site.ps.navs %}
+        {% for nav in site.navs %}
         <a href="{{ site.url }}{{ nav.href }}"
           class="{% if page.menu == nav.label %} selected {% endif %} site-header-nav-item"
           target="{{ nav.target | default: _self }}" title="{{ nav.label }}">{{ nav.label }}</a>

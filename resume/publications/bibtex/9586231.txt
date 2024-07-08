@@ -1,0 +1,13 @@
+@INPROCEEDINGS{9586231,
+  author={Yang, Tao and Li, Dongyue and Han, Yibo and Zhao, Yilong and Liu, Fangxin and Liang, Xiaoyao and He, Zhezhi and Jiang, Li},
+  booktitle={2021 58th ACM/IEEE Design Automation Conference (DAC)}, 
+  title={PIMGCN: A ReRAM-Based PIM Design for Graph Convolutional Network Acceleration}, 
+  year={2021},
+  volume={},
+  number={},
+  pages={583-588},
+  abstract={Graph Convolutional Network (GCN) is a promising but computing- and memory-intensive learning model. Processing-in-memory (PIM) architecture based on the ReRAM crossbar is a natural fit for GCN inference. It can reduce the data movements and compute the vector-matrix multiplication (VMM) in analog. However, it requires an unbearable crossbar cost to leverage the massive parallelism exhibited in GCNs. This paper explores the design space for GCN acceleration on ReRAM crossbars and presents the first PIM-based GCN accelerator named PIMGCN. PIMGCN employs dense data mapping and a search-execute architecture to take full advantage of the intra-vertex parallelisms with acceptable crossbars cost. We further propose two scheduling strategies for PIMGCN to maximize the inter-vertex parallelisms and optimize the pipeline. The optimal scheduling is reduced to a maximum independent set problem, which is solved by a novel node-grouping algorithm. Compared to the state-of-the-art software framework running on Intel Xeon CPU and NVIDIA RTX8000 GPU, PIMGCN achieves on average 11044× and 74.3× speedup, 6.13E+06× and 5.09E+03× energy reduction, respectively. Compared with ASIC accelerator HyGCN [1], PIMGCN achieves 219× speedup and 95.3× energy reduction.},
+  keywords={Costs;Virtual machine monitors;Software algorithms;Graphics processing units;Computer architecture;Optimal scheduling;Software;GCN;PIM;ReRAM;Accelerator},
+  doi={10.1109/DAC18074.2021.9586231},
+  ISSN={0738-100X},
+  month={Dec},}

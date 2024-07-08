@@ -45,38 +45,28 @@ github_username: xiaoke0515
 twitter_username: y.zhao
 location: Shanghai, China
 email: ylzhao2018@gmail.com
+describeme: <p>My name is Yilong Zhao, and I am currently pursuing a PhD in Shanghai Jiao Tong University.</p><p>My main research interests are in process-in-memory (PIM) architecture and AI accelerator. I am currently a member of Advanced Computer Architecture Lab (ACA-IMPACT) at Shanghai Jiao Tong University under the supervision of Prof. <a href="http://www.cs.sjtu.edu.cn/en/PeopleDetail.aspx?id=165"><u>Li Jiang</u></a>.</p>
 
 # ---------------- #
 #    Navigation    #
 # ---------------- #
 navs:
-  -
-    href: /
-    label: Home
 
-  -
-    href: /categories/
-    label: Category
+    -
+        href: /
+        label: Home
+    
+    -
+        href: /CV/
+        label: CV/Resume
 
-  -
-    href: /archives/
-    label: Archive
+    -
+        href: /publications/
+        label: Publications
 
-#   -
-#     href: /open-source/
-#     label: 开源
-
-#  -
-#    href: /wiki/
-#    label: 维基
-
-#  -
-#    href: /links/
-#    label: 链接
-
-  -
-    href: /about/
-    label: About
+    -
+        href: /projects/
+        label: Experience
 
 
 # ---------------- #
@@ -160,23 +150,36 @@ google:
         
 
 # ---------------- #
-#  Personal site   #
+#  Blog   #
 # ---------------- #
-psurl: /page
-ps:
+blogurl: /blog
+blog:
     navs:
+    
         -
-            href: /page/
+            href: /blog/
             label: Home
-        
-        -
-            href: /page/CV/
-            label: CV/Resume
 
         -
-            href: /page/publications/
-            label: Publications
+            href: /blog/categories/
+            label: Category
 
         -
-            href: /page/projects/
-            label: Experience
+            href: /blog/archives/
+            label: Archive
+
+        #   -
+        #     href: /open-source/
+        #     label: 开源
+
+        #  -
+        #    href: /wiki/
+        #    label: 维基
+
+        #  -
+        #    href: /links/
+        #    label: 链接
+
+        -
+            href: /blog/about/
+            label: About

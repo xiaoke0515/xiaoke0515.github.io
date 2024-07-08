@@ -3,8 +3,8 @@
   url: https://github.com/xiaoke0515
 
 - sitename: E-Mail
-  name: ylzhao2018@gmail.com
-  url: mailto:ylzhao2018@gmail.com
+  name: sjtuzyl@sjtu.edu.cn
+  url: mailto:sjtuzyl@sjtu.edu.cn
 
 - sitename: WeChat
   name: QRCode
@@ -12,7 +12,7 @@
 
 - sitename: Blog
   name: Link
-  url: /
+  url: /blog
 
 - sitename: Personal Page
   name: Link

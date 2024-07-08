@@ -1,0 +1,13 @@
+@ARTICLE{9790868,
+  author={Yang, Tao and Ma, Fei and Li, Xiaoling and Liu, Fangxin and Zhao, Yilong and He, Zhezhi and Jiang, Li},
+  journal={IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems}, 
+  title={DTATrans: Leveraging Dynamic Token-Based Quantization With Accuracy Compensation Mechanism for Efficient Transformer Architecture}, 
+  year={2023},
+  volume={42},
+  number={2},
+  pages={509-520},
+  abstract={Models based on the attention mechanism, i.e., transformers, have shown extraordinary performance in natural language processing (NLP) tasks. However, their memory footprint, inference latency, and power consumption are still prohibitive for efficient inference at edge devices, even at data centers. To tackle this issue, we present an algorithm-architecture co-design named DTATrans. We find empirically that the tolerance to the noise varies from token to token in attention-based NLP models. This finding leads us to dynamically quantize different tokens with mixed levels of bits. Furthermore, we find that the overstrict quantization method causes a dilemma of the model accuracy and model compression ratio, which impels us to explore a method to compensate for the model accuracy when the compression ratio is high. Thus, in DTATrans, we design a compression framework that: 1) dynamically quantizes tokens while they are forwarded in the models; 2) jointly determines the ratio of each precision; and 3) compensate the model accuracy by exploiting lightweight computing on the 0-bit tokens. Moreover, due to the dynamic mixed-precision tokens caused by our framework, previous matrix-multiplication accelerators (e.g., systolic array) cannot effectively exploit the benefit of the compressed attention computation. We thus design our transformer accelerator with the variable-speed systolic array (VSSA) and propose an effective optimization strategy to alleviate the pipeline-stall problem in VSSA without hardware overhead. We conduct experiments with existing attention-based NLP models, including BERT and GPT-2 on various language tasks. Our results show that DTATrans outperforms the previous neural network accelerator Eyeriss by  $16.04\times $  in terms of speedup and  $3.62\times $  in terms of energy saving. Compared with the state-of-the-art attention accelerator SpAtten, our DTATrans achieves at least  $3.62\times $  speedup and  $4.22\times $  energy efficiency improvement.},
+  keywords={Quantization (signal);Computational modeling;Transformers;Natural language processing;Task analysis;Systolic arrays;Hardware;Algorithm-architecture co-design;domain-specific accelerator;dynamic quantization;transformers},
+  doi={10.1109/TCAD.2022.3181541},
+  ISSN={1937-4151},
+  month={Feb},}

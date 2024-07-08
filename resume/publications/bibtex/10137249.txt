@@ -1,0 +1,13 @@
+@INPROCEEDINGS{10137249,
+  author={Yang, Tao and Ma, Hui and Zhao, Yilong and Liu, Fangxin and He, Zhezhi and Sun, Xiaoli and Jiang, Li},
+  booktitle={2023 Design, Automation & Test in Europe Conference & Exhibition (DATE)}, 
+  title={PIMPR: PIM-based Personalized Recommendation with Heterogeneous Memory Hierarchy}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-6},
+  abstract={Deep learning-based personalized recommendation models (DLRMs) are dominating AI tasks in data centers. The performance bottleneck of typical DLRMs mainly lies in the memory-bounded embedding layers. Resistive Random Access Memory (ReRAM)-based Processing-in-memory (PIM) architecture is a natural fit for DLRMs thanks to its in-situ computation and high computational density. However, it remains two challenges before DLRMs fully embrace ReRAM-based PIM architectures: 1) The size of DLRM's embedding tables can reach tens of GBs, far beyond the memory capacity of typical ReRAM chips. 2) The irregular sparsity conveyed in the embedding layers is difficult to exploit in ReRAM crossbars architecture. In this paper, we present a PIM-based DLRM accelerator named PIMPR. PIMPR has a heterogeneous memory hierarchy-ReRAM crossbar-based PIM modules serve as the computing caches with high computing parallelism, while DIMM modules are able to hold the entire embedding table-leveraging the data locality of DLRM's embedding layers. Moreover, we propose a runtime strategy to skip the useless calculation induced by the sparsity and an offline strategy to balance the workload of each ReRAM crossbar. Compared to the state-of-the-art DLRM accelerator SPACE and TRiM, PIMPR achieves on average 2.02×and 1.79× speedup, 5.6 ×, and 5.1 × energy reduction, respectively.},
+  keywords={Data centers;Runtime;Computational modeling;Pipelines;Random access memory;Computer architecture;Parallel processing;Recommendation System;PIM;Embedding;Ac-celeration;Architecture Design},
+  doi={10.23919/DATE56975.2023.10137249},
+  ISSN={1558-1101},
+  month={April},}

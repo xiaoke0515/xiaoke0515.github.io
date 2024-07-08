@@ -5,7 +5,7 @@ description: About Me
 keywords: Yilong Zhao
 comments: false
 menu: experiences
-permalink: /page/projects/
+permalink: /projects/
 ---
 
 <!--<p>About <a href="{{"/resume/resume/index.html" | prepend: site.baseurl}}">ME</a></p>-->

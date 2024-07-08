@@ -1,0 +1,13 @@
+@ARTICLE{9774869,
+  author={Yang, Tao and Li, Dongyue and Ma, Fei and Song, Zhuoran and Zhao, Yilong and Zhang, Jiaxi and Liu, Fangxin and Jiang, Li},
+  journal={IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems}, 
+  title={PASGCN: An ReRAM-Based PIM Design for GCN With Adaptively Sparsified Graphs}, 
+  year={2023},
+  volume={42},
+  number={1},
+  pages={150-163},
+  abstract={Graph convolutional network (GCN) is a promising but computing- and memory-intensive learning model. Processing-in-memory (PIM) architecture based on the resistive random access memory-based crossbar (ReRAM crossbar) is a natural fit for GCN inference. It can reduce the data movements and compute the vector-matrix multiplication (VMM) in analog. However, it requires an unbearable crossbar cost to leverage the massive parallelism exhibited in GCNs. First, this article explores the design space for GCN inference on ReRAM crossbars and presents the first PIM-based GCN accelerator named PIMGCN, PIMGCN employs dense data mapping and a search-execute architecture to take full advantage of the intravertex parallelisms with acceptable crossbars cost. Two scheduling strategies for PIMGCN to maximize the intervertex parallelisms and optimize the pipeline are proposed. The optimal scheduling is reduced to a maximum independent set problem, which is solved by a novel node-grouping algorithm. Second, this article explores the task-irrelevant information in the graphs and proposes an adaptively sparsified GCN network targeted for PIMGCN, which is named as ASparGCN. ASparGCN exploits a multilayer perceptron (MLP)-based edge predictor to get edge selection strategies for each GCN layer separately and adaptively in the training stage, and only inferences with the selected edges in the test stage. We design two regularization terms to guide the selection strategies to achieve architecture-friendly sparse graphs for PIMGCN. The overall algorithm-architecture co-design is named as PASGCN. Compared to the state-of-the-art software framework running on Intel Xeon CPU and NVIDIA RTX8000 GPU, PASGCN achieves an average of  $16455\times $  and  $110.7\times $  speedup and 8.0E $+ 06\times $  and 6.67E $+ 03\times $  energy reduction, respectively. Compared with the ASIC accelerator HyGCN (Yan et al., 2020), PASGCN achieves  $326.31\times $  speedup and  $124.8\times $  energy reduction.},
+  keywords={Computer architecture;Parallel processing;Space exploration;Hardware;Costs;Throughput;Task analysis;Acceleration;graph convolutional network (GCN);processing in memory (PIM);resistive random access memory (ReRAM);sparse},
+  doi={10.1109/TCAD.2022.3175031},
+  ISSN={1937-4151},
+  month={Jan},}
