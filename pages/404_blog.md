@@ -1,10 +1,10 @@
 ---
-layout: page_ps
+layout: page
 title: 页面没有找到
 description: 你来到了一片荒芜之地
 keywords: 404
 comments: false
-permalink: /404.html
+permalink: /404_blog.html
 ---
 
 页面没有找到，请检查地址。
