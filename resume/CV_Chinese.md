@@ -6,8 +6,8 @@ email:
   text: sjtuzyl@sjtu.edu.cn
 phone: 15221833996
 homepage: 
-  url: https://xiaoke0515.github.io/page/
-  text: https://xiaoke0515.github.io/page/
+  url: https://xiaoke0515.github.io/
+  text: https://xiaoke0515.github.io/
 ---
 
 <a href="{{"/resume/resume/index.html" | prepend: site.baseurl}}" style="margin-left:0.5em">英文版</a>
@@ -43,7 +43,16 @@ Supported arguments:
 
 ## 教育经历
 
-### **上海交通大学 (SJTU)** `2018.9 - 至今`
+### **上海交通大学 (SJTU)** `2022.9 - 至今`
+
+```
+上海, 中国
+```
+
+- 计算机科学与技术 博士
+- 导师：[蒋力](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97) 教授
+
+### **上海交通大学 (SJTU)** `2018.9 - 2021.3`
 
 ```
 上海, 中国
@@ -64,43 +73,28 @@ Supported arguments:
 - GPA 3.51/4.3
 
 
-## 论文
+## 论文 （完整列表见[这里]({{ site.baseurl.url }}/publications)）
 
+**Yilong Zhao**, Mingyu Gao, Fangxin Liu, Yiwei Hu, Zongwu Wang, Han Lin, Ji Li, He Xian, Hanlin Dong, Tao Yang, Naifeng Jing, Xiaoyao Liang, and Li Jiang, **UM-PIM: DRAM-based PIM with Uniform & Shared Memory Space**, in 51st International Symposium on Computer Architecture (ISCA'24)
 
-Weidong Cao, **Yilong Zhao(共同一作)**, Adith Boloor, Yinhe Han, Xuan Zhang, and Li Jiang, "**Neural-PIM: Efficient Processing-In-Memory with Neural Approximation of Peripherals**, " in IEEE Transactions on Computers, (接收)
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10609641.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/10609641)]
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/ISCA24-93-UMPIM.pdf)]
 
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/)]
-  [[url](https://)]
+**Yilong Zhao**, Li Jiang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Fangxin Liu, Tao Yang, and Xiaoyao Liang, **RePAST: A ReRAM-based PIM Accelerator for Second-order Training of DNN**, arXiv preprint 2022
 
-Fangxin Liu, Wenbo Zhao, Zhezhi He, Zongwu Wang, **Yilong Zhao**, Yongbiao Chen and Li Jiang , **Bit-Transformer: Transforming Bit-level Sparsity into Higher Preformance in ReRAM-based Accelerator**, In Proceedings of the 40th International Conference on Computer-Aided Design (ICCAD '21). (接收)
+  [[arxiv](https://arxiv.org/abs/2210.15255)]
 
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/)]
-  [[url](https://)]
+Weidong Cao, **Yilong Zhao(Co-First-Author)**, Adith Boloor, Yinhe Han, Xuan Zhang, and Li Jiang, **Neural-PIM: Efficient Processing-In-Memory with Neural Approximation of Peripherals**, in IEEE Transactions on Computers (TC), 2021
 
-Liu F, Zhao W, **Zhao Y**, Wang Z, Yang T, He Z, Jing N, Liang X, Jiang L. **SME: ReRAM-based Sparse-Multiplication-Engine to Squeeze-Out Bit Sparsity of Neural Network**. arXiv preprint arXiv:2103.01705. 2021 Mar 2.
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/9591330.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/9591330)]
 
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/2103.01705.txt)]
-  [[url](https://arxiv.org/abs/2103.01705)]
-
-**Yilong Zhao**, Zhezhi He, Naifeng Jing, Xiaoyao Liang, and Li Jiang. 2021. **Re2PIM: A Reconfigurable ReRAM-Based PIM Design for Variable-Sized Vector-Matrix Multiplication**. In Proceedings of the 2021 on Great Lakes Symposium on VLSI (GLSVLSI '21). Association for Computing Machinery, New York, NY, USA, 15–20. 
+**Yilong Zhao**, Zhezhi He, Naifeng Jing, Xiaoyao Liang, and Li Jiang. 2021. **Re2PIM: A Reconfigurable ReRAM-Based PIM Design for Variable-Sized Vector-Matrix Multiplication**. In Proceedings of the 2021 on Great Lakes Symposium on VLSI (GLSVLSI '21)
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3453688.3461494.txt)]
   [[url](https://dl.acm.org/doi/10.1145/3453688.3461494)]
-
-Tao Yang, Dongyue Li, Yibo Han, **Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Zhezhi He, Li Jiang, **PIMGCN: A ReRAM-Based PIM Design for Graph Convolutional Network Acceleration**, ACM/IEEE Design Automation Conference, DAC, 2021, (接收)
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/)]
-  [[url](https://)]
-
-Z. Meng, W. Oian, **Y. Zhao**, Y. Sun, R. Yang and L. Jiang, "**Digital Offset for RRAM-based Neuromorphic Computing: A Novel Solution to Conquer Cycle-to-cycle Variation**," 2021 Design, Automation & Test in Europe Conference & Exhibition (DATE), 2021, pp. 1078-1083, doi: 10.23919/DATE51398.2021.9474179.
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/9474179.txt)]
-  [[url](https://ieeexplore.ieee.org/abstract/document/9474179)]
-
-Yanan Sun, Chang Ma, Zhi Li, **Yilong Zhao**, Jiachen Jiang, Weikang Qian, Rui Yang, Zhezhi He and Li Jiang, "**Unary Coding and Variation-Aware Optimal Mapping Scheme for Reliable ReRAM-based Neuromorphic Computing**," in IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, 2021
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/9323041.txt)]
-  [[url](https://ieeexplore.ieee.org/document/9323041)]
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/GLSVLSI21-re2pim-slides.pdf)]
 
 Zhuoran Song, **Yilong Zhao**, Yanan Sun, Xiaoyao Liang and Li Jiang.**ESNreram: An Energy-Efficient Sparse Neural Network Based on Resistive Random-Access Memory**. Proceedings of the 2020 on Great Lakes Symposium on VLSI, GLSVLSI. 2020: 291-296.
 
@@ -122,7 +116,6 @@ Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Characterization of Kerr Sol
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/8749866.txt)]
   [[url](https://ieeexplore.ieee.org/abstract/document/8749866)]
-<!--[[BibTeX]({{ page.homepage.url }}/assets/siggraph20-penrose.txt)]-->
 
 Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in doubly resonant half-harmonic generation**," in Nonlinear Optics (NLO), OSA Technical Digest (Optical Society of America, 2019), paper NTu4A.18.
 
@@ -131,20 +124,31 @@ Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in d
 
 ### **专利**
 
-蒋力，**赵怿龙**，“**可重构架构、加速器、电路部署和计算数据流方法**”。发明专利，申请号：202010910280.5
+蒋力，**赵怿龙**，“**可重构架构、加速器、电路部署和计算数据流方法**”。发明专利，申请号：202010910280.5；授权号：CN112181895B
 
-蒋力，**赵怿龙**，崔晓松，陈云，廖健行，“**神经网络电路**”。发明专利，申请号：202010729402.05
+蒋力，**赵怿龙**，崔晓松，陈云，廖健行，“**神经网络电路**”。发明专利，申请号：202010729402.05；公开号：CN114004344A
  
 
-## 科研经历
+## 个人经历
+
+### **上海交通大学, 先进计算机体系结构实验室** 
+
+[蒋力](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97) 教授指导
+
+研究 ___用于DRAM-PIM架构的统一内存设计___`2022.10 - 2023.11`
+  
+  研究目的是解决DRAM-PIM中PIM计算单元与内存交织的冲突问题。为DRAM-PIM设计了一个统一内存空间，具有不同交织策略的CPU和PIM页面共存于此空间中并按需分配。CPU可以访问PIM页面从而避免了现有隔离内存空间的设计带来的数据传输问题。
+
+<!--研究 ___基于DRAM-PIM架构的HTAP数据库系统设计___`2022.10 - 2023.11`-->
+  
 
 ### **上海期智研究院**
 
-研究 ____基于FeFET-SRAM存算一体技术的二阶优化加速器设计____	`2021.01-至今`
+研究 ____基于ReRAM存算一体技术的二阶优化加速器设计____	`2021.01-2022.07`
   
-  研究目的是基于存算一体技术设计一个神经网络二阶优化器。包括一些二阶优化中特有的算子的存算一体设计、架构映射策略设计。
+  研究目的是基于存算一体技术设计一个神经网络二阶优化器。利用泰勒展开使用低精度ReRAM矩阵求逆电路实现高精度求逆，以满足神经网络二阶优化的精度要求。架构设计包括一些二阶优化中特有的算子的存算一体设计、架构映射策略设计。
 
-华为合作项目 ____面向光通信、无线通信的的存算一体实现____ `2021.03-至今`
+华为合作项目 ____面向光通信、无线通信的的存算一体实现____ `2021.03-2022.06`
   
   研究目的是基于存算一体技术实现光通信与无线通信的接收机，负责工作如下：
   
@@ -153,18 +157,23 @@ Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in d
   - 针对高功耗计算模块进行AI化，在误差允许的条件下达到比现有数值算法更低的计算量。
 
 
+### **上海羿煜电子科技有限公司**
+
+实习 `2020.07-2021.07`
+使用Candance为电路设计版图并验证。
+
 ### **上海交通大学, 先进计算机体系结构实验室** 
 
 [蒋力](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97) 教授指导
 
-研究 ___基于ReRAM的可重构CNN加速器架构设计___`2019.8 - 至今`
+研究 ___基于ReRAM的可重构CNN加速器架构设计___ `2019.8 - 至今`
   
   研究目的是设计一个基于ReRAM的DNN加速器架构，可显著减少ReRAM阵列周边计算电路开销。
   
   - 设计了一个高能效的ReRAM加速器的周边电路实现策略。相对于一些先进的架构，在一些流行的卷积神经网络的计算中可以提升5.36倍能效。
   - 设计一个基于ReRAM的可重构DNN加速器架构。相对于一些先进的现有架构，可以进一步提升27倍能效。
 
-华为合作项目   ___基于ReRAM的高效可靠DNN加速器技术研究___`2019.4 - 2020.4`
+华为合作项目   ___基于ReRAM的高效可靠DNN加速器技术研究___ `2019.4 - 2020.4`
   
   项目研究基于ReRAM的DNN加速器中，提升计算可靠性以及利用稀疏性提升能效，负责工作如下：
   
@@ -191,6 +200,11 @@ Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in d
   - 光纤信号传输仿真系统的搭建
 
 
+### **利思电器** 
+
+实习 `2016.07 - 2016.08`
+
+
 ### **上海交通大学，大学生创新计划**
 
 [赵春宇](http://www.ie.sjtu.edu.cn/Data/View/261)教授指导
@@ -210,4 +224,4 @@ Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in d
 ## --
 
 <hr style=" height:2px;border:none;border-top:2px dotted #185598;" /> 
-Last updated: Oct. 2021 
+Last updated: 2024.08 

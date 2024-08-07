@@ -18,7 +18,9 @@ permalink: /publications/
 
 **Yilong Zhao**, Mingyu Gao, Fangxin Liu, Yiwei Hu, Zongwu Wang, Han Lin, Ji Li, He Xian, Hanlin Dong, Tao Yang, Naifeng Jing, Xiaoyao Liang, and Li Jiang, **UM-PIM: DRAM-based PIM with Uniform & Shared Memory Space**, in 51st International Symposium on Computer Architecture (ISCA'24)
 
-[[slides]({{ site.baseurl.url }}/resume/publications/slides/ISCA24-93-UMPIM.pdf)]
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10609641.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/10609641)]
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/ISCA24-93-UMPIM.pdf)]
 
 ### 2023
 

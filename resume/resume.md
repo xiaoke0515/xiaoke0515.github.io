@@ -6,8 +6,8 @@ email:
   text: sjtuzyl@sjtu.edu.cn
 phone: 15221833996
 homepage: 
-  url: https://xiaoke0515.github.io/page/
-  text: https://xiaoke0515.github.io/page/
+  url: https://xiaoke0515.github.io/
+  text: https://xiaoke0515.github.io/
 ---
 
 <a href="{{"/resume/CV_Chinese/index.html" | prepend: site.baseurl}}" style="margin-left:0.5em">Chinese Version</a>
@@ -43,7 +43,16 @@ Supported arguments:
 
 ## Education
 
-### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `Step. 2018 -`
+### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `Step. 2022 - `
+
+```
+Shanghai, China
+```
+
+- Ph.D in Computer Science and Technology
+- Supervised by Prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)
+
+### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `Step. 2018 - Mar. 2021`
 
 ```
 Shanghai, China
@@ -53,7 +62,7 @@ Shanghai, China
 - Supervised by Prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)
 - GPA 3.49/4.0
 
-### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `Step. 2014 - June. 2018`
+### **Shanghai Jiao Tong University (SJTU), Shanghai, China** `Step. 2014 - Jun. 2018`
 
 ```
 Shanghai, China
@@ -64,42 +73,29 @@ Shanghai, China
 - GPA 3.51/4.3
 
 
-## Publications
+## Publications (Full list can be found &nbsp;[Here]({{ site.baseurl.url }}/publications))
 
-Weidong Cao, **Yilong Zhao(Co-First-Author)**, Adith Boloor, Yinhe Han, Xuan Zhang, and Li Jiang, "**Neural-PIM: Efficient Processing-In-Memory with Neural Approximation of Peripherals**, " in IEEE Transactions on Computers, (Accepted)
 
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/)]
-  [[url](https://)]
+**Yilong Zhao**, Mingyu Gao, Fangxin Liu, Yiwei Hu, Zongwu Wang, Han Lin, Ji Li, He Xian, Hanlin Dong, Tao Yang, Naifeng Jing, Xiaoyao Liang, and Li Jiang, **UM-PIM: DRAM-based PIM with Uniform & Shared Memory Space**, in 51st International Symposium on Computer Architecture (ISCA'24)
 
-Fangxin Liu, Wenbo Zhao, Zhezhi He, Zongwu Wang, **Yilong Zhao**, Yongbiao Chen and Li Jiang , **Bit-Transformer: Transforming Bit-level Sparsity into Higher Preformance in ReRAM-based Accelerator**, In Proceedings of the 40th International Conference on Computer-Aided Design (ICCAD '21). (Accepted)
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10609641.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/10609641)]
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/ISCA24-93-UMPIM.pdf)]
 
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/)]
-  [[url](https://)]
+**Yilong Zhao**, Li Jiang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Fangxin Liu, Tao Yang, and Xiaoyao Liang, **RePAST: A ReRAM-based PIM Accelerator for Second-order Training of DNN**, arXiv preprint 2022
 
-Liu F, Zhao W, **Zhao Y**, Wang Z, Yang T, He Z, Jing N, Liang X, Jiang L. **SME: ReRAM-based Sparse-Multiplication-Engine to Squeeze-Out Bit Sparsity of Neural Network**. arXiv preprint arXiv:2103.01705. 2021 Mar 2.
+  [[arxiv](https://arxiv.org/abs/2210.15255)]
 
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/2103.01705.txt)]
-  [[url](https://arxiv.org/abs/2103.01705)]
+Weidong Cao, **Yilong Zhao(Co-First-Author)**, Adith Boloor, Yinhe Han, Xuan Zhang, and Li Jiang, **Neural-PIM: Efficient Processing-In-Memory with Neural Approximation of Peripherals**, in IEEE Transactions on Computers (TC), 2021
 
-**Yilong Zhao**, Zhezhi He, Naifeng Jing, Xiaoyao Liang, and Li Jiang. 2021. **Re2PIM: A Reconfigurable ReRAM-Based PIM Design for Variable-Sized Vector-Matrix Multiplication**. In Proceedings of the 2021 on Great Lakes Symposium on VLSI (GLSVLSI '21). Association for Computing Machinery, New York, NY, USA, 15–20. 
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/9591330.txt)]
+  [[url](https://ieeexplore.ieee.org/abstract/document/9591330)]
+
+**Yilong Zhao**, Zhezhi He, Naifeng Jing, Xiaoyao Liang, and Li Jiang. 2021. **Re2PIM: A Reconfigurable ReRAM-Based PIM Design for Variable-Sized Vector-Matrix Multiplication**. In Proceedings of the 2021 on Great Lakes Symposium on VLSI (GLSVLSI '21)
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3453688.3461494.txt)]
   [[url](https://dl.acm.org/doi/10.1145/3453688.3461494)]
-
-Tao Yang, Dongyue Li, Yibo Han, **Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Zhezhi He, Li Jiang, **PIMGCN: A ReRAM-Based PIM Design for Graph Convolutional Network Acceleration**, ACM/IEEE Design Automation Conference, DAC, 2021, (Accepted)
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/)]
-  [[url](https://)]
-
-Z. Meng, W. Oian, **Y. Zhao**, Y. Sun, R. Yang and L. Jiang, "**Digital Offset for RRAM-based Neuromorphic Computing: A Novel Solution to Conquer Cycle-to-cycle Variation**," 2021 Design, Automation & Test in Europe Conference & Exhibition (DATE), 2021, pp. 1078-1083, doi: 10.23919/DATE51398.2021.9474179.
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/9474179.txt)]
-  [[url](https://ieeexplore.ieee.org/abstract/document/9474179)]
-
-Yanan Sun, Chang Ma, Zhi Li, **Yilong Zhao**, Jiachen Jiang, Weikang Qian, Rui Yang, Zhezhi He and Li Jiang, "**Unary Coding and Variation-Aware Optimal Mapping Scheme for Reliable ReRAM-based Neuromorphic Computing**," in IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, TCAD, 2021
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/9323041.txt)]
-  [[url](https://ieeexplore.ieee.org/document/9323041)]
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/GLSVLSI21-re2pim-slides.pdf)]
 
 Zhuoran Song, **Yilong Zhao**, Yanan Sun, Xiaoyao Liang and Li Jiang.**ESNreram: An Energy-Efficient Sparse Neural Network Based on Resistive Random-Access Memory**. Proceedings of the 2020 on Great Lakes Symposium on VLSI, GLSVLSI. 2020: 291-296.
 
@@ -121,7 +117,6 @@ Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Characterization of Kerr Sol
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/8749866.txt)]
   [[url](https://ieeexplore.ieee.org/abstract/document/8749866)]
-<!--[[BibTeX]({{ page.homepage.url }}/assets/siggraph20-penrose.txt)]-->
 
 Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in doubly resonant half-harmonic generation**," in Nonlinear Optics (NLO), OSA Technical Digest (Optical Society of America, 2019), paper NTu4A.18.
 
@@ -134,37 +129,43 @@ Li Jiang, **Yilong Zhao**, "**Reconfigurable Architecture, Accelerator,Circuit D
 
 Li Jiang, **Yilong Zhao**, Xiaosong Cui, Yun Chen, Jianxing Liao, "**Neural Network Circuit**," Application No.202010729402.0
 
+## Research Experience
 
-## Experience
+
+### **Shanghai Jiao Tong University, Advanced Computer Architecture Laboratory** `Step. 2022 - `
+<!--_Research Assistant_ <br>
+Supervised by prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)-->
+
+Research **DRAM-PIM with Shared and Uniform Memory Space**. To address the contradiction between PIM and memory interleaving, we design a uniform memory space where CPU memory pages and PIM pages with different interleaving scheme co-exists. Compared to current design, CPU have access to the PIM pages so that we do not need to move data between memory spaces with different interleaving scheme.
 
 
-### **Shanghai Qizhi Institute.** `Jul. 2021 - Now`
-_Research Assistant_ <br>
+### **Shanghai Qizhi Institute.** `Jul. 2021 - Aug. 2022`
+<!--_Research Assistant_ <br>-->
 
-Research **A Reconfigurable ReRAM-based DNN AcceleratorA PIM based Second-Order Trainning Accelerator**.
+Research **A PIM based Second-Order Training Accelerator**. Design a ReRAM-based architecture for Second-order training. We propose a method to improve the precision of ReRAM-based matrix-inversion computation.
 
-Project **PIM Implementation Towards Optical Communication**.
+Project **PIM Implementation Towards Optical Communication**. We design and simulate the SRAM-based PIM circuits for optical communication.
 
-### **Shanghai Yiyu Electronic Technology Co., Ltd.** `Jul. 2020 - Jul. 2021`
-_Research Intern_ <br>
+<!--### **Shanghai Yiyu Electronic Technology Co., Ltd.** `Jul. 2020 - Jul. 2021`
+_Research Intern_ <br>-->
 
-### **Advanced Computer Architecture Laboratory, SJTU** `Apr. 2019 - Dec. 2020`
+### **Shanghai Jiao Tong University, Advanced Computer Architecture Laboratory** `Apr. 2019 - Dec. 2020`
 
-_Research Assistant_ <br>
-Supervised by prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)
+<!--_Research Assistant_ <br>
+Supervised by prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)-->
 
-Research **A Reconfigurable ReRAM-based DNN Accelerator**. Design an energy-efficient ReRAM-based DNN Accelerator.
+Research **A Reconfigurable ReRAM-based DNN Accelerator**. Design an energy-efficient ReRAM-based DNN Accelerator that can fit variable-sized DNN weight matrices.
 
 Project **Research on Technology of Efficient and Reliable DNN Accelerator Based on ReRAM**. Program a simulator on ReRAM based CNN accelerator based on GEM5 simulator.
 
 ### **Shanghai Jiao Tong University, Laboratory of Quantum Nonlinear Photonics** `Jun. 2017 - Jun. 2018`
 
-_Research Assistant_ <br>
-Supervised by prof. [Guangqiang He](http://qnp.sjtu.edu.cn/content.aspx?info_lb=80&flag=39)
+<!--_Research Assistant_ <br>
+Supervised by prof. [Guangqiang He](http://qnp.sjtu.edu.cn/content.aspx?info_lb=80&flag=39)-->
 
 Project **Optimization design and numerical implementation of nonlinear Fourier transform algorithm**. Program the nonlinear Fourier transform module of the system, and help to build the whole simulation system; Research the generation conditions of optical soliton in optical fiber, and analysis the eigenvalue and eigenspectrum of optical soliton.
 
-### **Shanghai Jiao Tong University, Research Experiences** `Dec. 2015 - Dec. 2016`
+<!--### **Shanghai Jiao Tong University, Research Experiences** `Dec. 2015 - Dec. 2016`
 
 _Innovation program for College Students_ <br>
 Supervised by prof. [Chunyu Zhao](http://www.ie.sjtu.edu.cn/Data/View/261)
@@ -176,9 +177,9 @@ _Research Intern_ <br>
 
 ## Teaching
 
-Teaching Assistant, **Algorithm Design and Analysis (CS222)** `Shanghai Jiao Tong University, 2019-2020 fall` <br>
+Teaching Assistant, **Algorithm Design and Analysis (CS222)** `Shanghai Jiao Tong University, 2019-2020 fall` <br>-->
 
 
 ## --
 <hr style=" height:2px;border:none;border-top:2px dotted #185598;" /> 
-Last updated: Oct. 2021 
+Last updated: Aug. 2024 
