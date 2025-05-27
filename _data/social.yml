@@ -1,27 +1,35 @@
 - sitename: GitHub
-  name: "@xiaoke0515"
+  name: "xiaoke0515"
   url: https://github.com/xiaoke0515
+  icon: fab fa-github
 
 - sitename: E-Mail
   name: sjtuzyl@sjtu.edu.cn
   url: mailto:sjtuzyl@sjtu.edu.cn
+  icon: fas fa-envelope
 
-- sitename: WeChat
-  name: QRCode
-  url: https://xiaoke0515.github.io/img/siteimage/WechatQRCode.png
+#- sitename: Blog
+#  name: Link
+#  url: /blog
 
-- sitename: Blog
-  name: Link
-  url: /blog
-
-- sitename: Personal Page
-  name: Link
-  url: /
+#- sitename: Personal Page
+#  name: Link
+#  url: /
 
 - sitename: Google Scholar
-  name: Profile
+  #name: Profile
+  name: Google Scholar
   url: https://scholar.google.com/citations?user=Pt-6rPkAAAAJ
+  icon: fas fa-graduation-cap
+
+- sitename: WeChat
+  #name: QRCode
+  name: WeChat
+  url: https://xiaoke0515.github.io/img/siteimage/WechatQRCode.png
+  icon: fab fa-weixin
 
 - sitename: Research Gate
-  name: Profile
+  #name: Profile
+  name: Research Gate
   url: https://www.researchgate.net/profile/Yilong-Zhao-3
+  icon: fas fa-user-graduate

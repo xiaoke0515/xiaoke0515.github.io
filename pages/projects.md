@@ -11,6 +11,12 @@ permalink: /projects/
 <!--<p>About <a href="{{"/resume/resume/index.html" | prepend: site.baseurl}}">ME</a></p>-->
 
 
+#### **Advanced Computer Architecture Laboratory, SJTU** `Sept. 2022 - Now`
+
+_Ph.D. Student_ <br>
+Supervised by prof. [Li Jiang](http://www.cs.sjtu.edu.cn/PeopleDetail.aspx?id=97)
+
+
 ### **Shanghai Qizhi Institute.** `Jul. 2021 - Now`
 _Research Assistant_ <br>
 

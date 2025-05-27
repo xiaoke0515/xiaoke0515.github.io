@@ -2,6 +2,10 @@
 <h3>Contact Me</h3>
 <ul>
 {% for website in site.data.social %}
-<li>{{website.sitename }}：<a href="{{ website.url }}" target="_blank"><u>{{ website.name }}</u></a></li>
+<li>
+    <span style="display: inline-block; width: 20px; text-align: left;"><i class="{{ website.icon }}"></i></span>
+    <!--{{website.sitename }}：<a href="{{ website.url }}" target="_blank"><u>{{ website.name }}</u></a>-->
+    <span style="display: inline-block; width: 200px; text-align: left;"><a href="{{ website.url }}" target="_blank"><u>{{ website.name }}</u></a></span>
+</li>
 {% endfor %}
 </ul>

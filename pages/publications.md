@@ -14,6 +14,13 @@ permalink: /publications/
 
 ##  Publications
 
+### 2025
+
+
+**Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Tao Yang, and Li Jiang, **STAMP: Accelerating Second-order DNN Training Via ReRAM-based Processing-in-Memory Architecture**, in APPT 2025 (Accepted)
+
+**Yilong Zhao**, Mingyu Gao, Huanchen Zhang, Fangxin Liu, Gongye Chen, He Xian, Haibin Guan, and Li Jiang, **PUSHtap: PIM-based In-Memory HTAP with Unified Data Storage Format**, in ASPLOS 2025 (Accepted)
+
 ### 2024
 
 **Yilong Zhao**, Mingyu Gao, Fangxin Liu, Yiwei Hu, Zongwu Wang, Han Lin, Ji Li, He Xian, Hanlin Dong, Tao Yang, Naifeng Jing, Xiaoyao Liang, and Li Jiang, **UM-PIM: DRAM-based PIM with Uniform & Shared Memory Space**, in 51st International Symposium on Computer Architecture (ISCA'24)
