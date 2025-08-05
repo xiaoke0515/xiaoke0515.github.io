@@ -19,7 +19,11 @@ permalink: /publications/
 
 **Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Tao Yang, and Li Jiang, **STAMP: Accelerating Second-order DNN Training Via ReRAM-based Processing-in-Memory Architecture**, in APPT 2025 (Accepted)
 
-**Yilong Zhao**, Mingyu Gao, Huanchen Zhang, Fangxin Liu, Gongye Chen, He Xian, Haibing Guan, and Li Jiang, **PUSHtap: PIM-based In-Memory HTAP with Unified Data Storage Format**, in ASPLOS 2025 (Accepted)
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/APPT25_STAMP.pdf)]
+
+**Yilong Zhao**, Mingyu Gao, Huanchen Zhang, Fangxin Liu, Gongye Chen, He Xian, Haibing Guan, and Li Jiang, **PUSHtap: PIM-based In-Memory HTAP with Unified Data Storage Format**, in ASPLOS 2025 (Accepted, will presented at ASPLOS 2026)
+
+  [[arXiv](https://arxiv.org/abs/2508.02309)]
 
 ### 2024
 
@@ -40,7 +44,7 @@ Tao Yang, Hui Ma, **Yilong Zhao**, Fangxin Liu, Zhezhi He, Xiaoli Sun, and Li Ji
 
 **Yilong Zhao**, Li Jiang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Fangxin Liu, Tao Yang, and Xiaoyao Liang, **RePAST: A ReRAM-based PIM Accelerator for Second-order Training of DNN**, arXiv preprint 2022
 
-  [[arxiv](https://arxiv.org/abs/2210.15255)]
+  [[arXiv](https://arxiv.org/abs/2210.15255)]
 
 Tao Yang, Fei Ma, Xiaoling Li, Fangxin Liu, **Yilong Zhao**, Zhezhi He, and Li Jiang, **DTATrans: Leveraging dynamic token-based quantization with accuracy compensation mechanism for efficient transformer architecture**, in IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems (TCAD), 2022
 

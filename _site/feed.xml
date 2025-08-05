@@ -1,1183 +1,1183 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-05-27T14:45:22+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">基于 ReRAM 的神经网络加速器综述（一）——介绍</title><link href="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/" rel="alternate" type="text/html" title="基于 ReRAM 的神经网络加速器综述（一）——介绍" /><published>2021-03-24T22:02:00+08:00</published><updated>2021-03-24T22:02:00+08:00</updated><id>http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1</id><content type="html" xml:base="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/">&lt;p&gt;筹划了一段时间，终于开始写这个综述了。也算是做个总结吧。
-这个综述将聚焦于基于 ReRAM 的存算一体的 DNN 加速器设计。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-08-05T09:51:54+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Yilong Zhao</title><subtitle>My site is built on Nov. 24, 2019. It is used to record something I am interested in.</subtitle><author><name>Yilong Zhao</name></author><entry><title type="html">基于 ReRAM 的神经网络加速器综述（一）——介绍</title><link href="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/" rel="alternate" type="text/html" title="基于 ReRAM 的神经网络加速器综述（一）——介绍" /><published>2021-03-24T22:02:00+08:00</published><updated>2021-03-24T22:02:00+08:00</updated><id>http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1</id><content type="html" xml:base="http://localhost:4000/2021/03/24/3_ReRAM_DNN_Review_1/"><![CDATA[<p>筹划了一段时间，终于开始写这个综述了。也算是做个总结吧。
+这个综述将聚焦于基于 ReRAM 的存算一体的 DNN 加速器设计。</p>
 
-&lt;h2 id=&quot;存算一体-pim-&quot;&gt;存算一体（ PIM ）&lt;/h2&gt;
+<h2 id="存算一体-pim-">存算一体（ PIM ）</h2>
 
-&lt;p&gt;存算一体（ Process-in-Memory, PIM ； 也有称为 Compute-in-Memory 或 In-Memory-Computing 的，但都是一个东西）是一个比较“古老”的概念了。
-在这里我们就简单定性地介绍一下这个 PIM &lt;sup id=&quot;fnref:pim&quot;&gt;&lt;a href=&quot;#fn:pim&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+<p>存算一体（ Process-in-Memory, PIM ； 也有称为 Compute-in-Memory 或 In-Memory-Computing 的，但都是一个东西）是一个比较“古老”的概念了。
+在这里我们就简单定性地介绍一下这个 PIM <sup id="fnref:pim" role="doc-noteref"><a href="#fn:pim" class="footnote" rel="footnote">1</a></sup>。</p>
 
-&lt;p&gt;在介绍 PIM 之前要提一下冯$\cdot$诺依曼架构，也就是现在普遍应用的架构，的一个特点。
+<p>在介绍 PIM 之前要提一下冯$\cdot$诺依曼架构，也就是现在普遍应用的架构，的一个特点。
 这个特点就是存储和计算单元是分离的。
 也就是说在计算时要先将数据从存储器中读取到计算单元中，再由计算单元执行计算。
 这样就会产生数据读写和搬移的功耗。
 目前的大部分的 workload 都是计算密集（ CPU Bound ）的，即计算量远大于存储的读写量，因此体现不出这个数据搬移带来的开销的影响。
 但是，随着深度神经网络（ Deep-Neural-Network ， DNN ）的崛起，情况开始变得不同了。
-DNN 中存在大量的矩阵运算，而矩阵运算是存储密集的（ Memory Bound ），因此数据搬移的的开销就成为了一个问题。&lt;/p&gt;
+DNN 中存在大量的矩阵运算，而矩阵运算是存储密集的（ Memory Bound ），因此数据搬移的的开销就成为了一个问题。</p>
 
-&lt;p&gt;PIM ，顾名思义，就是直接在存储器内执行计算。
+<p>PIM ，顾名思义，就是直接在存储器内执行计算。
 这样就省去了数据搬移的开销。
-目前我了解的 PIM 有如下几种路径：&lt;/p&gt;
+目前我了解的 PIM 有如下几种路径：</p>
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;近存计算&lt;/p&gt;
+<ol>
+  <li>
+    <p>近存计算</p>
 
-    &lt;p&gt;近存计算就是在存储器旁边直接放置计算电路。
+    <p>近存计算就是在存储器旁边直接放置计算电路。
  这样数据就不用搬到计算单元中计算，就直接在存储器旁边计算。
- 这种方式实现非常简单，直接在 FPGA 上实现就可以。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;基于 SRAM 、 DRAM 等已知器件的存内计算&lt;/p&gt;
+ 这种方式实现非常简单，直接在 FPGA 上实现就可以。</p>
+  </li>
+  <li>
+    <p>基于 SRAM 、 DRAM 等已知器件的存内计算</p>
 
-    &lt;p&gt;这一类方法开发了这些存储器件的计算潜力。
- 比如，直接在字线上进行电荷共享&lt;sup id=&quot;fnref:3CSRAM&quot;&gt;&lt;a href=&quot;#fn:3CSRAM&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;、逻辑计算&lt;sup id=&quot;fnref:TCAM&quot;&gt;&lt;a href=&quot;#fn:TCAM&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; &lt;sup id=&quot;fnref:DrAcc&quot;&gt;&lt;a href=&quot;#fn:DrAcc&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;，或在 cell 内执行多比特相乘&lt;sup id=&quot;fnref:Conv-RAM&quot;&gt;&lt;a href=&quot;#fn:Conv-RAM&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;基于新器件的存内计算&lt;/p&gt;
+    <p>这一类方法开发了这些存储器件的计算潜力。
+ 比如，直接在字线上进行电荷共享<sup id="fnref:3CSRAM" role="doc-noteref"><a href="#fn:3CSRAM" class="footnote" rel="footnote">2</a></sup>、逻辑计算<sup id="fnref:TCAM" role="doc-noteref"><a href="#fn:TCAM" class="footnote" rel="footnote">3</a></sup> <sup id="fnref:DrAcc" role="doc-noteref"><a href="#fn:DrAcc" class="footnote" rel="footnote">4</a></sup>，或在 cell 内执行多比特相乘<sup id="fnref:Conv-RAM" role="doc-noteref"><a href="#fn:Conv-RAM" class="footnote" rel="footnote">5</a></sup>。</p>
+  </li>
+  <li>
+    <p>基于新器件的存内计算</p>
 
-    &lt;p&gt;这个方式是利用一些新兴的阻性器件构成的阵列来计算，其中就包括了本文的主角——ReRAM。
+    <p>这个方式是利用一些新兴的阻性器件构成的阵列来计算，其中就包括了本文的主角——ReRAM。
  除了ReRAM之外，还有FeRAM、PCM等器件，它们的计算原理基本相同。
- 计算原理我们接下来会说。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+ 计算原理我们接下来会说。</p>
+  </li>
+</ol>
 
-&lt;h2 id=&quot;基于-reram-的存算一体电路计算原理&quot;&gt;基于 ReRAM 的存算一体电路计算原理&lt;/h2&gt;
+<h2 id="基于-reram-的存算一体电路计算原理">基于 ReRAM 的存算一体电路计算原理</h2>
 
-&lt;p&gt;ReRAM 阵列其实加速的只是向量-矩阵乘法。
-它的原理如下图所示：&lt;/p&gt;
+<p>ReRAM 阵列其实加速的只是向量-矩阵乘法。
+它的原理如下图所示：</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/3_figure_rram_xb.jpg&quot; alt=&quot;TE&quot; width=&quot;600&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/ReRAM_DNN_accelerator/3_figure_rram_xb.jpg" alt="TE" width="600" align="bottom" /></p>
 
-&lt;p&gt;一列模拟电压信号输入到 ReRAM 阵列的 wordline 上，在每个 ReRAM 单元（ cell ）中，对应行的电压与 ReRAM 器件的电导相乘，得到一个小的模拟电路。
+<p>一列模拟电压信号输入到 ReRAM 阵列的 wordline 上，在每个 ReRAM 单元（ cell ）中，对应行的电压与 ReRAM 器件的电导相乘，得到一个小的模拟电路。
 这个小的模拟电流在 bitline 上汇聚，并输出一行模拟电流信号。
 这样，就完成了一个向量与一个矩阵的“乘累加”，即向量-矩阵相乘。
 右面的公式表示了这个过程。
 因此，要利用它进行计算，我们只需要将矩阵写在阵列上，再将向量以模拟电压的形式输入到 wordline 上，这样 bitline 上得到的结果就是计算结果。
-&lt;!--但我们发现，计算过程中，输入的信号与输出的信号都是模拟信号，但计算机都是数字的，所以需要信号转换电路 ADC （ Analog-to-Digital Converter ）和 DAC （ Digital-to-Analog Converter ）。--&gt;
+<!--但我们发现，计算过程中，输入的信号与输出的信号都是模拟信号，但计算机都是数字的，所以需要信号转换电路 ADC （ Analog-to-Digital Converter ）和 DAC （ Digital-to-Analog Converter ）。-->
 这样，每个 ReRAM 单元都是一个乘法器，面积只有一个晶体管的大小（因为 ReRAM 是在金属层，可以直接做在晶体管上面，几乎不占面积），这比乘法器省了很多的面积。
 同时 bitline 作用等同于一个组加法器树，将同一列的结果加起来，这与加法器相比面积也小得多。
-总得来说，$28\mathrm{nm}$ 工艺下一个 $128\times128$ 的阵列的面积仅有 $25\mathrm{\mu m^2}$ &lt;sup id=&quot;fnref:Dot&quot;&gt;&lt;a href=&quot;#fn:Dot&quot; class=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;，可以算一下它的面积效率，再和 V100 GPU比较一下（15.7$\mathrm{TFLOPS}$, 815$\mathrm{mm^2}$），就能知道它的潜力有多大了。&lt;/p&gt;
+总得来说，$28\mathrm{nm}$ 工艺下一个 $128\times128$ 的阵列的面积仅有 $25\mathrm{\mu m^2}$ <sup id="fnref:Dot" role="doc-noteref"><a href="#fn:Dot" class="footnote" rel="footnote">6</a></sup>，可以算一下它的面积效率，再和 V100 GPU比较一下（15.7$\mathrm{TFLOPS}$, 815$\mathrm{mm^2}$），就能知道它的潜力有多大了。</p>
 
-&lt;p&gt;但是，在实际使用的过程中，这个东西完全没我们想象的那么好，主要是如下的几点理由。&lt;/p&gt;
+<p>但是，在实际使用的过程中，这个东西完全没我们想象的那么好，主要是如下的几点理由。</p>
 
-&lt;ol&gt;
-  &lt;li&gt;这个阵列完全是模拟计算，而我们的计算机中存储和传输的数据都是数字形式的，进一步地，是二进制的。
-&lt;!--这就需要引入两个开销极大的电路————模-数转换器（ Analog-to-Digital Converter ， ADC ）和数-模转换器（ Digital-to-Analog Converter ， DAC ）。
-一些早期的架构文章中， ADC 和 DAC 的开销能占到总体的 90%。--&gt;&lt;/li&gt;
-  &lt;li&gt;受 ReRAM 工艺的限制，每个 ReRAM 单元只能写有限个比特，比如，2比特。我见过的最高的文章有能写6-8比特的，但我并不太相信。
-这就导致了低精度的问题。&lt;/li&gt;
-&lt;/ol&gt;
+<ol>
+  <li>这个阵列完全是模拟计算，而我们的计算机中存储和传输的数据都是数字形式的，进一步地，是二进制的。
+<!--这就需要引入两个开销极大的电路————模-数转换器（ Analog-to-Digital Converter ， ADC ）和数-模转换器（ Digital-to-Analog Converter ， DAC ）。
+一些早期的架构文章中， ADC 和 DAC 的开销能占到总体的 90%。--></li>
+  <li>受 ReRAM 工艺的限制，每个 ReRAM 单元只能写有限个比特，比如，2比特。我见过的最高的文章有能写6-8比特的，但我并不太相信。
+这就导致了低精度的问题。</li>
+</ol>
 
-&lt;p&gt;这里详细讨论一下为什么这个比特数会有限制。
+<p>这里详细讨论一下为什么这个比特数会有限制。
 这是因为 ReRAM 写有限的比特是因为它本身的阻值是写不准的，写上去的和期望的值有一个偏移（ Variation ），这个偏移有可能会导致相邻的两个阻态间有重叠。
 比如下面那张图。
 在下图这种情况下如果我们写四种电阻，那么我们很容易画三条竖线将这四种阻态分开，如果我们增加阻态个数，在$10^3$那里再“强行”塞入一个阻态，那个这个阻态就会和红色或紫色的阻态间重叠，被判决成这两种阻态，就不正确了。
 这还是一个电阻的情况。
-如果我们是$128\times128$这么大的阵列一列的电流相加，那么根据概率论知识，每个累积概率的线都会被横向拉伸，每个状态间更容易重叠。&lt;/p&gt;
+如果我们是$128\times128$这么大的阵列一列的电流相加，那么根据概率论知识，每个累积概率的线都会被横向拉伸，每个状态间更容易重叠。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/3_figure_resistance_overlap.jpg&quot; alt=&quot;TE&quot; width=&quot;400&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/ReRAM_DNN_accelerator/3_figure_resistance_overlap.jpg" alt="TE" width="400" align="bottom" /></p>
 
-&lt;p&gt;由于这两个原因，我们就需要一些周边电路来支持它来实现我们期望的高精度的矩阵乘法。&lt;/p&gt;
+<p>由于这两个原因，我们就需要一些周边电路来支持它来实现我们期望的高精度的矩阵乘法。</p>
 
-&lt;h2 id=&quot;基于-reram-的存算一体的周边电路&quot;&gt;基于 ReRAM 的存算一体的周边电路&lt;/h2&gt;
+<h2 id="基于-reram-的存算一体的周边电路">基于 ReRAM 的存算一体的周边电路</h2>
 
-&lt;h3 id=&quot;数-模模-数转换电路&quot;&gt;数-模/模-数转换电路&lt;/h3&gt;
+<h3 id="数-模模-数转换电路">数-模/模-数转换电路</h3>
 
-&lt;p&gt;为了解决问题一，我们要引入两个电路————模-数转换器（ Analog-to-Digital Converter ， ADC ）和数-模转换器（ Digital-to-Analog Converter ， DAC ）————作为 ReRAM 阵列内的模拟域和外部数字域间的“桥梁”。&lt;/p&gt;
+<p>为了解决问题一，我们要引入两个电路————模-数转换器（ Analog-to-Digital Converter ， ADC ）和数-模转换器（ Digital-to-Analog Converter ， DAC ）————作为 ReRAM 阵列内的模拟域和外部数字域间的“桥梁”。</p>
 
-&lt;p&gt;但这两个电路仍面临很严重的精度问题。
+<p>但这两个电路仍面临很严重的精度问题。
 首先，如果我们想要实现一个16比特的计算，我们就需要一个16-比特的DAC，这个东西并做不出来。
 其次， DAC 和 ADC 的精度间是耦合的，这导致了功耗与精度的取舍问题。
 就算我们只算4比特的计算， 4 比特的 DAC 有 16 种电平， 4 比特的 ReRAM 每个单元也有 16 种电阻，这一乘就是 256 种电流输出。
 再加上同一列的 128 个 cell 输出电流的汇聚，就是 $2^{15}$ 种电流。
 我们需要一个 15 比特的 ADC 来量化这个模拟电流。
-且不说这么高比特的 ADC 能不能做出来，就算能做出来，想想 ADC 的功耗和分辨率可是成指数关系 &lt;sup id=&quot;fnref:ADC&quot;&gt;&lt;a href=&quot;#fn:ADC&quot; class=&quot;footnote&quot;&gt;7&lt;/a&gt;&lt;/sup&gt;，这么高比特的 ADC 功耗也是难以接受的。
-这就限制了我们必需用低比特的 DAC ，每个 ReRAM 单元上写更少的比特。&lt;/p&gt;
+且不说这么高比特的 ADC 能不能做出来，就算能做出来，想想 ADC 的功耗和分辨率可是成指数关系 <sup id="fnref:ADC" role="doc-noteref"><a href="#fn:ADC" class="footnote" rel="footnote">7</a></sup>，这么高比特的 ADC 功耗也是难以接受的。
+这就限制了我们必需用低比特的 DAC ，每个 ReRAM 单元上写更少的比特。</p>
 
-&lt;h3 id=&quot;sh-电路&quot;&gt;S&amp;amp;H 电路&lt;/h3&gt;
+<h3 id="sh-电路">S&amp;H 电路</h3>
 
-&lt;p&gt;ADC 的频率可以远快于 ReRAM 阵列的计算速度，但面积比较大。
+<p>ADC 的频率可以远快于 ReRAM 阵列的计算速度，但面积比较大。
 因此我们可以选择在 bitline 间共享 ADC 。
-这就需要暂存模拟信号，我们可以用一种叫采样-保持（ Sample-and-Hold ， S&amp;amp;H ）的电路 &lt;sup id=&quot;fnref:SH&quot;&gt;&lt;a href=&quot;#fn:SH&quot; class=&quot;footnote&quot;&gt;8&lt;/a&gt;&lt;/sup&gt; 实现这个功能。
-这个电路实际上就是一个电容，存储一下电平，之后再将这个电平读出来。&lt;/p&gt;
+这就需要暂存模拟信号，我们可以用一种叫采样-保持（ Sample-and-Hold ， S&amp;H ）的电路 <sup id="fnref:SH" role="doc-noteref"><a href="#fn:SH" class="footnote" rel="footnote">8</a></sup> 实现这个功能。
+这个电路实际上就是一个电容，存储一下电平，之后再将这个电平读出来。</p>
 
-&lt;h3 id=&quot;bit-slice-方法和移加电路&quot;&gt;bit-slice 方法和移加电路&lt;/h3&gt;
+<h3 id="bit-slice-方法和移加电路">bit-slice 方法和移加电路</h3>
 
-&lt;p&gt;为了 ADC 、 DAC 和问题二共同导致的精度问题，我们要引入 bit-slice 技术。
+<p>为了 ADC 、 DAC 和问题二共同导致的精度问题，我们要引入 bit-slice 技术。
 这个技术的目标是将多个低比特的向量-矩阵乘组合成一个高精度的向量-矩阵乘。
-这个技术分两步，如下图所示：&lt;/p&gt;
+这个技术分两步，如下图所示：</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/3_figure_bit_slice.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/ReRAM_DNN_accelerator/3_figure_bit_slice.jpg" alt="TE" width="300" align="bottom" /></p>
 
-&lt;p&gt;首先，对于 ReRAM 单元的精度问题，我们将原本设计中的 ReRAM 阵列的一列代表矩阵的一列，变成用相邻的多列来代表矩阵的一列。
+<p>首先，对于 ReRAM 单元的精度问题，我们将原本设计中的 ReRAM 阵列的一列代表矩阵的一列，变成用相邻的多列来代表矩阵的一列。
 将矩阵的每个数按比特由高到低从左到右写在这相邻的列上。
 假设我们的阵列每个 cell 是 2 个比特，那么图中写一个 8 比特的数就要 4 列。
-ReRAM 阵列的每一列完成对应位的乘累加后，我们将这些列的结果移位相加即可。&lt;/p&gt;
+ReRAM 阵列的每一列完成对应位的乘累加后，我们将这些列的结果移位相加即可。</p>
 
-&lt;p&gt;之后，对于 DAC 的精度问题，我们将输入的多个比特分周期依次从 DAC 输入进去。
+<p>之后，对于 DAC 的精度问题，我们将输入的多个比特分周期依次从 DAC 输入进去。
 假设我们的 DAC 分辨率为 1 比特，那么我们如果要输入一个 8 比特的输入，就需要 8 个周期。
-在这之后，我们同样将结果移位相加即可。&lt;/p&gt;
+在这之后，我们同样将结果移位相加即可。</p>
 
-&lt;p&gt;这两个过程或许用数学公式会更好理解。
-假设每个 ReRAM 单元可以写 $R_c$ 比特， DAC 的分辨率分别为 $R_{DAC}$ ，如果我们要计算一个 16 比特的乘法（矩阵 $A$ 和向量 $b$ 均为 16 比特），那么我们就要对这两个操作数进行 bit-slice ：&lt;/p&gt;
+<p>这两个过程或许用数学公式会更好理解。
+假设每个 ReRAM 单元可以写 $R_c$ 比特， DAC 的分辨率分别为 $R_{DAC}$ ，如果我们要计算一个 16 比特的乘法（矩阵 $A$ 和向量 $b$ 均为 16 比特），那么我们就要对这两个操作数进行 bit-slice ：</p>
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;A=\sum_{i=0}^{16/R_c-1}A_i\cdot2^{-iR_c}, b=\sum_{i=0}^{16/R_{DAC}-1}b_i\cdot2^{-iR_{DAC}}&lt;/script&gt;
+\[A=\sum_{i=0}^{16/R_c-1}A_i\cdot2^{-iR_c}, b=\sum_{i=0}^{16/R_{DAC}-1}b_i\cdot2^{-iR_{DAC}}\]
 
-&lt;p&gt;其中， $A_i$ 和 $b_i$ 均代表一个 slice 。
-那么，我们的高比特乘法就可以写为：&lt;/p&gt;
+<p>其中， $A_i$ 和 $b_i$ 均代表一个 slice 。
+那么，我们的高比特乘法就可以写为：</p>
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;A\cdot b = \sum_{i,j=0}^{i=16/R_c-1, j=16/R_{DAC}-1}A_i\cdot b_i\cdot2^{-iR_c+jR_{DAC}}&lt;/script&gt;
+\[A\cdot b = \sum_{i,j=0}^{i=16/R_c-1, j=16/R_{DAC}-1}A_i\cdot b_i\cdot2^{-iR_c+jR_{DAC}}\]
 
-&lt;p&gt;可以看到，这两个步骤我们都需要对结果进行移位相加，因此我们需要引入一个数字的移位-相加器（ Shift-and-Add ， S+A ）来实现这个功能。&lt;/p&gt;
+<p>可以看到，这两个步骤我们都需要对结果进行移位相加，因此我们需要引入一个数字的移位-相加器（ Shift-and-Add ， S+A ）来实现这个功能。</p>
 
-&lt;h3 id=&quot;基于-reram-阵列的向量-矩阵乘法器&quot;&gt;基于 ReRAM 阵列的向量-矩阵乘法器&lt;/h3&gt;
+<h3 id="基于-reram-阵列的向量-矩阵乘法器">基于 ReRAM 阵列的向量-矩阵乘法器</h3>
 
-&lt;p&gt;综合我们以上的分析，再加上一些 I/OR （ Input/Output Register ），就可以得到一个典型的 ReRAM 矩阵乘法器的结构图了。&lt;/p&gt;
+<p>综合我们以上的分析，再加上一些 I/OR （ Input/Output Register ），就可以得到一个典型的 ReRAM 矩阵乘法器的结构图了。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/3_figure_rram_vmm.jpg&quot; alt=&quot;TE&quot; width=&quot;300&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/ReRAM_DNN_accelerator/3_figure_rram_vmm.jpg" alt="TE" width="300" align="bottom" /></p>
 
-&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+<h2 id="总结">总结</h2>
 
-&lt;p&gt;本文从原理上介绍了 ReRAM 阵列的计算原理以及一个基础的周边电路设置。
-在接下来的章节中我们将介绍几个完整的架构设计。&lt;/p&gt;
+<p>本文从原理上介绍了 ReRAM 阵列的计算原理以及一个基础的周边电路设置。
+在接下来的章节中我们将介绍几个完整的架构设计。</p>
 
-&lt;p&gt;下一章链接：
-&lt;a href=&quot;http://localhost:4000/2021/08/03/4_ReRAM_DNN_Review_2/&quot;&gt;基于 ReRAM 的神经网络加速器综述（二）——早期的加速器&lt;/a&gt;
-&lt;!--从 ReRAM 阵列的结构来看--&gt;&lt;/p&gt;
+<p>下一章链接：
+<a href="http://localhost:4000/2021/08/03/4_ReRAM_DNN_Review_2/">基于 ReRAM 的神经网络加速器综述（二）——早期的加速器</a>
+<!--从 ReRAM 阵列的结构来看--></p>
 
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:pim&quot;&gt;
-      &lt;p&gt;online: &lt;a href=&quot;https://zhuanlan.zhihu.com/p/98912754&quot;&gt;https://zhuanlan.zhihu.com/p/98912754&lt;/a&gt; &lt;a href=&quot;#fnref:pim&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:3CSRAM&quot;&gt;
-      &lt;p&gt;Z. Jiang, S. Yin, J. Seo, and M. Seok, “&lt;a href=&quot;https://ieeexplore.ieee.org/abstract/document/8877969/&quot;&gt;C3SRAM: In-Memory-Computing SRAM Macro Based on Capacitive-Coupling Computing&lt;/a&gt;,” IEEE Solid-State Circuits Letters, vol. 2, no. 9, pp. 131-134, 2019, doi: 10.1109/LSSC.2019.2934831. &lt;a href=&quot;#fnref:3CSRAM&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:TCAM&quot;&gt;
-      &lt;p&gt;S. Jeloka, N. B. Akesh, D. Sylvester, and D. Blaauw, “&lt;a href=&quot;https://ieeexplore.ieee.org/document/7400984/&quot;&gt;A 28 nm Configurable Memory (TCAM/BCAM/SRAM) Using Push-Rule 6T Bit Cell Enabling Logic-in-Memory&lt;/a&gt;,” IEEE Journal of Solid-State Circuits, vol. 51, no. 4, pp. 1009-1021, 2016-04-01 2016, doi: 10.1109/jssc.2016.2515510. &lt;a href=&quot;#fnref:TCAM&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:DrAcc&quot;&gt;
-      &lt;p&gt;Q. Deng, L. Jiang, Y. Zhang, M. Zhang, and J. Yang, “&lt;a href=&quot;https://dl.acm.org/doi/abs/10.1145/3195970.3196029&quot;&gt;DrAcc: a DRAM based Accelerator for Accurate CNN Inference&lt;/a&gt;,” in 2018 55th ACM/ESDA/IEEE Design Automation Conference (DAC), 24-28 June 2018 2018, vol. 77, no. DRAM  PIM, p. 6, doi: 10.1109/DAC.2018.8465866. &lt;a href=&quot;#fnref:DrAcc&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:Conv-RAM&quot;&gt;
-      &lt;p&gt;A. Biswas and A. P. Chandrakasan, “&lt;a href=&quot;https://ieeexplore.ieee.org/abstract/document/8310397/&quot;&gt;Conv-RAM: An energy-efficient SRAM with embedded convolution computation for low-power CNN-based machine learning applications&lt;/a&gt;,” in 2018 IEEE International Solid - State Circuits Conference - (ISSCC), 11-15 Feb. 2018 2018, pp. 488-490, doi: 10.1109/ISSCC.2018.8310397. &lt;a href=&quot;#fnref:Conv-RAM&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:Dot&quot;&gt;
-      &lt;p&gt;M. Hu et al., “Dot-product engine for neuromorphic computing: programming 1T1M crossbar to accelerate matrix-vector multiplication,” in Proceedings of the 53rd annual design automation conference, 2016: ACM, p. 19. [Online]. Available: https://dl.acm.org/citation.cfm?id=2898010. [Online]. Available: https://dl.acm.org/citation.cfm?id=2898010 &lt;a href=&quot;#fnref:Dot&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:ADC&quot;&gt;
-      &lt;p&gt;L. Kull et al., “A 3.1 mW 8b 1.2 GS/s Single-Channel Asynchronous SAR ADC With Alternate Comparators for Enhanced Speed in 32 nm Digital SOI CMOS,” IEEE Journal of Solid-State Circuits, vol. 48, no. 12, pp. 3049-3058, 2013, doi: 10.1109/JSSC.2013.2279571. &lt;a href=&quot;#fnref:ADC&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:SH&quot;&gt;
-      &lt;p&gt;M. O. Halloran and R. Sarpeshkar, “A 10-nW 12-bit accurate analog storage cell with 10-aA leakage,” IEEE Journal of Solid-State Circuits, vol. 39, no. 11, pp. 1985-1996, 2004, doi: 10.1109/JSSC.2004.835817. &lt;a href=&quot;#fnref:SH&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Yilong Zhao</name></author><summary type="html">筹划了一段时间，终于开始写这个综述了。也算是做个总结吧。 这个综述将聚焦于基于 ReRAM 的存算一体的 DNN 加速器设计。</summary></entry><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/">&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default&quot;&gt;&lt;/script&gt;
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:pim" role="doc-endnote">
+      <p>online: <a href="https://zhuanlan.zhihu.com/p/98912754">https://zhuanlan.zhihu.com/p/98912754</a> <a href="#fnref:pim" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3CSRAM" role="doc-endnote">
+      <p>Z. Jiang, S. Yin, J. Seo, and M. Seok, “<a href="https://ieeexplore.ieee.org/abstract/document/8877969/">C3SRAM: In-Memory-Computing SRAM Macro Based on Capacitive-Coupling Computing</a>,” IEEE Solid-State Circuits Letters, vol. 2, no. 9, pp. 131-134, 2019, doi: 10.1109/LSSC.2019.2934831. <a href="#fnref:3CSRAM" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:TCAM" role="doc-endnote">
+      <p>S. Jeloka, N. B. Akesh, D. Sylvester, and D. Blaauw, “<a href="https://ieeexplore.ieee.org/document/7400984/">A 28 nm Configurable Memory (TCAM/BCAM/SRAM) Using Push-Rule 6T Bit Cell Enabling Logic-in-Memory</a>,” IEEE Journal of Solid-State Circuits, vol. 51, no. 4, pp. 1009-1021, 2016-04-01 2016, doi: 10.1109/jssc.2016.2515510. <a href="#fnref:TCAM" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:DrAcc" role="doc-endnote">
+      <p>Q. Deng, L. Jiang, Y. Zhang, M. Zhang, and J. Yang, “<a href="https://dl.acm.org/doi/abs/10.1145/3195970.3196029">DrAcc: a DRAM based Accelerator for Accurate CNN Inference</a>,” in 2018 55th ACM/ESDA/IEEE Design Automation Conference (DAC), 24-28 June 2018 2018, vol. 77, no. DRAM  PIM, p. 6, doi: 10.1109/DAC.2018.8465866. <a href="#fnref:DrAcc" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:Conv-RAM" role="doc-endnote">
+      <p>A. Biswas and A. P. Chandrakasan, “<a href="https://ieeexplore.ieee.org/abstract/document/8310397/">Conv-RAM: An energy-efficient SRAM with embedded convolution computation for low-power CNN-based machine learning applications</a>,” in 2018 IEEE International Solid - State Circuits Conference - (ISSCC), 11-15 Feb. 2018 2018, pp. 488-490, doi: 10.1109/ISSCC.2018.8310397. <a href="#fnref:Conv-RAM" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:Dot" role="doc-endnote">
+      <p>M. Hu et al., “Dot-product engine for neuromorphic computing: programming 1T1M crossbar to accelerate matrix-vector multiplication,” in Proceedings of the 53rd annual design automation conference, 2016: ACM, p. 19. [Online]. Available: https://dl.acm.org/citation.cfm?id=2898010. [Online]. Available: https://dl.acm.org/citation.cfm?id=2898010 <a href="#fnref:Dot" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:ADC" role="doc-endnote">
+      <p>L. Kull et al., “A 3.1 mW 8b 1.2 GS/s Single-Channel Asynchronous SAR ADC With Alternate Comparators for Enhanced Speed in 32 nm Digital SOI CMOS,” IEEE Journal of Solid-State Circuits, vol. 48, no. 12, pp. 3049-3058, 2013, doi: 10.1109/JSSC.2013.2279571. <a href="#fnref:ADC" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:SH" role="doc-endnote">
+      <p>M. O. Halloran and R. Sarpeshkar, “A 10-nW 12-bit accurate analog storage cell with 10-aA leakage,” IEEE Journal of Solid-State Circuits, vol. 39, no. 11, pp. 1985-1996, 2004, doi: 10.1109/JSSC.2004.835817. <a href="#fnref:SH" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>]]></content><author><name>Yilong Zhao</name></author><category term="基于 ReRAM 的 DNN 加速器" /><summary type="html"><![CDATA[some word here]]></summary></entry><entry><title type="html">SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks</title><link href="http://localhost:4000/2020/08/03/2_SRAM_BNN/" rel="alternate" type="text/html" title="SRAM-BNN 论文： Parallelizing SRAM Arrays with Customized Bit-Cell for Binary Neural Networks" /><published>2020-08-03T00:00:00+08:00</published><updated>2020-08-03T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/03/2_SRAM_BNN</id><content type="html" xml:base="http://localhost:4000/2020/08/03/2_SRAM_BNN/"><![CDATA[<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
-&lt;blockquote&gt;
-  &lt;p&gt;Rui Liu, Xiaochen Peng, Xiaoyu Sun, Win-San Khwa, Xin Si, Jia-Jing Chen, Jia-Fang Li, Meng-Fan Chang, and Shimeng Yu. 2018. Parallelizing SRAM arrays with customized bit-cell for binary neural networks. In Proceedings of the 55th Annual Design Automation Conference (DAC ’18). Association for Computing Machinery, New York, NY, USA, Article 21, 1–6. DOI:https://doi.org/10.1145/3195970.3196089.&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>Rui Liu, Xiaochen Peng, Xiaoyu Sun, Win-San Khwa, Xin Si, Jia-Jing Chen, Jia-Fang Li, Meng-Fan Chang, and Shimeng Yu. 2018. Parallelizing SRAM arrays with customized bit-cell for binary neural networks. In Proceedings of the 55th Annual Design Automation Conference (DAC ’18). Association for Computing Machinery, New York, NY, USA, Article 21, 1–6. DOI:https://doi.org/10.1145/3195970.3196089.</p>
+</blockquote>
 
-&lt;p&gt;The paper is &lt;a href=&quot;https://dl.acm.org/doi/pdf/10.1145/3195970.3196089,&quot; title=&quot;paper&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+<p>The paper is <a href="https://dl.acm.org/doi/pdf/10.1145/3195970.3196089," title="paper">here</a></p>
 
-&lt;p&gt;Abstract first:&lt;/p&gt;
+<p>Abstract first:</p>
 
-&lt;blockquote&gt;
-  &lt;p&gt;Recent advances in deep neural networks (DNNs) have shown Binary Neural Networks (BNNs) are able to provide a reasonable accuracy on various image datasets with a significant reduction in computation and memory cost. In this paper, we explore two BNNs: hybrid BNN (HBNN) and XNOR-BNN, where the weights are binarized to +1/-1 while the neuron activations are binarized to 1/0 and +1/-1 respectively. Two SRAM bit cell designs are proposed, namely, 6T SRAM for HBNN and customized 8T SRAM for XNOR-BNN. In our design, the high-precision multiply-and-accumulate (MAC) is replaced by bitwise multiplication for HBNN or XNOR for XNOR-BNN plus bit-counting operations. To parallelize the weighted sum operation, we activate multiple word lines in the SRAM array simultaneously and digitize the analog voltage developed along the bit line by a multi-level sense amplifier (MLSA). In order to partition the large matrices in DNNs, we investigate the impact of sensing bit-levels of MLSA on the accuracy degradation for different sub-array sizes and propose using the nonlinear quantization technique to mitigate the accuracy degradation. With 64×64 sub-array size and 3-bit MLSA, HBNN and XNOR-BNN architectures can minimize the accuracy degradation to 2.37% and 0.88%, respectively, for an inspired VGG-16 network on the CIFAR-10 dataset. Design space exploration of SRAM based synaptic architectures with the conventional row-by-row access scheme and our proposed parallel access scheme are also performed, showing significant benefits in the area, latency and energy-efficiency. Finally, we have successfully taped-out and validated the proposed HBNN and XNOR-BNN designs in TSMC 65 nm process with measured silicon data, achieving energy-efficiency &amp;gt;100 TOPS/W for HBNN and &amp;gt;50 TOPS/W for XNOR-BNN.&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>Recent advances in deep neural networks (DNNs) have shown Binary Neural Networks (BNNs) are able to provide a reasonable accuracy on various image datasets with a significant reduction in computation and memory cost. In this paper, we explore two BNNs: hybrid BNN (HBNN) and XNOR-BNN, where the weights are binarized to +1/-1 while the neuron activations are binarized to 1/0 and +1/-1 respectively. Two SRAM bit cell designs are proposed, namely, 6T SRAM for HBNN and customized 8T SRAM for XNOR-BNN. In our design, the high-precision multiply-and-accumulate (MAC) is replaced by bitwise multiplication for HBNN or XNOR for XNOR-BNN plus bit-counting operations. To parallelize the weighted sum operation, we activate multiple word lines in the SRAM array simultaneously and digitize the analog voltage developed along the bit line by a multi-level sense amplifier (MLSA). In order to partition the large matrices in DNNs, we investigate the impact of sensing bit-levels of MLSA on the accuracy degradation for different sub-array sizes and propose using the nonlinear quantization technique to mitigate the accuracy degradation. With 64×64 sub-array size and 3-bit MLSA, HBNN and XNOR-BNN architectures can minimize the accuracy degradation to 2.37% and 0.88%, respectively, for an inspired VGG-16 network on the CIFAR-10 dataset. Design space exploration of SRAM based synaptic architectures with the conventional row-by-row access scheme and our proposed parallel access scheme are also performed, showing significant benefits in the area, latency and energy-efficiency. Finally, we have successfully taped-out and validated the proposed HBNN and XNOR-BNN designs in TSMC 65 nm process with measured silicon data, achieving energy-efficiency &gt;100 TOPS/W for HBNN and &gt;50 TOPS/W for XNOR-BNN.</p>
+</blockquote>
 
-&lt;h2 id=&quot;contributions&quot;&gt;Contributions:&lt;/h2&gt;
+<h2 id="contributions">Contributions:</h2>
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;XNOR-BNN complementary with costomized SRAM&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Peripheral circuits which allow parallel access for SRAM&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Low accuracy degration and high energy saving&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li>
+    <p>XNOR-BNN complementary with costomized SRAM</p>
+  </li>
+  <li>
+    <p>Peripheral circuits which allow parallel access for SRAM</p>
+  </li>
+  <li>
+    <p>Low accuracy degration and high energy saving</p>
+  </li>
+</ul>
 
-&lt;h2 id=&quot;background&quot;&gt;Background:&lt;/h2&gt;
+<h2 id="background">Background:</h2>
 
-&lt;h3 id=&quot;hbnn-proposed&quot;&gt;HBNN (proposed)&lt;/h3&gt;
+<h3 id="hbnn-proposed">HBNN (proposed)</h3>
 
-&lt;p&gt;Feature:&lt;/p&gt;
+<p>Feature:</p>
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Weights: +1 / -1&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Activations: 0 / 1&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+  <li>
+    <p>Weights: +1 / -1</p>
+  </li>
+  <li>
+    <p>Activations: 0 / 1</p>
+  </li>
+</ul>
 
-&lt;h3 id=&quot;sram-cell&quot;&gt;SRAM Cell&lt;/h3&gt;
+<h3 id="sram-cell">SRAM Cell</h3>
 
-&lt;p&gt;Directly refer to the explicit figure:&lt;/p&gt;
+<p>Directly refer to the explicit figure:</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_SRAM_Cell.jpg&quot; alt=&quot;SRAM Cell&quot; width=&quot;500&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/ReRAM_DNN_accelerator/2_figure_SRAM_Cell.jpg" alt="SRAM Cell" width="500" align="bottom" /></p>
 
-&lt;h2 id=&quot;parallel-architecture&quot;&gt;Parallel Architecture&lt;/h2&gt;
+<h2 id="parallel-architecture">Parallel Architecture</h2>
 
-&lt;p&gt;All the cells in the same column are opened by WLs.
-Currents are accumulated at BLs, and the MAC operation is implemented.&lt;/p&gt;
+<p>All the cells in the same column are opened by WLs.
+Currents are accumulated at BLs, and the MAC operation is implemented.</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_MAC.jpg&quot; alt=&quot;MAC&quot; width=&quot;500&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/ReRAM_DNN_accelerator/2_figure_MAC.jpg" alt="MAC" width="500" align="bottom" /></p>
 
-&lt;h2 id=&quot;experiments--results&quot;&gt;Experiments &amp;amp; Results&lt;/h2&gt;
+<h2 id="experiments--results">Experiments &amp; Results</h2>
 
-&lt;h3 id=&quot;accuracy&quot;&gt;Accuracy&lt;/h3&gt;
+<h3 id="accuracy">Accuracy</h3>
 
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_Accuracy.jpg&quot; alt=&quot;MAC&quot; width=&quot;900&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/ReRAM_DNN_accelerator/2_figure_Accuracy.jpg" alt="MAC" width="900" align="bottom" /></p>
 
-&lt;h3 id=&quot;performance&quot;&gt;Performance&lt;/h3&gt;
+<h3 id="performance">Performance</h3>
 
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_Performance.jpg&quot; alt=&quot;MAC&quot; width=&quot;500&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/ReRAM_DNN_accelerator/2_figure_Performance.jpg" alt="MAC" width="500" align="bottom" /></p>
 
-&lt;h3 id=&quot;chip&quot;&gt;Chip&lt;/h3&gt;
+<h3 id="chip">Chip</h3>
 
-&lt;p&gt;&lt;img src=&quot;/img/ReRAM_DNN_accelerator/2_figure_Chip.jpg&quot; alt=&quot;MAC&quot; width=&quot;900&quot; align=&quot;bottom&quot; /&gt;&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="analog computing" /><category term="analog signal processing" /><summary type="html"></summary></entry><entry><title type="html">GEM5- GEM5 中的 fatal 、 panic 、 warn</title><link href="http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn/" rel="alternate" type="text/html" title="GEM5- GEM5 中的 fatal 、 panic 、 warn" /><published>2020-08-02T00:00:00+08:00</published><updated>2020-08-02T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn</id><content type="html" xml:base="http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn/">&lt;p&gt;除了可以使用 assert 外， GEM5 中提供了三个用于检查的函数：&lt;/p&gt;
+<p><img src="/img/ReRAM_DNN_accelerator/2_figure_Chip.jpg" alt="MAC" width="900" align="bottom" /></p>]]></content><author><name>Yilong Zhao</name></author><category term="基于 ReRAM 的 DNN 加速器" /><category term="analog computing" /><category term="analog signal processing" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">GEM5- GEM5 中的 fatal 、 panic 、 warn</title><link href="http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn/" rel="alternate" type="text/html" title="GEM5- GEM5 中的 fatal 、 panic 、 warn" /><published>2020-08-02T00:00:00+08:00</published><updated>2020-08-02T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn</id><content type="html" xml:base="http://localhost:4000/2020/08/02/6_GEM5_fatal_panic_warn/"><![CDATA[<p>除了可以使用 assert 外， GEM5 中提供了三个用于检查的函数：</p>
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;fatal / falal_if&lt;/p&gt;
+<ol>
+  <li>
+    <p>fatal / falal_if</p>
 
-    &lt;p&gt;程序直接退出&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;panic / panic_ic&lt;/p&gt;
+    <p>程序直接退出</p>
+  </li>
+  <li>
+    <p>panic / panic_ic</p>
 
-    &lt;p&gt;程序退出当前函数，继续执行&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;warn / warn_if&lt;/p&gt;
+    <p>程序退出当前函数，继续执行</p>
+  </li>
+  <li>
+    <p>warn / warn_if</p>
 
-    &lt;p&gt;程序报 warning ，继续执行&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html">除了可以使用 assert 外， GEM5 中提供了三个用于检查的函数：</summary></entry><entry><title type="html">GEM5- GEM5 给 SimObject 添加 Param</title><link href="http://localhost:4000/2020/08/01/3_GEM5_Param/" rel="alternate" type="text/html" title="GEM5- GEM5 给 SimObject 添加 Param" /><published>2020-08-01T00:00:00+08:00</published><updated>2020-08-01T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/01/3_GEM5_Param</id><content type="html" xml:base="http://localhost:4000/2020/08/01/3_GEM5_Param/">&lt;p&gt;先废话一下吧， GEM5 仿真器的代码组织是以 SimObject 为核心的。
+    <p>程序报 warning ，继续执行</p>
+  </li>
+</ol>]]></content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html"><![CDATA[除了可以使用 assert 外， GEM5 中提供了三个用于检查的函数：]]></summary></entry><entry><title type="html">GEM5- GEM5 给 SimObject 添加 Param</title><link href="http://localhost:4000/2020/08/01/3_GEM5_Param/" rel="alternate" type="text/html" title="GEM5- GEM5 给 SimObject 添加 Param" /><published>2020-08-01T00:00:00+08:00</published><updated>2020-08-01T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/01/3_GEM5_Param</id><content type="html" xml:base="http://localhost:4000/2020/08/01/3_GEM5_Param/"><![CDATA[<p>先废话一下吧， GEM5 仿真器的代码组织是以 SimObject 为核心的。
 以 CPU 和 memory 两类重要的模块为例，在各自的文件夹下定义了好多个 class ，每个 class 都以 SimObject 类为基类。
-GEM5 提供了给 SimObject 添加参数的方式，在 &lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/parameters/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/parameters/&lt;/a&gt; 中。
+GEM5 提供了给 SimObject 添加参数的方式，在 <a href="http://www.gem5.org/documentation/learning_gem5/part2/parameters/">http://www.gem5.org/documentation/learning_gem5/part2/parameters/</a> 中。
 原理非常简单，在此不再完整描述，只介绍必要的部分。
-随后将讨论一个重要的问题，如何定义一个复杂类型的参数。&lt;/p&gt;
+随后将讨论一个重要的问题，如何定义一个复杂类型的参数。</p>
 
-&lt;h2 id=&quot;background&quot;&gt;BackGround&lt;/h2&gt;
+<h2 id="background">BackGround</h2>
 
-&lt;h3 id=&quot;gem5-中的参数定义&quot;&gt;GEM5 中的参数定义&lt;/h3&gt;
+<h3 id="gem5-中的参数定义">GEM5 中的参数定义</h3>
 
-&lt;p&gt;GEM5 中给一个 SimObject 定义一个参数有如下几个步骤：&lt;/p&gt;
+<p>GEM5 中给一个 SimObject 定义一个参数有如下几个步骤：</p>
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;在 SimObject 对应的 .py 文件中添加参数&lt;/p&gt;
+<ol>
+  <li>
+    <p>在 SimObject 对应的 .py 文件中添加参数</p>
 
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     &lt;span class=&quot;n&quot;&gt;Param&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'The number of xxx'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 一个整数作为参数
-&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;VectorParam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([],&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'The number of xxxs'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 一个整数 vector 作为参数
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;GEM5 编译器通过分析上述 .py 文件在 param 文件夹下生成与 SimObject 名字相同的 c++ 头文件，里面定义了 c++ 可引用的参数类型。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在我们写的 SimObject 的 c++ class 中，将 2 步骤中的参数类型传递给构造函数，就可以在构造函数中解析参数。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="n">Param</span><span class="p">.</span><span class="n">Int</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'The number of xxx'</span><span class="p">)</span> <span class="c1"># 一个整数作为参数
+</span>     <span class="n">VectorParam</span><span class="p">.</span><span class="n">Int</span><span class="p">([],</span> <span class="s">'The number of xxxs'</span><span class="p">)</span> <span class="c1"># 一个整数 vector 作为参数
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>GEM5 编译器通过分析上述 .py 文件在 param 文件夹下生成与 SimObject 名字相同的 c++ 头文件，里面定义了 c++ 可引用的参数类型。</p>
+  </li>
+  <li>
+    <p>在我们写的 SimObject 的 c++ class 中，将 2 步骤中的参数类型传递给构造函数，就可以在构造函数中解析参数。</p>
+  </li>
+</ol>
 
-&lt;h3 id=&quot;gem5-中的参数类型&quot;&gt;GEM5 中的参数类型&lt;/h3&gt;
+<h3 id="gem5-中的参数类型">GEM5 中的参数类型</h3>
 
-&lt;p&gt;我们先看一下 GEM5 中提供了哪几种参数。&lt;/p&gt;
+<p>我们先看一下 GEM5 中提供了哪几种参数。</p>
 
-&lt;p&gt;通过观察 GEM5 中定义参数的步骤，可以分析出来 GEM5 是通过某种方式将 python 中的数据类型和 c++ 中的数据类型打通，进而完成将 python config 脚本中的参数传递给 c++ 代码的任务。
+<p>通过观察 GEM5 中定义参数的步骤，可以分析出来 GEM5 是通过某种方式将 python 中的数据类型和 c++ 中的数据类型打通，进而完成将 python config 脚本中的参数传递给 c++ 代码的任务。
 因此在 GEM5 的源码中，默认参数类型在 c++ 文件和 python 文件分别定义了一份。
-c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。&lt;/p&gt;
+c++ 文件为 base/types.hh ， python 文件为 python/m5/params.py 。</p>
 
-&lt;p&gt;下面的列表我们将描述 python 文件中定义的数据类型，并列出对应的 c++ 数据类型：&lt;/p&gt;
+<p>下面的列表我们将描述 python 文件中定义的数据类型，并列出对应的 c++ 数据类型：</p>
 
-&lt;table align=&quot;center&quot; border=&quot;1&quot; frame=&quot;box&quot;&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Python 类型&lt;/th&gt; 
-        &lt;th&gt;c++ 类型&lt;/th&gt; 
-        &lt;th&gt;c++ 头文件&lt;/th&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Int&lt;/th&gt;
-        &lt;td&gt;std::string&lt;/td&gt;
-        &lt;td&gt;内置类型&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;(U)Int(8,16...)&lt;/th&gt;
-        &lt;td&gt;(u)int(8,16...)_t&lt;/td&gt;
-        &lt;td&gt;内置类型&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Float&lt;/th&gt;
-        &lt;td&gt;double&lt;/td&gt;
-        &lt;td&gt;内置类型&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Bool&lt;/th&gt;
-        &lt;td&gt;bool&lt;/td&gt;
-        &lt;td&gt;内置类型&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Counter&lt;/th&gt;
-        &lt;td&gt;Counter&lt;/td&gt;
-        &lt;td&gt;base/type.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Tick&lt;/th&gt;
-        &lt;td&gt;Tick&lt;/td&gt;
-        &lt;td&gt;base/type.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;TcpPort / UdpPort&lt;/th&gt;
-        &lt;td&gt;uint16_t&lt;/td&gt;
-        &lt;td&gt;内置类型&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Percent&lt;/th&gt;
-        &lt;td&gt;int&lt;/td&gt;
-        &lt;td&gt;内置类型&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Cycles&lt;/th&gt;
-        &lt;td&gt;Cycles&lt;/td&gt;
-        &lt;td&gt;base/type.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;MemorySize / MemorySize32&lt;/th&gt;
-        &lt;td&gt;uint64_t&lt;/td&gt;
-        &lt;td&gt;内置类型&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Addr&lt;/th&gt;
-        &lt;td&gt;Addr&lt;/td&gt;
-        &lt;td&gt;base/type.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;AddrRange&lt;/th&gt;
-        &lt;td&gt;AddrRange&lt;/td&gt;
-        &lt;td&gt;base/addr_range.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;EthernetAddr&lt;/th&gt;
-        &lt;td&gt;Net::EthAddr&lt;/td&gt;
-        &lt;td&gt;base/inet.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;IpAddress&lt;/th&gt;
-        &lt;td&gt;Net::IpAddress&lt;/td&gt;
-        &lt;td&gt;base/inet.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;IpNetmask&lt;/th&gt;
-        &lt;td&gt;Net::IpNetmask&lt;/td&gt;
-        &lt;td&gt;base/inet.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;IpWithPort&lt;/th&gt;
-        &lt;td&gt;Net::IpWithPort&lt;/td&gt;
-        &lt;td&gt;base/inet.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Time&lt;/th&gt;
-        &lt;td&gt;tm&lt;/td&gt;
-        &lt;td&gt;base/time.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;TickParamValue / Latency / Frequency / Clock&lt;/th&gt;
-        &lt;td&gt;Tick&lt;/td&gt;
-        &lt;td&gt;base/types.hh&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;Voltage / Current / Energy / NetworkBandwidth / MemoryBandwidth&lt;/th&gt;
-        &lt;td&gt;double&lt;/td&gt;
-        &lt;td&gt;内置类型&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr align=&quot;center&quot;&gt;
-        &lt;th&gt;NullSimObject&lt;/th&gt;
-        &lt;td&gt;Null&lt;/td&gt;
-        &lt;td&gt;内置类型&lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;
+<table align="center" border="1" frame="box">
+    <tr align="center">
+        <th>Python 类型</th> 
+        <th>c++ 类型</th> 
+        <th>c++ 头文件</th>
+    </tr>
+    <tr align="center">
+        <th>Int</th>
+        <td>std::string</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>(U)Int(8,16...)</th>
+        <td>(u)int(8,16...)_t</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Float</th>
+        <td>double</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Bool</th>
+        <td>bool</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Counter</th>
+        <td>Counter</td>
+        <td>base/type.hh</td>
+    </tr>
+    <tr align="center">
+        <th>Tick</th>
+        <td>Tick</td>
+        <td>base/type.hh</td>
+    </tr>
+    <tr align="center">
+        <th>TcpPort / UdpPort</th>
+        <td>uint16_t</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Percent</th>
+        <td>int</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Cycles</th>
+        <td>Cycles</td>
+        <td>base/type.hh</td>
+    </tr>
+    <tr align="center">
+        <th>MemorySize / MemorySize32</th>
+        <td>uint64_t</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>Addr</th>
+        <td>Addr</td>
+        <td>base/type.hh</td>
+    </tr>
+    <tr align="center">
+        <th>AddrRange</th>
+        <td>AddrRange</td>
+        <td>base/addr_range.hh</td>
+    </tr>
+    <tr align="center">
+        <th>EthernetAddr</th>
+        <td>Net::EthAddr</td>
+        <td>base/inet.hh</td>
+    </tr>
+    <tr align="center">
+        <th>IpAddress</th>
+        <td>Net::IpAddress</td>
+        <td>base/inet.hh</td>
+    </tr>
+    <tr align="center">
+        <th>IpNetmask</th>
+        <td>Net::IpNetmask</td>
+        <td>base/inet.hh</td>
+    </tr>
+    <tr align="center">
+        <th>IpWithPort</th>
+        <td>Net::IpWithPort</td>
+        <td>base/inet.hh</td>
+    </tr>
+    <tr align="center">
+        <th>Time</th>
+        <td>tm</td>
+        <td>base/time.hh</td>
+    </tr>
+    <tr align="center">
+        <th>TickParamValue / Latency / Frequency / Clock</th>
+        <td>Tick</td>
+        <td>base/types.hh</td>
+    </tr>
+    <tr align="center">
+        <th>Voltage / Current / Energy / NetworkBandwidth / MemoryBandwidth</th>
+        <td>double</td>
+        <td>内置类型</td>
+    </tr>
+    <tr align="center">
+        <th>NullSimObject</th>
+        <td>Null</td>
+        <td>内置类型</td>
+    </tr>
+</table>
 
-&lt;p&gt;一般来说，上述的数据类型已经足够丰富，足够使用了。&lt;/p&gt;
+<p>一般来说，上述的数据类型已经足够丰富，足够使用了。</p>
 
-&lt;h2 id=&quot;定义新的参数类型&quot;&gt;定义新的参数类型&lt;/h2&gt;
+<h2 id="定义新的参数类型">定义新的参数类型</h2>
 
-&lt;p&gt;在我的需求中实际上是要定义一个新的复杂的数据类型。
+<p>在我的需求中实际上是要定义一个新的复杂的数据类型。
 一种直观的方式是通过 SimObject 的嵌套来实现。
 但是这种方式会多定义好多 SimObject ，增加编译时间。
 因此我更希望通过仿照 GEM5 的源码中定义数据类型的方式来实现。
-于是我看了下源码是如何定义的。&lt;/p&gt;
+于是我看了下源码是如何定义的。</p>
 
-&lt;h3 id=&quot;gem5-源码中参数定义&quot;&gt;GEM5 源码中参数定义&lt;/h3&gt;
+<h3 id="gem5-源码中参数定义">GEM5 源码中参数定义</h3>
 
-&lt;p&gt;以 AddrRange 类型为例：&lt;/p&gt;
+<p>以 AddrRange 类型为例：</p>
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;python 文件中的定义（python/m5/params.py)：&lt;/p&gt;
+<ol>
+  <li>
+    <p>python 文件中的定义（python/m5/params.py)：</p>
 
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ParamValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 以ParamValue为基类来定义一个数据类型
-&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;cxx_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'AddrRange'&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# 定义对应的 c++ class 名称
-&lt;/span&gt;
-     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-         &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'end'&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-             &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'end'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# 读取 kwargs
-&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">class</span> <span class="nc">AddrRange</span><span class="p">(</span><span class="n">ParamValue</span><span class="p">):</span> <span class="c1"># 以ParamValue为基类来定义一个数据类型
+</span>     <span class="n">cxx_type</span> <span class="o">=</span> <span class="s">'AddrRange'</span>   <span class="c1"># 定义对应的 c++ class 名称
+</span>
+     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+         <span class="p">...</span>
+         <span class="k">if</span> <span class="s">'end'</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+             <span class="bp">self</span><span class="p">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">Addr</span><span class="p">(</span><span class="n">kwargs</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="s">'end'</span><span class="p">))</span> <span class="c1"># 读取 kwargs
+</span>         <span class="p">...</span>
         
-     &lt;span class=&quot;c1&quot;&gt;# 定义 python 方法 （可选）
-&lt;/span&gt;     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__str__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+     <span class="c1"># 定义 python 方法 （可选）
+</span>     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="p">...</span>
 
-     &lt;span class=&quot;c1&quot;&gt;# pybind_predecls 方法：
-&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 定义一个引用文件（即 AddrRange 对应的 c++ class 定义的位置）
-&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 这句 code 在某个使用 AddrRange 参数的 SimObject 生成的 build/X86/python/_m5/param_xxx.cc 中，会出现在引用头文件的部分
-&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# build/X86/python/_m5/param_xxx.cc 文件是用于 SimObject 的 c++ 和 python 文件之间的 pybind
-&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;classmethod&lt;/span&gt;
-     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pybind_predecls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-         &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'#include &quot;base/addr_range.hh&quot;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+     <span class="c1"># pybind_predecls 方法：
+</span>     <span class="c1"># 定义一个引用文件（即 AddrRange 对应的 c++ class 定义的位置）
+</span>     <span class="c1"># 这句 code 在某个使用 AddrRange 参数的 SimObject 生成的 build/X86/python/_m5/param_xxx.cc 中，会出现在引用头文件的部分
+</span>     <span class="c1"># build/X86/python/_m5/param_xxx.cc 文件是用于 SimObject 的 c++ 和 python 文件之间的 pybind
+</span>     <span class="o">@</span><span class="nb">classmethod</span>
+     <span class="k">def</span> <span class="nf">pybind_predecls</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+         <span class="p">...</span>
+         <span class="n">code</span><span class="p">(</span><span class="s">'#include "base/addr_range.hh"'</span><span class="p">)</span>
 
-     &lt;span class=&quot;c1&quot;&gt;# cxx_predecls 方法：
-&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 定义一个引用文件（即 AddrRange 对应的 c++ class 定义的位置）
-&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 这句 code 在某个使用 AddrRange 参数的 SimObject 生成的 build/X86/params/xxx.hh 中，会出现在引用头文件的部分
-&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# build/X86/params/xxx.hh 文件是用于定义 SimObject 的 c++ 语言的参数类型
-&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;classmethod&lt;/span&gt;
-     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cxx_predecls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-         &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'#include &quot;base/addr_range.hh&quot;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+     <span class="c1"># cxx_predecls 方法：
+</span>     <span class="c1"># 定义一个引用文件（即 AddrRange 对应的 c++ class 定义的位置）
+</span>     <span class="c1"># 这句 code 在某个使用 AddrRange 参数的 SimObject 生成的 build/X86/params/xxx.hh 中，会出现在引用头文件的部分
+</span>     <span class="c1"># build/X86/params/xxx.hh 文件是用于定义 SimObject 的 c++ 语言的参数类型
+</span>     <span class="o">@</span><span class="nb">classmethod</span>
+     <span class="k">def</span> <span class="nf">cxx_predecls</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+         <span class="p">...</span>
+         <span class="n">code</span><span class="p">(</span><span class="s">'#include "base/addr_range.hh"'</span><span class="p">)</span>
 
-     &lt;span class=&quot;c1&quot;&gt;# cxx_ini_predecls 和 cxx_ini_parse 方法：（可选）
-&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 定义一个引用文件和sparse代码
-&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 这句 code 在由 .py 配置文件生成 .ini 配置文件时生成参数的信息
-&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;classmethod&lt;/span&gt;
-     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cxx_ini_predecls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-         &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'#include &amp;lt;vector&amp;gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+     <span class="c1"># cxx_ini_predecls 和 cxx_ini_parse 方法：（可选）
+</span>     <span class="c1"># 定义一个引用文件和sparse代码
+</span>     <span class="c1"># 这句 code 在由 .py 配置文件生成 .ini 配置文件时生成参数的信息
+</span>     <span class="o">@</span><span class="nb">classmethod</span>
+     <span class="k">def</span> <span class="nf">cxx_ini_predecls</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+         <span class="p">...</span>
+         <span class="n">code</span><span class="p">(</span><span class="s">'#include &lt;vector&gt;'</span><span class="p">)</span>
 
-     &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;classmethod&lt;/span&gt;
-     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cxx_ini_parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-         &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-         &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'${ret} _ret;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+     <span class="o">@</span><span class="nb">classmethod</span>
+     <span class="k">def</span> <span class="nf">cxx_ini_parse</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">ret</span><span class="p">):</span>
+         <span class="p">...</span>
+         <span class="n">code</span><span class="p">(</span><span class="s">'${ret} _ret;'</span><span class="p">)</span>
 
-     &lt;span class=&quot;c1&quot;&gt;# 定义 getValue函数：
-&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;# 这个是 python 和 c++ 代码之间联系的关键之一，这个含义我们在接下来pybind一节中介绍
-&lt;/span&gt;     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-             &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;_m5.range&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt; 
+     <span class="c1"># 定义 getValue函数：
+</span>     <span class="c1"># 这个是 python 和 c++ 代码之间联系的关键之一，这个含义我们在接下来pybind一节中介绍
+</span>     <span class="k">def</span> <span class="nf">getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+             <span class="kn">from</span> <span class="nn">_m5.range</span> <span class="kn">import</span> <span class="n">AddrRange</span> 
 
-             &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-                             &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;masks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;intlvMatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+             <span class="k">return</span> <span class="n">AddrRange</span><span class="p">(</span><span class="nb">long</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">start</span><span class="p">),</span> <span class="nb">long</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">end</span><span class="p">),</span>
+                             <span class="bp">self</span><span class="p">.</span><span class="n">masks</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">intlvMatch</span><span class="p">))</span>
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;c++ 文件中的定义(base/addr_range.hh)：&lt;/p&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>c++ 文件中的定义(base/addr_range.hh)：</p>
 
-    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
- &lt;span class=&quot;nl&quot;&gt;private:&lt;/span&gt;
-     &lt;span class=&quot;c1&quot;&gt;// 定义私有成员变量，可自由发挥&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
-     &lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
- &lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt;
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">class</span> <span class="nc">AddrRange</span><span class="p">{</span>
+ <span class="nl">private:</span>
+     <span class="c1">// 定义私有成员变量，可自由发挥</span>
+     <span class="n">Addr</span> <span class="n">_start</span><span class="p">;</span> 
+     <span class="n">Addr</span> <span class="n">_end</span><span class="p">;</span>
+     <span class="p">...</span>
+ <span class="nl">public:</span>
 
-     &lt;span class=&quot;c1&quot;&gt;// 定义构造函数&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-         &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...)&lt;/span&gt;
-     &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+     <span class="c1">// 定义构造函数</span>
+     <span class="n">AddrRange</span><span class="p">()</span>
+         <span class="o">:</span> <span class="n">_start</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">_end</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="p">...</span>
+     <span class="p">{}</span>
+     <span class="n">AddrRange</span><span class="p">(</span><span class="n">Addr</span> <span class="n">_start</span><span class="p">,</span> <span class="n">Addr</span> <span class="n">_end</span><span class="p">,</span> <span class="p">...)</span>
+     <span class="o">:</span> <span class="n">_start</span><span class="p">(</span><span class="n">_start</span><span class="p">),</span> <span class="n">_end</span><span class="p">(</span><span class="n">_end</span><span class="p">),</span> <span class="p">...</span>
+     <span class="p">{}</span>
 
-     &lt;span class=&quot;c1&quot;&gt;// 定义其他方法，以下面这个为例&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-         &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+     <span class="c1">// 定义其他方法，以下面这个为例</span>
+     <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">to_string</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+         <span class="p">...</span>
+     <span class="p">}</span>
 
-     &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在 SConscript 文件中设置编译以上两个文件&lt;/p&gt;
+     <span class="p">...</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 SConscript 文件中设置编译以上两个文件</p>
 
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;PySource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'m5'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'m5/params.py'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;以及&lt;/p&gt;
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'types.cc'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">PySource</span><span class="p">(</span><span class="s">'m5'</span><span class="p">,</span> <span class="s">'m5/params.py'</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>以及</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">Source</span><span class="p">(</span><span class="s">'types.cc'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
 
-&lt;h3 id=&quot;将两种语言定义的数据类型联系起来pybind&quot;&gt;将两种语言定义的数据类型联系起来（pybind）&lt;/h3&gt;
+<h3 id="将两种语言定义的数据类型联系起来pybind">将两种语言定义的数据类型联系起来（pybind）</h3>
 
-&lt;p&gt;GEM5 中将两种语言的数据类型联系起来的关键是利用 pybind，与 AddrRange 相关的代码在 python/pybind11/core.cc 文件中定义：&lt;/p&gt;
+<p>GEM5 中将两种语言的数据类型联系起来的关键是利用 pybind，与 AddrRange 相关的代码在 python/pybind11/core.cc 文件中定义：</p>
 
-&lt;ol&gt;
-  &lt;li&gt;首先定义一个 python module ， 名为 core.range：
-    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;
- &lt;span class=&quot;nf&quot;&gt;pybind_init_core&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m_native&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_core&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_native&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def_submodule&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;core&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+<ol>
+  <li>首先定义一个 python module ， 名为 core.range：
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kt">void</span>
+ <span class="nf">pybind_init_core</span><span class="p">(</span><span class="n">py</span><span class="o">::</span><span class="n">module</span> <span class="o">&amp;</span><span class="n">m_native</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="n">py</span><span class="o">::</span><span class="n">module</span> <span class="n">m_core</span> <span class="o">=</span> <span class="n">m_native</span><span class="p">.</span><span class="n">def_submodule</span><span class="p">(</span><span class="s">"core"</span><span class="p">);</span>
+     <span class="p">...</span>
         
-     &lt;span class=&quot;c1&quot;&gt;// 调用下面的函数定义一个子模块 core.range&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;init_range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m_native&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+     <span class="c1">// 调用下面的函数定义一个子模块 core.range</span>
+     <span class="n">init_range</span><span class="p">(</span><span class="n">m_native</span><span class="p">);</span>
+ <span class="p">}</span>
 
- &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;
- &lt;span class=&quot;nf&quot;&gt;init_range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m_native&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_native&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def_submodule&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;range&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ <span class="k">static</span> <span class="kt">void</span>
+ <span class="n">init_range</span><span class="p">(</span><span class="n">py</span><span class="o">::</span><span class="n">module</span> <span class="o">&amp;</span><span class="n">m_native</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="n">py</span><span class="o">::</span><span class="n">module</span> <span class="n">m</span> <span class="o">=</span> <span class="n">m_native</span><span class="p">.</span><span class="n">def_submodule</span><span class="p">(</span><span class="s">"range"</span><span class="p">);</span>
 
-     &lt;span class=&quot;c1&quot;&gt;// 绑定数据类型 AddrRange&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;AddrRange&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-         &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;// 绑定构造函数&lt;/span&gt;
-         &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// 绑定另一个构造函数&lt;/span&gt;
-         &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;//&lt;/span&gt;
+     <span class="c1">// 绑定数据类型 AddrRange</span>
+     <span class="n">py</span><span class="o">::</span><span class="n">class_</span><span class="o">&lt;</span><span class="n">AddrRange</span><span class="o">&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s">"AddrRange"</span><span class="p">)</span>
+         <span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="n">py</span><span class="o">::</span><span class="n">init</span><span class="o">&lt;&gt;</span><span class="p">())</span>                  <span class="c1">// 绑定构造函数</span>
+         <span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="n">py</span><span class="o">::</span><span class="n">init</span><span class="o">&lt;</span><span class="n">Addr</span> <span class="o">&amp;</span><span class="p">,</span> <span class="n">Addr</span> <span class="o">&amp;&gt;</span><span class="p">())</span>    <span class="c1">// 绑定另一个构造函数</span>
+         <span class="p">...</span>   <span class="c1">//</span>
 
-         &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;__str__&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// 将 python 文件中定义的 __str__ 函数与 c++ 文件中定义的 to_string 函数绑定&lt;/span&gt;
+         <span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="s">"__str__"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">AddrRange</span><span class="o">::</span><span class="n">to_string</span><span class="p">)</span><span class="c1">// 将 python 文件中定义的 __str__ 函数与 c++ 文件中定义的 to_string 函数绑定</span>
 
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;将 core 模块挂载到 _m5 模块下&lt;/p&gt;
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>将 core 模块挂载到 _m5 模块下</p>
 
-    &lt;p&gt;在 sim/init.cc 文件中，已经定义了 _m5 模块。在这个文件的如下代码中，调用了上述 pybind_init_core 函数，将 range 挂载到了 _m5 模块下：&lt;/p&gt;
+    <p>在 sim/init.cc 文件中，已经定义了 _m5 模块。在这个文件的如下代码中，调用了上述 pybind_init_core 函数，将 range 挂载到了 _m5 模块下：</p>
 
-    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;EmbeddedPyBind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;initAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;EmbeddedPyBind&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pending&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">EmbeddedPyBind</span><span class="o">::</span><span class="n">initAll</span><span class="p">()</span>
+ <span class="p">{</span>
+     <span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">EmbeddedPyBind</span> <span class="o">*&gt;</span> <span class="n">pending</span><span class="p">;</span>
 
-     &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_m5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;_m5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;m_m5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;__package__&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;_m5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+     <span class="n">py</span><span class="o">::</span><span class="n">module</span> <span class="n">m_m5</span> <span class="o">=</span> <span class="n">py</span><span class="o">::</span><span class="n">module</span><span class="p">(</span><span class="s">"_m5"</span><span class="p">);</span>
+     <span class="n">m_m5</span><span class="p">.</span><span class="n">attr</span><span class="p">(</span><span class="s">"__package__"</span><span class="p">)</span> <span class="o">=</span> <span class="n">py</span><span class="o">::</span><span class="n">cast</span><span class="p">(</span><span class="s">"_m5"</span><span class="p">);</span>
 
-     &lt;span class=&quot;n&quot;&gt;pybind_init_core&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m_m5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在 python 定义的 AddrRange 中定义 getValue 函数&lt;/p&gt;
+     <span class="n">pybind_init_core</span><span class="p">(</span><span class="n">m_m5</span><span class="p">);</span>
+     <span class="p">...</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 python 定义的 AddrRange 中定义 getValue 函数</p>
 
-    &lt;p&gt;回头再说之前代码中的 getValue函数：&lt;/p&gt;
+    <p>回头再说之前代码中的 getValue函数：</p>
 
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-         &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;_m5.range&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt; 
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="k">def</span> <span class="nf">getValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="kn">from</span> <span class="nn">_m5.range</span> <span class="kn">import</span> <span class="n">AddrRange</span> 
 
-         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddrRange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-                         &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;masks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;intlvMatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+         <span class="k">return</span> <span class="n">AddrRange</span><span class="p">(</span><span class="nb">long</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">start</span><span class="p">),</span> <span class="nb">long</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">end</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="p">.</span><span class="n">masks</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">intlvMatch</span><span class="p">))</span>
+</code></pre></div>    </div>
 
-    &lt;p&gt;现在可以理解，这实际上是引用了 _m5 模块中的 c++ 类型 AddrRange，并调用它的构造函数，返回一个 c++ 类型的 AddrRange。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+    <p>现在可以理解，这实际上是引用了 _m5 模块中的 c++ 类型 AddrRange，并调用它的构造函数，返回一个 c++ 类型的 AddrRange。</p>
+  </li>
+</ol>
 
-&lt;h2 id=&quot;在任意位置定义新的参数&quot;&gt;在任意位置定义新的参数&lt;/h2&gt;
+<h2 id="在任意位置定义新的参数">在任意位置定义新的参数</h2>
 
-&lt;p&gt;我的习惯是将改动都放在自己的文件夹下，这就要实现在任意位置定义新的参数。这里其实也算是个步骤总结：&lt;/p&gt;
+<p>我的习惯是将改动都放在自己的文件夹下，这就要实现在任意位置定义新的参数。这里其实也算是个步骤总结：</p>
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;定义一个 c++ class （参考上面的代码）&lt;/p&gt;
+<ol>
+  <li>
+    <p>定义一个 c++ class （参考上面的代码）</p>
 
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;定义构造函数，与其他函数&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在 SConscript 中设置编译：&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
+    <ol>
+      <li>
+        <p>定义构造函数，与其他函数</p>
+      </li>
+      <li>
+        <p>在 SConscript 中设置编译：</p>
+      </li>
+    </ol>
 
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'xxx.cc'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;利用 pybind 将上述 c++ 类转换成 python 库（参考上面的代码）&lt;/p&gt;
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">Source</span><span class="p">(</span><span class="s">'xxx.cc'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>利用 pybind 将上述 c++ 类转换成 python 库（参考上面的代码）</p>
 
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;定义一个子模块 init 函数&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在上述函数中将 c++ 类绑定成 python module&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在 sim/init.cc 的对应位置调用上述函数 （这里不得不修改源码）&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;定义一个 python class （参考上面的代码）&lt;/p&gt;
+    <ol>
+      <li>
+        <p>定义一个子模块 init 函数</p>
+      </li>
+      <li>
+        <p>在上述函数中将 c++ 类绑定成 python module</p>
+      </li>
+      <li>
+        <p>在 sim/init.cc 的对应位置调用上述函数 （这里不得不修改源码）</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>定义一个 python class （参考上面的代码）</p>
 
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;定义 cxx_type&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;定义构造函数，读取 kwargs&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;定义 pybind_predecls 、 cxx_predecls 、 cxx_ini_predecls 、 cxx_ini_parse ，后两者可选&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;定义 getValue ，返回 pybind 中绑定的 c++ 类&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;在 SConscript 中将这个文件挂载到 m5 模块下：&lt;/p&gt;
+    <ol>
+      <li>
+        <p>定义 cxx_type</p>
+      </li>
+      <li>
+        <p>定义构造函数，读取 kwargs</p>
+      </li>
+      <li>
+        <p>定义 pybind_predecls 、 cxx_predecls 、 cxx_ini_predecls 、 cxx_ini_parse ，后两者可选</p>
+      </li>
+      <li>
+        <p>定义 getValue ，返回 pybind 中绑定的 c++ 类</p>
+      </li>
+      <li>
+        <p>在 SConscript 中将这个文件挂载到 m5 模块下：</p>
 
-        &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;PySource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'m5'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'xxx.py'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html">先废话一下吧， GEM5 仿真器的代码组织是以 SimObject 为核心的。 以 CPU 和 memory 两类重要的模块为例，在各自的文件夹下定义了好多个 class ，每个 class 都以 SimObject 类为基类。 GEM5 提供了给 SimObject 添加参数的方式，在 http://www.gem5.org/documentation/learning_gem5/part2/parameters/ 中。 原理非常简单，在此不再完整描述，只介绍必要的部分。 随后将讨论一个重要的问题，如何定义一个复杂类型的参数。</summary></entry><entry><title type="html">GEM5- GEM5 中 SimObject 多继承的问题</title><link href="http://localhost:4000/2020/08/01/4_GEM5_MultiInherent/" rel="alternate" type="text/html" title="GEM5- GEM5 中 SimObject 多继承的问题" /><published>2020-08-01T00:00:00+08:00</published><updated>2020-08-01T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/01/4_GEM5_MultiInherent</id><content type="html" xml:base="http://localhost:4000/2020/08/01/4_GEM5_MultiInherent/">&lt;p&gt;之前遇到了一个比较蠢的问题，记录一下。&lt;/p&gt;
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">PySource</span><span class="p">(</span><span class="s">'m5'</span><span class="p">,</span> <span class="s">'xxx.py'</span><span class="p">)</span>
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+</ol>]]></content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html"><![CDATA[先废话一下吧， GEM5 仿真器的代码组织是以 SimObject 为核心的。 以 CPU 和 memory 两类重要的模块为例，在各自的文件夹下定义了好多个 class ，每个 class 都以 SimObject 类为基类。 GEM5 提供了给 SimObject 添加参数的方式，在 http://www.gem5.org/documentation/learning_gem5/part2/parameters/ 中。 原理非常简单，在此不再完整描述，只介绍必要的部分。 随后将讨论一个重要的问题，如何定义一个复杂类型的参数。]]></summary></entry><entry><title type="html">GEM5- GEM5 中 SimObject 多继承的问题</title><link href="http://localhost:4000/2020/08/01/4_GEM5_MultiInherent/" rel="alternate" type="text/html" title="GEM5- GEM5 中 SimObject 多继承的问题" /><published>2020-08-01T00:00:00+08:00</published><updated>2020-08-01T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/01/4_GEM5_MultiInherent</id><content type="html" xml:base="http://localhost:4000/2020/08/01/4_GEM5_MultiInherent/"><![CDATA[<p>之前遇到了一个比较蠢的问题，记录一下。</p>
 
-&lt;p&gt;在定义一个 SimObject 时，突发奇想搞了个多继承，即既继承 SimObject 和另一个基类。
+<p>在定义一个 SimObject 时，突发奇想搞了个多继承，即既继承 SimObject 和另一个基类。
 就这样出了问题。
-观察 python/m5/simulate.py/instantiate() 发现，在实例化的过程中调用了基类中的函数，导致运行的错误。&lt;/p&gt;
+观察 python/m5/simulate.py/instantiate() 发现，在实例化的过程中调用了基类中的函数，导致运行的错误。</p>
 
-&lt;p&gt;所以&lt;/p&gt;
+<p>所以</p>
 
-&lt;h2 id=&quot;不要用多继承&quot;&gt;&lt;strong&gt;不要用多继承&lt;/strong&gt;&lt;/h2&gt;</content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html">之前遇到了一个比较蠢的问题，记录一下。</summary></entry><entry><title type="html">GEM5- GEM5 中 VectorPort 的用法</title><link href="http://localhost:4000/2020/08/01/5_GEM5_VectorPortUsage/" rel="alternate" type="text/html" title="GEM5- GEM5 中 VectorPort 的用法" /><published>2020-08-01T00:00:00+08:00</published><updated>2020-08-01T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/01/5_GEM5_VectorPortUsage</id><content type="html" xml:base="http://localhost:4000/2020/08/01/5_GEM5_VectorPortUsage/">&lt;p&gt;我的需求用到不确定个数的 port ，看了源码搞清了应该怎么用。&lt;/p&gt;
+<h2 id="不要用多继承"><strong>不要用多继承</strong></h2>]]></content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html"><![CDATA[之前遇到了一个比较蠢的问题，记录一下。]]></summary></entry><entry><title type="html">GEM5- GEM5 中 VectorPort 的用法</title><link href="http://localhost:4000/2020/08/01/5_GEM5_VectorPortUsage/" rel="alternate" type="text/html" title="GEM5- GEM5 中 VectorPort 的用法" /><published>2020-08-01T00:00:00+08:00</published><updated>2020-08-01T00:00:00+08:00</updated><id>http://localhost:4000/2020/08/01/5_GEM5_VectorPortUsage</id><content type="html" xml:base="http://localhost:4000/2020/08/01/5_GEM5_VectorPortUsage/"><![CDATA[<p>我的需求用到不确定个数的 port ，看了源码搞清了应该怎么用。</p>
 
-&lt;ol&gt;
-  &lt;li&gt;在 SimObject 的 py 文件中添加：
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;masterports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;VectorMasterPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'master ports'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
- &lt;span class=&quot;n&quot;&gt;slaveports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;VectorSlavePort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'slave ports'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在 SimObject 的 hh 文件中添加 port 的 vector 变量：&lt;/p&gt;
+<ol>
+  <li>在 SimObject 的 py 文件中添加：
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">masterports</span> <span class="o">=</span> <span class="n">VectorMasterPort</span><span class="p">(</span><span class="s">'master ports'</span><span class="p">)</span>
+ <span class="n">slaveports</span> <span class="o">=</span> <span class="n">VectorSlavePort</span><span class="p">(</span><span class="s">'slave ports'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 SimObject 的 hh 文件中添加 port 的 vector 变量：</p>
 
-    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;XXXMasterPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
- &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;XXXSlavePort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;SimObject 类中重写 getPort 函数：&lt;/p&gt;
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">XXXMasterPort</span><span class="o">&gt;</span> <span class="n">m_ps</span><span class="p">;</span>
+ <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">XXXSlavePort</span><span class="o">&gt;</span> <span class="n">s_ps</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>SimObject 类中重写 getPort 函数：</p>
 
-    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;Port&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;
- &lt;span class=&quot;n&quot;&gt;HyperTr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;if_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PortID&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">Port</span> <span class="o">&amp;</span>
+ <span class="n">HyperTr</span><span class="o">::</span><span class="n">getPort</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">if_name</span><span class="p">,</span> <span class="n">PortID</span> <span class="n">idx</span><span class="p">){</span>
 
-     &lt;span class=&quot;c1&quot;&gt;// This is the name from the Python SimObject declaration (SimpleMemobj.py)&lt;/span&gt;
-     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;if_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;masterports&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;if_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;slaveports&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-         &lt;span class=&quot;c1&quot;&gt;// pass it along to our super class&lt;/span&gt;
-         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SimObject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;if_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在 c++ class 的构造函数中添加 vector ports：&lt;/p&gt;
+     <span class="c1">// This is the name from the Python SimObject declaration (SimpleMemobj.py)</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">if_name</span> <span class="o">==</span> <span class="s">"masterports"</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">return</span> <span class="n">m_ps</span><span class="p">[</span><span class="n">idx</span><span class="p">];</span>
+     <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">if_name</span> <span class="o">==</span> <span class="s">"slaveports"</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">return</span> <span class="n">s_ps</span><span class="p">[</span><span class="n">idx</span><span class="p">];</span>
+     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+         <span class="c1">// pass it along to our super class</span>
+         <span class="k">return</span> <span class="n">SimObject</span><span class="o">::</span><span class="n">getPort</span><span class="p">(</span><span class="n">if_name</span><span class="p">,</span> <span class="n">idx</span><span class="p">);</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在 c++ class 的构造函数中添加 vector ports：</p>
 
-    &lt;p&gt;port_xxx_connection_count 是自动生成的参数，是编译器根据 config.py 文件中连接了多少 port 确定的。
- 在构造函数中，我们需要按照这个数量添加 port。&lt;/p&gt;
-    &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;port_masterports_connection_count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;m_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push_back&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;XXXMasterPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;.m_port:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
- &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;port_slaveports_connection_count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-     &lt;span class=&quot;n&quot;&gt;s_ps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push_back&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;XXXSlavePort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;.s_port:&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+    <p>port_xxx_connection_count 是自动生成的参数，是编译器根据 config.py 文件中连接了多少 port 确定的。
+ 在构造函数中，我们需要按照这个数量添加 port。</p>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">params</span><span class="o">-&gt;</span><span class="n">port_masterports_connection_count</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">){</span>
+     <span class="n">m_ps</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">XXXMasterPort</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">name</span> <span class="o">+</span> <span class="s">".m_port:"</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="k">this</span><span class="p">));</span>
+ <span class="p">}</span>
+ <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">params</span><span class="o">-&gt;</span><span class="n">port_slaveports_connection_count</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">){</span>
+     <span class="n">s_ps</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">XXXSlavePort</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">name</span> <span class="o">+</span> <span class="s">".s_port:"</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="k">this</span><span class="p">));</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
 
-&lt;p&gt;为了表示哪几个名字必须一样，哪几个名字不必一样，我特意将 c++ class 中 port 的名字与 python 中 port 的名字设置的不同。&lt;/p&gt;
+<p>为了表示哪几个名字必须一样，哪几个名字不必一样，我特意将 c++ class 中 port 的名字与 python 中 port 的名字设置的不同。</p>
 
-&lt;p&gt;另：啰嗦一句&lt;/p&gt;
+<p>另：啰嗦一句</p>
 
-&lt;p&gt;其实重点在于 getPort 函数，这个函数用于定义 python 文件中的 port 名字与 c++ class 中的哪个 port 对应。
+<p>其实重点在于 getPort 函数，这个函数用于定义 python 文件中的 port 名字与 c++ class 中的哪个 port 对应。
 c++ class 中的 port 可能不必定义成一个 vector 。
-只要能让 gem5 编译器找到对应的 port 即可。&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html">我的需求用到不确定个数的 port ，看了源码搞清了应该怎么用。</summary></entry><entry><title type="html">GEM5- GEM5 的基础使用</title><link href="http://localhost:4000/2020/07/21/2_GEM5_Basic_Usage/" rel="alternate" type="text/html" title="GEM5- GEM5 的基础使用" /><published>2020-07-21T00:00:00+08:00</published><updated>2020-07-21T00:00:00+08:00</updated><id>http://localhost:4000/2020/07/21/2_GEM5_Basic_Usage</id><content type="html" xml:base="http://localhost:4000/2020/07/21/2_GEM5_Basic_Usage/">&lt;p&gt;参考文档 &lt;a href=&quot;http://www.gem5.org/&quot;&gt;http://www.gem5.org/&lt;/a&gt;&lt;/p&gt;
+只要能让 gem5 编译器找到对应的 port 即可。</p>]]></content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html"><![CDATA[我的需求用到不确定个数的 port ，看了源码搞清了应该怎么用。]]></summary></entry><entry><title type="html">GEM5- GEM5 的基础使用</title><link href="http://localhost:4000/2020/07/21/2_GEM5_Basic_Usage/" rel="alternate" type="text/html" title="GEM5- GEM5 的基础使用" /><published>2020-07-21T00:00:00+08:00</published><updated>2020-07-21T00:00:00+08:00</updated><id>http://localhost:4000/2020/07/21/2_GEM5_Basic_Usage</id><content type="html" xml:base="http://localhost:4000/2020/07/21/2_GEM5_Basic_Usage/"><![CDATA[<p>参考文档 <a href="http://www.gem5.org/">http://www.gem5.org/</a></p>
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;GEM5 的编译&lt;/p&gt;
+<ul>
+  <li>
+    <p>GEM5 的编译</p>
 
-    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part1/building/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part1/building/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;GEM5 的 config 文件&lt;/p&gt;
+    <p><a href="http://www.gem5.org/documentation/learning_gem5/part1/building/">http://www.gem5.org/documentation/learning_gem5/part1/building/</a></p>
+  </li>
+  <li>
+    <p>GEM5 的 config 文件</p>
 
-    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part1/simple_config/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part1/simple_config/&lt;/a&gt;
-  &lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part1/cache_config/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part1/cache_config/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;GEM5 的 output&lt;/p&gt;
+    <p><a href="http://www.gem5.org/documentation/learning_gem5/part1/simple_config/">http://www.gem5.org/documentation/learning_gem5/part1/simple_config/</a>
+  <a href="http://www.gem5.org/documentation/learning_gem5/part1/cache_config/">http://www.gem5.org/documentation/learning_gem5/part1/cache_config/</a></p>
+  </li>
+  <li>
+    <p>GEM5 的 output</p>
 
-    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part1/gem5_stats/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part1/gem5_stats/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;编写一个模块 （ SimObject ）&lt;/p&gt;
+    <p><a href="http://www.gem5.org/documentation/learning_gem5/part1/gem5_stats/">http://www.gem5.org/documentation/learning_gem5/part1/gem5_stats/</a></p>
+  </li>
+  <li>
+    <p>编写一个模块 （ SimObject ）</p>
 
-    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/helloobject/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/helloobject/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;debug flag 的使用&lt;/p&gt;
+    <p><a href="http://www.gem5.org/documentation/learning_gem5/part2/helloobject/">http://www.gem5.org/documentation/learning_gem5/part2/helloobject/</a></p>
+  </li>
+  <li>
+    <p>debug flag 的使用</p>
 
-    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/debugging/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/debugging/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;cycle accurate 的核心： event 的定义&lt;/p&gt;
+    <p><a href="http://www.gem5.org/documentation/learning_gem5/part2/debugging/">http://www.gem5.org/documentation/learning_gem5/part2/debugging/</a></p>
+  </li>
+  <li>
+    <p>cycle accurate 的核心： event 的定义</p>
 
-    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/events/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/events/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;模块的参数定义&lt;/p&gt;
+    <p><a href="http://www.gem5.org/documentation/learning_gem5/part2/events/">http://www.gem5.org/documentation/learning_gem5/part2/events/</a></p>
+  </li>
+  <li>
+    <p>模块的参数定义</p>
 
-    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/parameters/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/parameters/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;模块间的数据交互： port 的定义&lt;/p&gt;
+    <p><a href="http://www.gem5.org/documentation/learning_gem5/part2/parameters/">http://www.gem5.org/documentation/learning_gem5/part2/parameters/</a></p>
+  </li>
+  <li>
+    <p>模块间的数据交互： port 的定义</p>
 
-    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/memoryobject/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/memoryobject/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;一个例子： cache&lt;/p&gt;
+    <p><a href="http://www.gem5.org/documentation/learning_gem5/part2/memoryobject/">http://www.gem5.org/documentation/learning_gem5/part2/memoryobject/</a></p>
+  </li>
+  <li>
+    <p>一个例子： cache</p>
 
-    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part2/simplecache/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part2/simplecache/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;GEM5 中的 ruby&lt;/p&gt;
+    <p><a href="http://www.gem5.org/documentation/learning_gem5/part2/simplecache/">http://www.gem5.org/documentation/learning_gem5/part2/simplecache/</a></p>
+  </li>
+  <li>
+    <p>GEM5 中的 ruby</p>
 
-    &lt;p&gt;&lt;a href=&quot;http://www.gem5.org/documentation/learning_gem5/part3/MSIintro/&quot;&gt;http://www.gem5.org/documentation/learning_gem5/part3/MSIintro/&lt;/a&gt;&lt;/p&gt;
+    <p><a href="http://www.gem5.org/documentation/learning_gem5/part3/MSIintro/">http://www.gem5.org/documentation/learning_gem5/part3/MSIintro/</a></p>
 
-    &lt;p&gt;这里开始我暂时用不上，还没有仔细看。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html">参考文档 http://www.gem5.org/</summary></entry><entry><title type="html">GEM5- GEM5 的非 sudo 用户安装</title><link href="http://localhost:4000/2020/07/20/1_GEM_Install/" rel="alternate" type="text/html" title="GEM5- GEM5 的非 sudo 用户安装" /><published>2020-07-20T00:00:00+08:00</published><updated>2020-07-20T00:00:00+08:00</updated><id>http://localhost:4000/2020/07/20/1_GEM_Install</id><content type="html" xml:base="http://localhost:4000/2020/07/20/1_GEM_Install/">&lt;p&gt;这篇是好久之前总结的，觉得网上没有相关的资料于是就把这个放上来了。算是比较详细，该踩的坑都踩了。&lt;/p&gt;
+    <p>这里开始我暂时用不上，还没有仔细看。</p>
+  </li>
+</ul>]]></content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html"><![CDATA[参考文档 http://www.gem5.org/]]></summary></entry><entry><title type="html">GEM5- GEM5 的非 sudo 用户安装</title><link href="http://localhost:4000/2020/07/20/1_GEM_Install/" rel="alternate" type="text/html" title="GEM5- GEM5 的非 sudo 用户安装" /><published>2020-07-20T00:00:00+08:00</published><updated>2020-07-20T00:00:00+08:00</updated><id>http://localhost:4000/2020/07/20/1_GEM_Install</id><content type="html" xml:base="http://localhost:4000/2020/07/20/1_GEM_Install/"><![CDATA[<p>这篇是好久之前总结的，觉得网上没有相关的资料于是就把这个放上来了。算是比较详细，该踩的坑都踩了。</p>
 
-&lt;p&gt;需求：gem5仿真器要安装 scons ，需要无sudo权限使用 python-dev ；先试着求助 anaconda ，但无果，最终选择了这种方案。&lt;/p&gt;
+<p>需求：gem5仿真器要安装 scons ，需要无sudo权限使用 python-dev ；先试着求助 anaconda ，但无果，最终选择了这种方案。</p>
 
-&lt;p&gt;大致思路是用源码编译python，之后安装pip，再安装scons。&lt;/p&gt;
+<p>大致思路是用源码编译python，之后安装pip，再安装scons。</p>
 
-&lt;p&gt;当然，如果有 root 权限就简单很多了，直接参考官方文档 &lt;a href=&quot;http://www.gem5.org/&quot;&gt;http://www.gem5.org/&lt;/a&gt; 就可以了。&lt;/p&gt;
+<p>当然，如果有 root 权限就简单很多了，直接参考官方文档 <a href="http://www.gem5.org/">http://www.gem5.org/</a> 就可以了。</p>
 
-&lt;h2 id=&quot;python-和-python-dev-的安装&quot;&gt;Python 和 Python-dev 的安装&lt;/h2&gt;
+<h2 id="python-和-python-dev-的安装">Python 和 Python-dev 的安装</h2>
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;下载并编译python&lt;/p&gt;
+<ol>
+  <li>
+    <p>下载并编译python</p>
 
-    &lt;p&gt;scons对python版本需求是 python2.7，下安装 python2.7.17&lt;/p&gt;
+    <p>scons对python版本需求是 python2.7，下安装 python2.7.17</p>
 
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;源码地址： &lt;a href=&quot;https://www.python.org/downloads/source/&quot;&gt;https://www.python.org/downloads/source/&lt;/a&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;config：&lt;/p&gt;
+    <ul>
+      <li>
+        <p>源码地址： <a href="https://www.python.org/downloads/source/">https://www.python.org/downloads/source/</a></p>
+      </li>
+      <li>
+        <p>config：</p>
 
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ./configure --enable-optimizations --prefix=~/.local/python2.7/（安装路径，可自定义）
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;make：&lt;/p&gt;
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ./configure --enable-optimizations --prefix=~/.local/python2.7/（安装路径，可自定义）
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>make：</p>
 
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  make &amp;amp; make install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;将python路径添加到.bashrc中：&lt;/p&gt;
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  make &amp; make install
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>将python路径添加到.bashrc中：</p>
 
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  export PATH=&quot;路径:$PATH&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;编译安装 pip 和 setuptools&lt;/p&gt;
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  export PATH="路径:$PATH"
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>编译安装 pip 和 setuptools</p>
 
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;源码地址： &lt;a href=&quot;https://pypi.org/project/setuptools/#files&quot;&gt;https://www.python.org/downloads/source/&lt;/a&gt; 和 &lt;a href=&quot;https://pypi.org/project/pip/#files&quot;&gt;https://pypi.org/project/pip/#files&lt;/a&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;install，注意这里要确认 python 为刚刚安装的 python ，如果不是，要尝试关闭 conda 等环境。&lt;/p&gt;
+    <ul>
+      <li>
+        <p>源码地址： <a href="https://pypi.org/project/setuptools/#files">https://www.python.org/downloads/source/</a> 和 <a href="https://pypi.org/project/pip/#files">https://pypi.org/project/pip/#files</a></p>
+      </li>
+      <li>
+        <p>install，注意这里要确认 python 为刚刚安装的 python ，如果不是，要尝试关闭 conda 等环境。</p>
 
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  python setup.py install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  python setup.py install
+</code></pre></div>        </div>
+      </li>
+    </ul>
 
-    &lt;p&gt;[2020-07-23 更新： setuptool会有版本问题，最新的版本不支持python2，要选择之前的版本]&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;修改pip源&lt;/p&gt;
+    <p>[2020-07-23 更新： setuptool会有版本问题，最新的版本不支持python2，要选择之前的版本]</p>
+  </li>
+  <li>
+    <p>修改pip源</p>
 
-    &lt;p&gt;几个可选的 PYPI 国内源路径:&lt;/p&gt;
+    <p>几个可选的 PYPI 国内源路径:</p>
 
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;阿里云 &lt;a href=&quot;http://mirrors.aliyun.com/pypi/simple/&quot;&gt;http://mirrors.aliyun.com/pypi/simple/&lt;/a&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;豆瓣(douban) &lt;a href=&quot;http://pypi.douban.com/simple/&quot;&gt;http://pypi.douban.com/simple/&lt;/a&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;清华大学 &lt;a href=&quot;https://pypi.tuna.tsinghua.edu.cn/simple/&quot;&gt;https://pypi.tuna.tsinghua.edu.cn/simple/&lt;/a&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;中国科学技术大学 &lt;a href=&quot;http://pypi.mirrors.ustc.edu.cn/simple/&quot;&gt;http://pypi.mirrors.ustc.edu.cn/simple/&lt;/a&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
+    <ul>
+      <li>
+        <p>阿里云 <a href="http://mirrors.aliyun.com/pypi/simple/">http://mirrors.aliyun.com/pypi/simple/</a></p>
+      </li>
+      <li>
+        <p>豆瓣(douban) <a href="http://pypi.douban.com/simple/">http://pypi.douban.com/simple/</a></p>
+      </li>
+      <li>
+        <p>清华大学 <a href="https://pypi.tuna.tsinghua.edu.cn/simple/">https://pypi.tuna.tsinghua.edu.cn/simple/</a></p>
+      </li>
+      <li>
+        <p>中国科学技术大学 <a href="http://pypi.mirrors.ustc.edu.cn/simple/">http://pypi.mirrors.ustc.edu.cn/simple/</a></p>
+      </li>
+    </ul>
 
-    &lt;p&gt;修改方式：在～/.pip/pip.conf文件中追加如下字段&lt;/p&gt;
+    <p>修改方式：在～/.pip/pip.conf文件中追加如下字段</p>
 
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; [global]
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [global]
  index-url=http://pypi.douban.com/simple
  [install]
  trusted-host=pypi.douban.com
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+</code></pre></div>    </div>
+  </li>
+</ol>
 
-&lt;h2 id=&quot;scons-的安装&quot;&gt;scons 的安装&lt;/h2&gt;
+<h2 id="scons-的安装">scons 的安装</h2>
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;安装scons:&lt;/p&gt;
+<ol>
+  <li>
+    <p>安装scons:</p>
 
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;源码地址 &lt;a href=&quot;https://github.com/SCons/scons&quot;&gt;https://github.com/SCons/scons&lt;/a&gt; ,  github上有安装步骤，可自行参考，不赘述&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;bootstrap 的安装：&lt;/p&gt;
+    <ul>
+      <li>
+        <p>源码地址 <a href="https://github.com/SCons/scons">https://github.com/SCons/scons</a> ,  github上有安装步骤，可自行参考，不赘述</p>
+      </li>
+      <li>
+        <p>bootstrap 的安装：</p>
 
-        &lt;ul&gt;
-          &lt;li&gt;
-            &lt;p&gt;python bootstrap.py build/scons&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;install：&lt;/p&gt;
+        <ul>
+          <li>
+            <p>python bootstrap.py build/scons</p>
+          </li>
+          <li>
+            <p>install：</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  cd build/scons
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  cd build/scons
   python setup.py install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
+</code></pre></div>            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
 
-    &lt;p&gt;[2020-07-23 更新： scons 会有版本问题，最新的版本不支持 python2 ，要选择之前的版本，亲测 3.1.2 之前的版本可以]&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+    <p>[2020-07-23 更新： scons 会有版本问题，最新的版本不支持 python2 ，要选择之前的版本，亲测 3.1.2 之前的版本可以]</p>
+  </li>
+</ol>
 
-&lt;h2 id=&quot;gem5的其他依赖&quot;&gt;GEM5的其他依赖&lt;/h2&gt;
+<h2 id="gem5的其他依赖">GEM5的其他依赖</h2>
 
-&lt;ol&gt;
-  &lt;li&gt;M4等： 此处参考 &lt;a href=&quot;https://blog.csdn.net/qq_30549833/article/details/72955881&quot;&gt;https://blog.csdn.net/qq_30549833/article/details/72955881&lt;/a&gt; ，下面的源网站可以根据情况改成最新的版本，四个都要安装在同一个文件夹下，建议安装在~/.local
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;安装m4&lt;/p&gt;
+<ol>
+  <li>M4等： 此处参考 <a href="https://blog.csdn.net/qq_30549833/article/details/72955881">https://blog.csdn.net/qq_30549833/article/details/72955881</a> ，下面的源网站可以根据情况改成最新的版本，四个都要安装在同一个文件夹下，建议安装在~/.local
+    <ul>
+      <li>
+        <p>安装m4</p>
 
-        &lt;ol&gt;
-          &lt;li&gt;
-            &lt;p&gt;地址:&lt;/p&gt;
+        <ol>
+          <li>
+            <p>地址:</p>
 
-            &lt;p&gt;&lt;a href=&quot;http://mirrors.kernel.org/gnu/m4/m4-1.4.13.tar.gz&quot;&gt;http://mirrors.kernel.org/gnu/m4/m4-1.4.13.tar.gz&lt;/a&gt;&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;Config:&lt;/p&gt;
+            <p><a href="http://mirrors.kernel.org/gnu/m4/m4-1.4.13.tar.gz">http://mirrors.kernel.org/gnu/m4/m4-1.4.13.tar.gz</a></p>
+          </li>
+          <li>
+            <p>Config:</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ./configure –prefix=~/.local（或其他安装路径，下同）
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;Install:&lt;/p&gt;
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ./configure –prefix=~/.local（或其他安装路径，下同）
+</code></pre></div>            </div>
+          </li>
+          <li>
+            <p>Install:</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; make &amp;amp;&amp;amp; make install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;安装autoconf&lt;/p&gt;
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> make &amp;&amp; make install
+</code></pre></div>            </div>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <p>安装autoconf</p>
 
-        &lt;ol&gt;
-          &lt;li&gt;
-            &lt;p&gt;地址:&lt;/p&gt;
+        <ol>
+          <li>
+            <p>地址:</p>
 
-            &lt;p&gt;&lt;a href=&quot;http://mirrors.kernel.org/gnu/autoconf/autoconf-latest.tar.gz&quot;&gt;http://mirrors.kernel.org/gnu/autoconf/autoconf-latest.tar.gz&lt;/a&gt;&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;Config:&lt;/p&gt;
+            <p><a href="http://mirrors.kernel.org/gnu/autoconf/autoconf-latest.tar.gz">http://mirrors.kernel.org/gnu/autoconf/autoconf-latest.tar.gz</a></p>
+          </li>
+          <li>
+            <p>Config:</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ./configure –prefix=~/.local
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;Install:&lt;/p&gt;
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ./configure –prefix=~/.local
+</code></pre></div>            </div>
+          </li>
+          <li>
+            <p>Install:</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; make &amp;amp;&amp;amp; make install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;安装automake&lt;/p&gt;
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> make &amp;&amp; make install
+</code></pre></div>            </div>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <p>安装automake</p>
 
-        &lt;ol&gt;
-          &lt;li&gt;
-            &lt;p&gt;地址:&lt;/p&gt;
+        <ol>
+          <li>
+            <p>地址:</p>
 
-            &lt;p&gt;&lt;a href=&quot;http://mirrors.kernel.org/gnu/automake/automake-1.11.tar.gz&quot;&gt;http://mirrors.kernel.org/gnu/automake/automake-1.11.tar.gz&lt;/a&gt;&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;Config:&lt;/p&gt;
+            <p><a href="http://mirrors.kernel.org/gnu/automake/automake-1.11.tar.gz">http://mirrors.kernel.org/gnu/automake/automake-1.11.tar.gz</a></p>
+          </li>
+          <li>
+            <p>Config:</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ./configure –prefix=~/.local
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;Install:&lt;/p&gt;
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ./configure –prefix=~/.local
+</code></pre></div>            </div>
+          </li>
+          <li>
+            <p>Install:</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; make &amp;amp;&amp;amp; make install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;安装libtool&lt;/p&gt;
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> make &amp;&amp; make install
+</code></pre></div>            </div>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <p>安装libtool</p>
 
-        &lt;ol&gt;
-          &lt;li&gt;
-            &lt;p&gt;地址:&lt;/p&gt;
+        <ol>
+          <li>
+            <p>地址:</p>
 
-            &lt;p&gt;&lt;a href=&quot;http://mirrors.kernel.org/gnu/libtool/libtool-2.2.6b.tar.gz&quot;&gt;http://mirrors.kernel.org/gnu/libtool/libtool-2.2.6b.tar.gz &lt;/a&gt;&lt;/p&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;Config:&lt;/p&gt;
+            <p><a href="http://mirrors.kernel.org/gnu/libtool/libtool-2.2.6b.tar.gz">http://mirrors.kernel.org/gnu/libtool/libtool-2.2.6b.tar.gz </a></p>
+          </li>
+          <li>
+            <p>Config:</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ./configure –prefix=~/.local
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;Install:&lt;/p&gt;
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ./configure –prefix=~/.local
+</code></pre></div>            </div>
+          </li>
+          <li>
+            <p>Install:</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; make &amp;amp;&amp;amp; make install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Protobuf:&lt;/p&gt;
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> make &amp;&amp; make install
+</code></pre></div>            </div>
+          </li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Protobuf:</p>
 
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;源码地址： &lt;a href=&quot;https://github.com/protocolbuffers/protobuf.git&quot;&gt;https://github.com/protocolbuffers/protobuf.git&lt;/a&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;Update： 这个步骤省了会报错&lt;/p&gt;
+    <ul>
+      <li>
+        <p>源码地址： <a href="https://github.com/protocolbuffers/protobuf.git">https://github.com/protocolbuffers/protobuf.git</a></p>
+      </li>
+      <li>
+        <p>Update： 这个步骤省了会报错</p>
 
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  git submodule update --init --recursive
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;autogen：&lt;/p&gt;
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  git submodule update --init --recursive
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>autogen：</p>
 
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ./autogen.sh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;config:&lt;/p&gt;
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ./autogen.sh
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>config:</p>
 
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ./configure --prefix = {your_path}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;install:&lt;/p&gt;
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ./configure --prefix = {your_path}
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>install:</p>
 
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  make
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  make
   make check
   make install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;添加路径在.bashrc文件中，在.bashrc中追加：&lt;/p&gt;
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>添加路径在.bashrc文件中，在.bashrc中追加：</p>
 
-        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  export PATH=&quot;{your_path}:$PATH&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;添加python依赖 （可选）：&lt;/p&gt;
-        &lt;ol&gt;
-          &lt;li&gt;
-            &lt;p&gt;添加python路径 （就是刚才安装的python路径，添加到 PYTHONPATH 环境变量中）：&lt;/p&gt;
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  export PATH="{your_path}:$PATH"
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>添加python依赖 （可选）：</p>
+        <ol>
+          <li>
+            <p>添加python路径 （就是刚才安装的python路径，添加到 PYTHONPATH 环境变量中）：</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; export PYTHONPATH=&quot;{your_path}/lib/python2.7/site-packages/:$PYTHONPATH&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;编译安装&lt;/p&gt;
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> export PYTHONPATH="{your_path}/lib/python2.7/site-packages/:$PYTHONPATH"
+</code></pre></div>            </div>
+          </li>
+          <li>
+            <p>编译安装</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; python setup.py build 
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> python setup.py build 
  python setup.py test 
  python setup.py install --prefix={your_path} 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-          &lt;li&gt;
-            &lt;p&gt;测试，打开一个python，输入下面代码，没有import错误就说明正确安装了&lt;/p&gt;
+</code></pre></div>            </div>
+          </li>
+          <li>
+            <p>测试，打开一个python，输入下面代码，没有import错误就说明正确安装了</p>
 
-            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; import google.protobuf
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
-          &lt;/li&gt;
-        &lt;/ol&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> import google.protobuf
+</code></pre></div>            </div>
+          </li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+</ol>
 
-&lt;h2 id=&quot;gem5-的编译&quot;&gt;GEM5 的编译&lt;/h2&gt;
+<h2 id="gem5-的编译">GEM5 的编译</h2>
 
-&lt;p&gt;最后就可以编译 GEM5 啦&lt;/p&gt;
+<p>最后就可以编译 GEM5 啦</p>
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;源码：&lt;/p&gt;
+<ol>
+  <li>
+    <p>源码：</p>
 
-    &lt;p&gt;&lt;a href=&quot;https://github.com/gem5/gem5.git&quot;&gt;https://github.com/gem5/gem5.git&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;编译gem5：&lt;/p&gt;
+    <p><a href="https://github.com/gem5/gem5.git">https://github.com/gem5/gem5.git</a></p>
+  </li>
+  <li>
+    <p>编译gem5：</p>
 
-    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; scons bulid/X86/gem5.opt -j9
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> scons bulid/X86/gem5.opt -j9
+</code></pre></div>    </div>
 
-    &lt;p&gt;有可能会报错少一些 python module ，这个可以很轻松解决，在此不赘述。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html">这篇是好久之前总结的，觉得网上没有相关的资料于是就把这个放上来了。算是比较详细，该踩的坑都踩了。</summary></entry><entry><title type="html">Candance 1： Candance的初步使用</title><link href="http://localhost:4000/2020/07/07/1_Candance_Intro/" rel="alternate" type="text/html" title="Candance 1： Candance的初步使用" /><published>2020-07-07T00:00:00+08:00</published><updated>2020-07-07T00:00:00+08:00</updated><id>http://localhost:4000/2020/07/07/1_Candance_Intro</id><content type="html" xml:base="http://localhost:4000/2020/07/07/1_Candance_Intro/">&lt;h2 id=&quot;candance的安装&quot;&gt;Candance的安装&lt;/h2&gt;
+    <p>有可能会报错少一些 python module ，这个可以很轻松解决，在此不赘述。</p>
+  </li>
+</ol>]]></content><author><name>Yilong Zhao</name></author><category term="GEM5" /><category term="GEM5" /><category term="simulator" /><category term="cycle accurate" /><summary type="html"><![CDATA[这篇是好久之前总结的，觉得网上没有相关的资料于是就把这个放上来了。算是比较详细，该踩的坑都踩了。]]></summary></entry><entry><title type="html">Candance 1： Candance的初步使用</title><link href="http://localhost:4000/2020/07/07/1_Candance_Intro/" rel="alternate" type="text/html" title="Candance 1： Candance的初步使用" /><published>2020-07-07T00:00:00+08:00</published><updated>2020-07-07T00:00:00+08:00</updated><id>http://localhost:4000/2020/07/07/1_Candance_Intro</id><content type="html" xml:base="http://localhost:4000/2020/07/07/1_Candance_Intro/"><![CDATA[<h2 id="candance的安装">Candance的安装</h2>
 
-&lt;p&gt;使用的是已经安装好的 candance ，没有涉及到安装问题，留出位置，以后遇到问题再补。&lt;/p&gt;
+<p>使用的是已经安装好的 candance ，没有涉及到安装问题，留出位置，以后遇到问题再补。</p>
 
-&lt;h2 id=&quot;candance-启动&quot;&gt;Candance 启动&lt;/h2&gt;
+<h2 id="candance-启动">Candance 启动</h2>
 
-&lt;p&gt;命令：&lt;/p&gt;
+<p>命令：</p>
 
-&lt;blockquote&gt;
-  &lt;p&gt;virtuoso &amp;amp;&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>virtuoso &amp;</p>
+</blockquote>
 
-&lt;p&gt;在我安装好的这个cadance中，virtuoso 打开的是6.1版本，icfb 打开的是5.1版本。6.1版本用的是oa库，5.1版本用的是cdb库，这两个库不兼容，使用时要注意。在此我用的是6.1版本。&lt;/p&gt;
+<p>在我安装好的这个cadance中，virtuoso 打开的是6.1版本，icfb 打开的是5.1版本。6.1版本用的是oa库，5.1版本用的是cdb库，这两个库不兼容，使用时要注意。在此我用的是6.1版本。</p>
 
-&lt;h2 id=&quot;安装库&quot;&gt;安装库&lt;/h2&gt;
+<h2 id="安装库">安装库</h2>
 
-&lt;p&gt;安装时要注意是 cdb 库还是 oa 库。在我电脑中的库中，SMIC_13mmrf_1P6M_30k 是 cdb 库，FreePDK-45 是 OA 库，所以这里我将安装FreePDK库。&lt;/p&gt;
+<p>安装时要注意是 cdb 库还是 oa 库。在我电脑中的库中，SMIC_13mmrf_1P6M_30k 是 cdb 库，FreePDK-45 是 OA 库，所以这里我将安装FreePDK库。</p>
 
-&lt;p&gt;Tools - Library Manager - File - New Library， Directory选择 /path/to/pdk/FreePDK45/ncsu_basekit/lib/，Name 输入NCSU_Devices_FreePDK45，之后 OK。&lt;/p&gt;
+<p>Tools - Library Manager - File - New Library， Directory选择 /path/to/pdk/FreePDK45/ncsu_basekit/lib/，Name 输入NCSU_Devices_FreePDK45，之后 OK。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_New_Library.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_New_Library.png" alt="" /></p>
 
-&lt;p&gt;在如下对话框中选择 Do not need process information 即可。&lt;/p&gt;
+<p>在如下对话框中选择 Do not need process information 即可。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Technology_File_for_New_Library.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_Technology_File_for_New_Library.png" alt="" /></p>
 
-&lt;p&gt;之后回到如下界面，在新的Library中出现 cell，即说明安装成功。每一个 cell 都有许多 View。双击一个 view 可浏览，如下图。&lt;/p&gt;
+<p>之后回到如下界面，在新的Library中出现 cell，即说明安装成功。每一个 cell 都有许多 View。双击一个 view 可浏览，如下图。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Library_Install_Done.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_Library_Install_Done.png" alt="" /></p>
 
-&lt;h2 id=&quot;新建-cellview&quot;&gt;新建 cellview&lt;/h2&gt;
+<h2 id="新建-cellview">新建 cellview</h2>
 
-&lt;p&gt;在安装好库后就可以画 cell 了。在画 cell 之前要新建一个库，用于存放我们画的 cell。步骤与上一节相同，只不过我们的路径选择一个空文件夹即可。在这里我新建的库的名字叫 proj1。&lt;/p&gt;
+<p>在安装好库后就可以画 cell 了。在画 cell 之前要新建一个库，用于存放我们画的 cell。步骤与上一节相同，只不过我们的路径选择一个空文件夹即可。在这里我新建的库的名字叫 proj1。</p>
 
-&lt;p&gt;File - New - CellView， Library 选择我们新建的库， cell 起一个名字（这里我要画一个反相器），Type 选择 schematic。OK 之后就会打开一个画图的界面。&lt;/p&gt;
+<p>File - New - CellView， Library 选择我们新建的库， cell 起一个名字（这里我要画一个反相器），Type 选择 schematic。OK 之后就会打开一个画图的界面。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_New_File.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_New_File.png" alt="" /></p>
 
-&lt;p&gt;反相器由两个 mos 组成。接下来我们将画这两个 mos 。 Create - Instance， Library 选择 FreePDK 那个库， cell 选择一个mos， View 选择 Symbol， Name 随意取个名字。此时在光标处就会出现一个 mos 管的形状，点击就可以把它放在任何想要的位置。&lt;/p&gt;
+<p>反相器由两个 mos 组成。接下来我们将画这两个 mos 。 Create - Instance， Library 选择 FreePDK 那个库， cell 选择一个mos， View 选择 Symbol， Name 随意取个名字。此时在光标处就会出现一个 mos 管的形状，点击就可以把它放在任何想要的位置。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Add_Instance.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_Add_Instance.png" alt="" /></p>
 
-&lt;p&gt;画好两个 mos 后，接下来增加四个 pin， 分别对应 Vin 、 Vout 、 VDD 、 GND。 Create - Pin ，根据需要选择输入-输出类型，之后添加即可。最后将两个 mos 和四个 pin 用线连接起来。&lt;/p&gt;
+<p>画好两个 mos 后，接下来增加四个 pin， 分别对应 Vin 、 Vout 、 VDD 、 GND。 Create - Pin ，根据需要选择输入-输出类型，之后添加即可。最后将两个 mos 和四个 pin 用线连接起来。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Inverter_Done.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_Inverter_Done.png" alt="" /></p>
 
-&lt;p&gt;之后 File- Check and Save ，无 error 即可。&lt;/p&gt;
+<p>之后 File- Check and Save ，无 error 即可。</p>
 
-&lt;h2 id=&quot;搭建-inverter-的仿真电路&quot;&gt;搭建 inverter 的仿真电路&lt;/h2&gt;
+<h2 id="搭建-inverter-的仿真电路">搭建 inverter 的仿真电路</h2>
 
-&lt;p&gt;首先要给我们画的 inverter 创建一个 symbol。这里我们为方便进行自动生成。 Create - CellView - From CellView。 按如下默认设置即可，选择 OK 。&lt;/p&gt;
+<p>首先要给我们画的 inverter 创建一个 symbol。这里我们为方便进行自动生成。 Create - CellView - From CellView。 按如下默认设置即可，选择 OK 。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_CellView_from_CellView.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_CellView_from_CellView.png" alt="" /></p>
 
-&lt;p&gt;此时在 Library Manager 中，我们发现我们画的 inverter 多了个 symbol 的 view，说明创建成功。&lt;/p&gt;
+<p>此时在 Library Manager 中，我们发现我们画的 inverter 多了个 symbol 的 view，说明创建成功。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Add_Symbol_Done.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_Add_Symbol_Done.png" alt="" /></p>
 
-&lt;p&gt;之后我们将搭建 inverter 的仿真电路。同样地，我们新建一个 cellview，我这里取名为 inverter_sim，按下图添加周边电路元件。下面的元件都可以在 basic 库中找到。&lt;/p&gt;
+<p>之后我们将搭建 inverter 的仿真电路。同样地，我们新建一个 cellview，我这里取名为 inverter_sim，按下图添加周边电路元件。下面的元件都可以在 basic 库中找到。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_fiugre_Inverter_sim.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_fiugre_Inverter_sim.png" alt="" /></p>
 
-&lt;p&gt;同样地， check and save。&lt;/p&gt;
+<p>同样地， check and save。</p>
 
-&lt;h2 id=&quot;spectre-仿真&quot;&gt;Spectre 仿真&lt;/h2&gt;
+<h2 id="spectre-仿真">Spectre 仿真</h2>
 
-&lt;p&gt;在我们的 inverter_sim 的原理图界面，Launch - ADE L。&lt;/p&gt;
+<p>在我们的 inverter_sim 的原理图界面，Launch - ADE L。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_ADEL.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_ADEL.png" alt="" /></p>
 
-&lt;p&gt;首先添加 model library。Setup - Model Library。 路径为 /path/to/pdk/FreePDK45/ncsu_basekit/models/hspice/tran_models ， 把所有的 .inc 文件添加进去。&lt;/p&gt;
+<p>首先添加 model library。Setup - Model Library。 路径为 /path/to/pdk/FreePDK45/ncsu_basekit/models/hspice/tran_models ， 把所有的 .inc 文件添加进去。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Model_Library_Setup.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_Model_Library_Setup.png" alt="" /></p>
 
-&lt;p&gt;Analysis - choose， 这里就和 spice 一样了，选择一种 analysis 。&lt;/p&gt;
+<p>Analysis - choose， 这里就和 spice 一样了，选择一种 analysis 。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Choosing_Analysis.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_Choosing_Analysis.png" alt="" /></p>
 
-&lt;p&gt;Simulation - NetList and Run，弹出一个窗口，无 error 和 warning。&lt;/p&gt;
+<p>Simulation - NetList and Run，弹出一个窗口，无 error 和 warning。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Simulation.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_Simulation.png" alt="" /></p>
 
-&lt;p&gt;Results - Direct Plot - Main Form，按如下图选择并在原理图中选择一个点来 plot。我这里选择 inverter 的 Vout，直接在原理图上选择对应位置即可。&lt;/p&gt;
+<p>Results - Direct Plot - Main Form，按如下图选择并在原理图中选择一个点来 plot。我这里选择 inverter 的 Vout，直接在原理图上选择对应位置即可。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Direct_Plot_Form.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_Direct_Plot_Form.png" alt="" /></p>
 
-&lt;p&gt;之后就会弹出一个窗口，就是绘制的曲线。&lt;/p&gt;
+<p>之后就会弹出一个窗口，就是绘制的曲线。</p>
 
-&lt;p&gt;&lt;img src=&quot;/img/others/2_figure_Visualization.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<p><img src="/img/others/2_figure_Visualization.png" alt="" /></p>
 
-&lt;p&gt;至此，我们的第一个 candance project 仿真完成。&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="ic" /><category term="candance" /><category term="virtuoso" /><summary type="html">Candance的安装</summary></entry><entry><title type="html">VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V</title><link href="http://localhost:4000/2020/07/06/1_Close_Hyper-V/" rel="alternate" type="text/html" title="VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V" /><published>2020-07-06T00:00:00+08:00</published><updated>2020-07-06T00:00:00+08:00</updated><id>http://localhost:4000/2020/07/06/1_Close_Hyper-V</id><content type="html" xml:base="http://localhost:4000/2020/07/06/1_Close_Hyper-V/">&lt;p&gt;前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。&lt;/p&gt;
+<p>至此，我们的第一个 candance project 仿真完成。</p>]]></content><author><name>Yilong Zhao</name></author><category term="ICDesign" /><category term="ic" /><category term="candance" /><category term="virtuoso" /><summary type="html"><![CDATA[Candance的安装]]></summary></entry><entry><title type="html">VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V</title><link href="http://localhost:4000/2020/07/06/1_Close_Hyper-V/" rel="alternate" type="text/html" title="VMWare 提示与 Hyper-V冲突；如何在Windows 上彻底关闭Hyper-V" /><published>2020-07-06T00:00:00+08:00</published><updated>2020-07-06T00:00:00+08:00</updated><id>http://localhost:4000/2020/07/06/1_Close_Hyper-V</id><content type="html" xml:base="http://localhost:4000/2020/07/06/1_Close_Hyper-V/"><![CDATA[<p>前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。</p>
 
-&lt;blockquote&gt;
-  &lt;p&gt;您的主机不满足在启用 Hyper-V 或 Device/Credential Guard 的情况下运行 VMware。&lt;/p&gt;
-&lt;/blockquote&gt;
+<blockquote>
+  <p>您的主机不满足在启用 Hyper-V 或 Device/Credential Guard 的情况下运行 VMware。</p>
+</blockquote>
 
-&lt;p&gt;打开 VMWare 官方文档就是让关闭 Hyper-V。但是其实在我的个人版 Windows 是没有 Hyper-V 选项的。在搜了半天 Hyper-V 是啥才想到可能是和我前几天打开的那个虚拟机功能有关。&lt;/p&gt;
+<p>打开 VMWare 官方文档就是让关闭 Hyper-V。但是其实在我的个人版 Windows 是没有 Hyper-V 选项的。在搜了半天 Hyper-V 是啥才想到可能是和我前几天打开的那个虚拟机功能有关。</p>
 
-&lt;p&gt;在我关闭这个功能之后，事情并没有改善，我一度以为思路错了，直到我继续谷歌半天才确定就是这个辣鸡虚拟机功能搞的鬼。***&lt;/p&gt;
+<p>在我关闭这个功能之后，事情并没有改善，我一度以为思路错了，直到我继续谷歌半天才确定就是这个辣鸡虚拟机功能搞的鬼。***</p>
 
-&lt;h2 id=&quot;解决问题记录&quot;&gt;解决问题记录&lt;/h2&gt;
+<h2 id="解决问题记录">解决问题记录</h2>
 
-&lt;p&gt;原因还是 Hyper-V 和 VMWare 不兼容。所以这里实际记录的实际上是如何彻底关闭 Hyper-V。&lt;/p&gt;
+<p>原因还是 Hyper-V 和 VMWare 不兼容。所以这里实际记录的实际上是如何彻底关闭 Hyper-V。</p>
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;小娜-&amp;gt;启用和关闭Windows功能-&amp;gt;关闭 虚拟机平台（或Hyper-V）&lt;/p&gt;
+<ol>
+  <li>
+    <p>小娜-&gt;启用和关闭Windows功能-&gt;关闭 虚拟机平台（或Hyper-V）</p>
 
-    &lt;p&gt;&lt;img src=&quot;/img/others/1_figure_windows_function.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;小娜-&amp;gt;计算机管理-&amp;gt;服务和应用程序-&amp;gt;服务-&amp;gt;把所有带 Hyper-V 的停止并禁用。&lt;/p&gt;
+    <p><img src="/img/others/1_figure_windows_function.jpg" alt="" /></p>
+  </li>
+  <li>
+    <p>小娜-&gt;计算机管理-&gt;服务和应用程序-&gt;服务-&gt;把所有带 Hyper-V 的停止并禁用。</p>
 
-    &lt;p&gt;&lt;img src=&quot;/img/others/1_figure_windows_service.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;重启计算机&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+    <p><img src="/img/others/1_figure_windows_service.jpg" alt="" /></p>
+  </li>
+  <li>
+    <p>重启计算机</p>
+  </li>
+</ol>
 
-&lt;p&gt;问题解决。&lt;/p&gt;</content><author><name>Yilong Zhao</name></author><category term="record" /><summary type="html">前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。</summary></entry></feed>
+<p>问题解决。</p>]]></content><author><name>Yilong Zhao</name></author><category term="others" /><category term="record" /><summary type="html"><![CDATA[前几天看到Windows功能中的虚拟机功能，突然好奇，手贱给打开了，觉得没什么意思，就也没动。直到今天打开VMWare提示与Hyper-V冲突。]]></summary></entry></feed>
