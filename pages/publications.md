@@ -21,9 +21,11 @@ permalink: /publications/
 
   [[slides]({{ site.baseurl.url }}/resume/publications/slides/APPT25_STAMP.pdf)]
 
-**Yilong Zhao**, Mingyu Gao, Huanchen Zhang, Fangxin Liu, Gongye Chen, He Xian, Haibing Guan, and Li Jiang, **PUSHtap: PIM-based In-Memory HTAP with Unified Data Storage Format**, in ASPLOS 2025 (Accepted, will presented at ASPLOS 2026)
+**Yilong Zhao**, Mingyu Gao, Huanchen Zhang, Fangxin Liu, Gongye Chen, He Xian, Haibing Guan, and Li Jiang, **PUSHtap: PIM-based In-Memory HTAP with Unified Data Storage Format**, In Proceedings of the 30th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 3 (ASPLOS'25)
 
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3676642.3736120.txt)]
   [[arXiv](https://arxiv.org/abs/2508.02309)]
+  [[url](https://dl.acm.org/doi/10.1145/3676642.3736120)]
 
 ### 2024
 

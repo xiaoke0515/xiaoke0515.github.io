@@ -1,0 +1,17 @@
+@inproceedings{10.1145/3676642.3736120,
+author = {Zhao, Yilong and Gao, Mingyu and Zhang, Huanchen and Liu, Fangxin and Chen, Gongye and Xian, He and Guan, Haibing and Jiang, Li},
+title = {PUSHtap: PIM-based In-Memory HTAP with Unified Data Storage Format},
+year = {2025},
+isbn = {9798400710803},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3676642.3736120},
+doi = {10.1145/3676642.3736120},
+abstract = {Hybrid transaction/analytical processing (HTAP) is an emerging database paradigm that supports both online transaction processing (OLTP) and online analytical processing (OLAP) workloads. Computing-intensive OLTP operations, involving row-wise data manipulation, are suitable for row-store format. In contrast, memory-intensive OLAP operations, which are column-centric, benefit from column-store format. This data-format dilemma prevents HTAP systems from concurrently achieving three design goals: performance isolation, data freshness, and workload-specific optimization. Another background technology is Processing-in-Memory (PIM), which integrates computing units (PIM units) inside DRAM memory devices to accelerate memory-intensive workloads, including OLAP. Our key insight is to combine the interleaved CPU access and localized PIM unit access to provide two-dimensional access to address the data format contradictions inherent in HTAP. First, we propose a unified data storage format with novel data alignment and placement techniques to optimize the effective bandwidth of CPUs and PIM units and exploit the PIM's parallelism. Second, we implement the multi-version concurrency control (MVCC) essential for single-instance HTAP. Third, we extend the commercial PIM architecture to support the OLAP operations and concurrent access from PIM and CPU. Experiments show that PUSHtap can achieve 3.4X/4.4X OLAP/OLTP throughput improvement compared to multi-instance PIM-based design.},
+booktitle = {Proceedings of the 30th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 3},
+pages = {179–194},
+numpages = {16},
+keywords = {dram, hybrid transactional/analytical processing (htap), processing-in-memory (pim), unified data format},
+location = {Rotterdam, Netherlands},
+series = {ASPLOS '25}
+}

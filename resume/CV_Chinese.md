@@ -75,6 +75,16 @@ Supported arguments:
 
 ## 论文 （完整列表见[这里]({{ site.baseurl.url }}/publications)）
 
+**Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Tao Yang, and Li Jiang, **STAMP: Accelerating Second-order DNN Training Via ReRAM-based Processing-in-Memory Architecture**, in APPT 2025 (Accepted)
+
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/APPT25_STAMP.pdf)]
+
+**Yilong Zhao**, Mingyu Gao, Huanchen Zhang, Fangxin Liu, Gongye Chen, He Xian, Haibing Guan, and Li Jiang, **PUSHtap: PIM-based In-Memory HTAP with Unified Data Storage Format**, In Proceedings of the 30th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 3 (ASPLOS'25)
+
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3676642.3736120.txt)]
+  [[arXiv](https://arxiv.org/abs/2508.02309)]
+  [[url](https://dl.acm.org/doi/10.1145/3676642.3736120)]
+
 **Yilong Zhao**, Mingyu Gao, Fangxin Liu, Yiwei Hu, Zongwu Wang, Han Lin, Ji Li, He Xian, Hanlin Dong, Tao Yang, Naifeng Jing, Xiaoyao Liang, and Li Jiang, **UM-PIM: DRAM-based PIM with Uniform & Shared Memory Space**, in 51st International Symposium on Computer Architecture (ISCA'24)
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10609641.txt)]
