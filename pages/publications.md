@@ -16,12 +16,13 @@ permalink: /publications/
 
 ### 2025
 
+**Yilong Zhao**, Fangxin Liu, Zongwu Wang, Mingjian Li, Mingxing Zhang, Chixiao Chen, and Li Jiang, **BLADE: Boosting LLM Decoding's Communication Efficiency in DRAM-based PIM**, in Proceedings of the 31st Asia and South Pacific Design Automation Conference (ASP-DAC'26) (Accepted)
 
-**Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Tao Yang, and Li Jiang, **STAMP: Accelerating Second-order DNN Training Via ReRAM-based Processing-in-Memory Architecture**, in APPT 2025 (Accepted)
+**Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Tao Yang, and Li Jiang, **STAMP: Accelerating Second-order DNN Training Via ReRAM-based Processing-in-Memory Architecture**, in Proceedings of the 16th International Symposium on Advanced Parallel Processing Technology (APPT 2025) (Accepted)
 
   [[slides]({{ site.baseurl.url }}/resume/publications/slides/APPT25_STAMP.pdf)]
 
-**Yilong Zhao**, Mingyu Gao, Huanchen Zhang, Fangxin Liu, Gongye Chen, He Xian, Haibing Guan, and Li Jiang, **PUSHtap: PIM-based In-Memory HTAP with Unified Data Storage Format**, In Proceedings of the 30th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 3 (ASPLOS'25)
+**Yilong Zhao**, Mingyu Gao, Huanchen Zhang, Fangxin Liu, Gongye Chen, He Xian, Haibing Guan, and Li Jiang, **PUSHtap: PIM-based In-Memory HTAP with Unified Data Storage Format**, in Proceedings of the 30th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 3 (ASPLOS'25)
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3676642.3736120.txt)]
   [[arXiv](https://arxiv.org/abs/2508.02309)]
@@ -29,7 +30,7 @@ permalink: /publications/
 
 ### 2024
 
-**Yilong Zhao**, Mingyu Gao, Fangxin Liu, Yiwei Hu, Zongwu Wang, Han Lin, Ji Li, He Xian, Hanlin Dong, Tao Yang, Naifeng Jing, Xiaoyao Liang, and Li Jiang, **UM-PIM: DRAM-based PIM with Uniform & Shared Memory Space**, in 51st International Symposium on Computer Architecture (ISCA'24)
+**Yilong Zhao**, Mingyu Gao, Fangxin Liu, Yiwei Hu, Zongwu Wang, Han Lin, Ji Li, He Xian, Hanlin Dong, Tao Yang, Naifeng Jing, Xiaoyao Liang, and Li Jiang, **UM-PIM: DRAM-based PIM with Uniform & Shared Memory Space**, in Proceedings of the 51st International Symposium on Computer Architecture (ISCA'24)
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10609641.txt)]
   [[url](https://ieeexplore.ieee.org/abstract/document/10609641)]
