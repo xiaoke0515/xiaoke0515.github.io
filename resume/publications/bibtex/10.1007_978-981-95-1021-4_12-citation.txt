@@ -1,0 +1,24 @@
+@InProceedings{10.1007/978-981-95-1021-4_12,
+author="Zhao, Yilong
+and Liu, Fangxin
+and Gao, Mingyu
+and Liang, Xiaoyao
+and Tang, Qidong
+and Gu, Chengyang
+and Yang, Tao
+and Jing, Naifeng
+and Jiang, Li",
+editor="Li, Chao
+and Qian, Xuehai
+and Gizopoulos, Dimitris
+and Grot, Boris",
+title="STAMP: Accelerating Second-Order DNN Training Via ReRAM-Based Processing-in-Memory Architecture",
+booktitle="Advanced Parallel Processing Technologies",
+year="2026",
+publisher="Springer Nature Singapore",
+address="Singapore",
+pages="160--170",
+abstract="Deep Neural Network (DNN) training is both compute- and memory-intensive. In this work, we propose a hardware-software co-design approach that leverages ReRAM-based process-in-memory (PIM) technology and second-order training to enhance DNN training efficiency. Second-order training reduces the number of iterations. Importantly, the key operation in second-order training, matrix inversion (INV), can be performed in ReRAM crossbars with {\$}{\$}O{\backslash}left( 1{\backslash}right) {\$}{\$}O1time complexity, minimizing the overhead. However, current ReRAM-based INV circuits face insufficient precision. To overcome this limitation, we propose a high-precision matrix inversion method with 8-bit INV circuit. Building on this foundation, we introduce STAMP, a ReRAM-based PIM accelerator specifically designed for second-order training. Experimental results demonstrate that STAMP achieves an average speedup of 114.8{\$}{\$}{\backslash}times {\$}{\$}{\texttimes}and an energy saving of 41.9{\$}{\$}{\backslash}times {\$}{\$}{\texttimes}compared to a GPU counterpart on large-scale DNNs.",
+isbn="978-981-95-1021-4"
+}
+
