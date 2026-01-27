@@ -14,9 +14,19 @@ permalink: /publications/
 
 ##  Publications
 
+### 2026
+
+**Yilong Zhao**, Fangxin Liu, Zongwu Wang, Mingjian Li, Mingxing Zhang, Chixiao Chen, and Li Jiang, **BLADE: Boosting LLM Decoding's Communication Efficiency in DRAM-based PIM**, in Proceedings of the 31st Asia and South Pacific Design Automation Conference (ASP-DAC'26) 
+
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/APPT25_STAMP.pdf)]
+
+
 ### 2025
 
-**Yilong Zhao**, Fangxin Liu, Zongwu Wang, Mingjian Li, Mingxing Zhang, Chixiao Chen, and Li Jiang, **BLADE: Boosting LLM Decoding's Communication Efficiency in DRAM-based PIM**, in Proceedings of the 31st Asia and South Pacific Design Automation Conference (ASP-DAC'26) (Accepted)
+Yiwei Hu, Fangxin Liu, Zongwu Wang, **Yilong Zhao**, Tao Yang, and Li Jiang, **PLAIN: Leveraging High Internal Bandwidth in PIM for Accelerating Large Language Model Inference via Mixed-Precision Quantization**, in Proceedings of 2025 IEEE/ACM International Conference On Computer Aided Design (ICCAD'25)
+
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/11240991.txt)]
+  [[url](https://ieeexplore.ieee.org/document/11240991)]
 
 **Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Tao Yang, and Li Jiang, **STAMP: Accelerating Second-order DNN Training Via ReRAM-based Processing-in-Memory Architecture**, in Proceedings of the 16th International Symposium on Advanced Parallel Processing Technology (APPT'25)
 
@@ -146,6 +156,8 @@ Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in d
 ---
 ## Patents
 
-Li Jiang, **Yilong Zhao**, "Reconfigurable Architecture, Accelerator,Circuit Deployment and Dataflow Methods," Application No.202010910280.5
+Fangxin Liu, Li Jiang, **Yilong Zhao**, " Decoding acceleration methods, systems, devices, and readable storage media for large language models," Application No. 2025118583915.5
 
-Li Jiang, **Yilong Zhao**, Xiaosong Cui, Yun Chen, Jianxing Liao, "Neural Network Circuit," Application No.202010729402.0
+Li Jiang, **Yilong Zhao**, "Reconfigurable Architecture, Accelerator,Circuit Deployment and Dataflow Methods," Application No.202010910280.5, Authorization No. CN112181895B
+
+Li Jiang, **Yilong Zhao**, Xiaosong Cui, Yun Chen, Jianxing Liao, "Neural Network Circuit," Application No.202010729402.0, Authorization No. CN114004344A
