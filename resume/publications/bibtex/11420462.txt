@@ -1,0 +1,13 @@
+@INPROCEEDINGS{11420462,
+  author={Zhao, Yilong and Liu, Fangxin and Wang, Zongwu and Li, Mingjian and Zhang, Mingxing and Chen, Chixiao and Jiang, Li},
+  booktitle={2026 31st Asia and South Pacific Design Automation Conference (ASP-DAC)}, 
+  title={BLADE: Boosting LLM Decoding’s Communication Efficiency in DRAM-based PIM}, 
+  year={2026},
+  volume={},
+  number={},
+  pages={561-567},
+  abstract={In recent years, the application of Large Language Models (LLMs) has grown rapidly. LLM inference consists of two stages: the prefill stage and the decoding stage. The prefill stage benefits from high data reuse, allowing GPUs to efficiently utilize computational resources. In contrast, the decoding stage is memory-bound and is more suited for Processing-in-Memory (PIM) techniques. PIM integrates computation units into memory banks to optimize the usage of internal memory bandwidth. However, the limited external bandwidth of PIM creates bottlenecks in two ways. First, PIM systems require high parallelism to fully utilize internal bandwidth, resulting in significant bank-tobank communication. Second, the value cache must be arranged contiguously along the sequence length dimension to maximize DRAM row-buffer hits, which introduces additional transpose overhead. In this work, we propose BLADE, a novel PIM-based architecture designed to accelerate LLM decoding. First, we introduce a task division strategy for multi-head attention (MHA) layers and dynamic PIM parallelism scaling to optimize the balance between computation and communication time. This approach adapts to the increasing sequence length during the decoding process. Second, we leverage the differing DRAM access granularities of CPUs and PIM units to automatically arrange the transposed matrix contiguously in DRAM rows during value cache transfers. Extensive experiments demonstrate that our architecture can significantly reduce the communication overhead and achieve a $105.7 \times$ speedup and $41.6 \times$ energy efficiency compared to the GPU baseline.},
+  keywords={Design automation;Blades;Large language models;Random access memory;Graphics processing units;Computer architecture;Bandwidth;Parallel processing;Energy efficiency;Decoding;Processing-in-Memory (PIM);Large Language Models (LLMs);Dynamic Parallelism;Transpose},
+  doi={10.1109/ASP-DAC66049.2026.11420462},
+  ISSN={2153-697X},
+  month={Jan},}
