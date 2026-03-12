@@ -19,7 +19,7 @@ permalink: /publications/
 **Yilong Zhao**, Fangxin Liu, Zongwu Wang, Mingjian Li, Mingxing Zhang, Chixiao Chen, and Li Jiang, **BLADE: Boosting LLM Decoding's Communication Efficiency in DRAM-based PIM**, in Proceedings of the 31st Asia and South Pacific Design Automation Conference (ASP-DAC'26) 
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/11420462.txt)]
-  [[slides]({{ site.baseurl.url }}/resume/publications/slides/APPT25_STAMP.pdf)]
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/ASPDAC26-BLADE.pdf)]
   [[url](https://ieeexplore.ieee.org/abstract/document/11420462)]
 
 
