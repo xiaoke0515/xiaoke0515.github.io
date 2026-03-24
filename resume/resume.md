@@ -75,9 +75,9 @@ Shanghai, China
 
 ## Publications (Full list can be found &nbsp;[Here]({{ site.baseurl.url }}/publications))
 
-**Yilong Zhao**, Fangxin Liu, Zongwu Wang, Mingjian Li, Mingxing Zhang, Chixiao Chen, and Li Jiang, **BLADE: Boosting LLM Decoding's Communication Efficiency in DRAM-based PIM**, in Proceedings of the 31st Asia and South Pacific Design Automation Conference (ASP-DAC'26) (Accepted)
+**Yilong Zhao**, Fangxin Liu, Zongwu Wang, Mingjian Li, Mingxing Zhang, Chixiao Chen, and Li Jiang, **BLADE: Boosting LLM Decoding's Communication Efficiency in DRAM-based PIM**, in Proceedings of the 31st Asia and South Pacific Design Automation Conference (ASP-DAC'26) 
 
-**Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Tao Yang, and Li Jiang, **STAMP: Accelerating Second-order DNN Training Via ReRAM-based Processing-in-Memory Architecture**, in APPT 2025 (Accepted)
+**Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Tao Yang, and Li Jiang, **STAMP: Accelerating Second-order DNN Training Via ReRAM-based Processing-in-Memory Architecture**, in APPT 2025
 
   [[slides]({{ site.baseurl.url }}/resume/publications/slides/APPT25_STAMP.pdf)]
 
