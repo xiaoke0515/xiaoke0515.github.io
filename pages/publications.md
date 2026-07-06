@@ -18,7 +18,10 @@ permalink: /publications/
 
 <!-- **Yilong Zhao**, Fangxin Liu, Mingyu Gao, Yiwei Hu, Zongwu Wang, Han Lin, Ji Li, He Xian, Hanlin Dong, Tao Yang, Naifeng Jing, Xiaoyao Liang, and Li Jiang,GUMPIM: Unitary and Malleable Memory for PIM with Guaranteed PIM Pages -->
 
-**Yilong Zhao**, Fangxin Liu, Onur Mutlu, Mingyu Gao, Jian Liu, Li Liang, and Haibing Guan, "**COSM: A Cooperative Scheduling Framework for Concurrent PIM and CPU Execution on Mobile Devices**", in *Proceedings of the 53st International Symposium on Computer Architecture* (**ISCA’26**, Accepted)
+**Yilong Zhao**, Fangxin Liu, Onur Mutlu, Mingyu Gao, Jian Liu, Haibing Guan, and Li Jiang, "**COSM: A Cooperative Scheduling Framework for Concurrent PIM and CPU Execution on Mobile Devices**", in *Proceedings of the 53st International Symposium on Computer Architecture* (**ISCA’26**, Best Paper Candidate)
+
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/ISCA2026-COSM.pdf)]
+  [[arXiv](https://arxiv.org/abs/2606.30553)]
 
 **Yilong Zhao**, Fangxin Liu, Zongwu Wang, Mingjian Li, Mingxing Zhang, Chixiao Chen, and Li Jiang, **BLADE: Boosting LLM Decoding's Communication Efficiency in DRAM-based PIM**, in *Proceedings of the 31st Asia and South Pacific Design Automation Conference* (**ASP-DAC'26**) 
 
