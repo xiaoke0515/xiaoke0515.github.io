@@ -10,7 +10,7 @@ homepage:
   text: https://xiaoke0515.github.io/
 ---
 
-<a href="{{"/resume/CV_Chinese/index.html" | prepend: site.baseurl}}" style="margin-left:0.5em">Chinese Version</a>
+<a href="{{"/resume/CV_Chinese/index.html" | prepend: site.baseurl}}" style="margin-left:0.5em">中文版</a>
 
 
 # Yilong Zhao
@@ -75,65 +75,31 @@ Shanghai, China
 
 ## Publications (Full list can be found &nbsp;[Here]({{ site.baseurl.url }}/publications))
 
-**Yilong Zhao**, Fangxin Liu, Zongwu Wang, Mingjian Li, Mingxing Zhang, Chixiao Chen, and Li Jiang, **BLADE: Boosting LLM Decoding's Communication Efficiency in DRAM-based PIM**, in Proceedings of the 31st Asia and South Pacific Design Automation Conference (ASP-DAC'26) (Accepted)
+**Yilong Zhao**, Fangxin Liu, Onur Mutlu, Mingyu Gao, Jian Liu, Li Liang, and Haibing Guan, "COMET: A Cooperative Scheduling Framework for Concurrent PIM/CPU Execution on Mobile Devices", in *Proceedings of the 53st International Symposium on Computer Architecture* (ISCA’26, Accepted)
 
-**Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Tao Yang, and Li Jiang, **STAMP: Accelerating Second-order DNN Training Via ReRAM-based Processing-in-Memory Architecture**, in APPT 2025 (Accepted)
+**Yilong Zhao**, Fangxin Liu, Zongwu Wang, Mingjian Li, Mingxing Zhang, Chixiao Chen, and Li Jiang, **BLADE: Boosting LLM Decoding's Communication Efficiency in DRAM-based PIM**, in Proceedings of the 31st Asia and South Pacific Design Automation Conference (ASP-DAC'26) 
 
-  [[slides]({{ site.baseurl.url }}/resume/publications/slides/APPT25_STAMP.pdf)]
+**Yilong Zhao**, Fangxin Liu, Xiaoyao Liang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Tao Yang, and Li Jiang, **STAMP: Accelerating Second-order DNN Training Via ReRAM-based Processing-in-Memory Architecture**, in APPT 2025
 
 **Yilong Zhao**, Mingyu Gao, Huanchen Zhang, Fangxin Liu, Gongye Chen, He Xian, Haibing Guan, and Li Jiang, **PUSHtap: PIM-based In-Memory HTAP with Unified Data Storage Format**, In Proceedings of the 30th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 3 (ASPLOS'25)
 
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3676642.3736120.txt)]
-  [[arXiv](https://arxiv.org/abs/2508.02309)]
-  [[url](https://dl.acm.org/doi/10.1145/3676642.3736120)]
-
-
 **Yilong Zhao**, Mingyu Gao, Fangxin Liu, Yiwei Hu, Zongwu Wang, Han Lin, Ji Li, He Xian, Hanlin Dong, Tao Yang, Naifeng Jing, Xiaoyao Liang, and Li Jiang, **UM-PIM: DRAM-based PIM with Uniform & Shared Memory Space**, in 51st International Symposium on Computer Architecture (ISCA'24)
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10609641.txt)]
-  [[url](https://ieeexplore.ieee.org/abstract/document/10609641)]
-  [[slides]({{ site.baseurl.url }}/resume/publications/slides/ISCA24-93-UMPIM.pdf)]
 
 **Yilong Zhao**, Li Jiang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Fangxin Liu, Tao Yang, and Xiaoyao Liang, **RePAST: A ReRAM-based PIM Accelerator for Second-order Training of DNN**, arXiv preprint 2022
 
-  [[arxiv](https://arxiv.org/abs/2210.15255)]
-
 Weidong Cao, **Yilong Zhao(Co-First-Author)**, Adith Boloor, Yinhe Han, Xuan Zhang, and Li Jiang, **Neural-PIM: Efficient Processing-In-Memory with Neural Approximation of Peripherals**, in IEEE Transactions on Computers (TC), 2021
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/9591330.txt)]
-  [[url](https://ieeexplore.ieee.org/abstract/document/9591330)]
 
 **Yilong Zhao**, Zhezhi He, Naifeng Jing, Xiaoyao Liang, and Li Jiang. 2021. **Re2PIM: A Reconfigurable ReRAM-Based PIM Design for Variable-Sized Vector-Matrix Multiplication**. In Proceedings of the 2021 on Great Lakes Symposium on VLSI (GLSVLSI '21)
 
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3453688.3461494.txt)]
-  [[url](https://dl.acm.org/doi/10.1145/3453688.3461494)]
-  [[slides]({{ site.baseurl.url }}/resume/publications/slides/GLSVLSI21-re2pim-slides.pdf)]
-
 Zhuoran Song, **Yilong Zhao**, Yanan Sun, Xiaoyao Liang and Li Jiang.**ESNreram: An Energy-Efficient Sparse Neural Network Based on Resistive Random-Access Memory**. Proceedings of the 2020 on Great Lakes Symposium on VLSI, GLSVLSI. 2020: 291-296.
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3386263.3406897.txt)]
-  [[url](https://dl.acm.org/doi/abs/10.1145/3386263.3406897)]
 
 Chaoqun Chu, Yanzhi Wang, **Yilong Zhao**, Xiaolong Ma, Shaokai Ye, Yunyan Hong, Xiaoyao Liang, Yinhe Han and Li Jiang. **PIM-Prune: Fine-Grain DCNN pruning for Crossbar-based Process-In-Memory architecture.** ACM/IEEE Design Automation Conference, DAC, 2020
 
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/92185237.txt)]
-  [[url](https://ieeexplore.ieee.org/abstract/document/9218523)]
-
 Jia Wang, **Yilong Zhao**, Xin Huang and Guangqiang He. **High Speed Polarization-Division Multiplexing Transmissions Based on the Nonlinear Fourier Transform**, ZTE COMMUNICATIONS 17, 3  (2019).
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/jia2019high.txt)]
-  [[url](https://www.zte.com.cn/global/about/magazine/zte-communications/2019/en201903/researchpaper/008.html)]
-  [[pdf](http://qnp.sjtu.edu.cn/userfiles/files/High%20Speed%20Polarization-Division%20Multiplexing%20Transmissions%20Based%20on%20the%20Nonlinear%20Fourier%20Transform(1).pdf)]
 
 Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Characterization of Kerr Solitons in Microresonators with Parameter Optimization and Nonlinear Fourier Spectrum**," in Conference on Lasers and Electro-Optics, OSA Technical Digest (Optical Society of America, 2019), paper JW2A.47.
 
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/8749866.txt)]
-  [[url](https://ieeexplore.ieee.org/abstract/document/8749866)]
-
 Aiguo Sheng, **Yilong Zhao**, and Guangqiang He, "**Quadratic soliton combs in doubly resonant half-harmonic generation**," in Nonlinear Optics (NLO), OSA Technical Digest (Optical Society of America, 2019), paper NTu4A.18.
-
-  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/8959308.txt)]
-  [[url](https://ieeexplore.ieee.org/abstract/document/8959308)]
 
 ## Patents
 

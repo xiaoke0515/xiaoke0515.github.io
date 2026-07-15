@@ -1,3 +1,3 @@
-# 博客模版：
+# 主页模版：
 
 https://github.com/mzlogin/mzlogin.github.io
