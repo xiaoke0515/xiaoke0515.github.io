@@ -16,7 +16,7 @@ permalink: /publications/
 
 ### 2026
 
-<!-- **Yilong Zhao**, Fangxin Liu, Mingyu Gao, Yiwei Hu, Zongwu Wang, Han Lin, Ji Li, He Xian, Hanlin Dong, Tao Yang, Naifeng Jing, Xiaoyao Liang, and Li Jiang,GUMPIM: Unitary and Malleable Memory for PIM with Guaranteed PIM Pages -->
+**Yilong Zhao**, Fangxin Liu, Yiwei Hu, Zongwu Wang, Mingyu Gao, Onur Mutlu, He Xian, Hanlin Dong, Naifeng Jing, Xiaoyao Liang, Haibing Guan, Qiang Xu, Chixiao Chen, Shuxue Quan, Tao Yang, and Li Jiang, "**GUMPIM: Unitary and Malleable Memory for Processing-in-Memory with Guaranteed PIM Pages**", in *ACM Transaction of Architecture and Code Optimization* (**TACO**, Accepted)
 
 **Yilong Zhao**, Fangxin Liu, Onur Mutlu, Mingyu Gao, Jian Liu, Haibing Guan, and Li Jiang, "**COSM: A Cooperative Scheduling Framework for Concurrent PIM and CPU Execution on Mobile Devices**", in *Proceedings of the 53st International Symposium on Computer Architecture* (**ISCA’26**, Best Paper Candidate)
 
@@ -26,8 +26,8 @@ permalink: /publications/
 **Yilong Zhao**, Fangxin Liu, Zongwu Wang, Mingjian Li, Mingxing Zhang, Chixiao Chen, and Li Jiang, **BLADE: Boosting LLM Decoding's Communication Efficiency in DRAM-based PIM**, in *Proceedings of the 31st Asia and South Pacific Design Automation Conference* (**ASP-DAC'26**) 
 
   [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/11420462.txt)]
-  [[slides]({{ site.baseurl.url }}/resume/publications/slides/ASPDAC26-BLADE.pdf)]
   [[Link](https://ieeexplore.ieee.org/abstract/document/11420462)]
+  [[slides]({{ site.baseurl.url }}/resume/publications/slides/ASPDAC26-BLADE.pdf)]
 
 
 ### 2025
