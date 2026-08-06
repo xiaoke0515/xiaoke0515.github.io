@@ -65,6 +65,10 @@ navs:
         label: Publications
 
     -
+        href: /service_honor/
+        label: Service&Honor
+
+    -
         href: /projects/
         label: Experience
 
