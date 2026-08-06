@@ -18,7 +18,7 @@ permissions:
 # Cancel older queued/running Pages deployments when a newer run starts.
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
