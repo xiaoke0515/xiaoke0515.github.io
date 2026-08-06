@@ -1,0 +1,9 @@
+@preprint{zhao2022repastrerambasedpimaccelerator,
+      title={RePAST: A ReRAM-based PIM Accelerator for Second-order Training of DNN}, 
+      author={Yilong Zhao and Li Jiang and Mingyu Gao and Naifeng Jing and Chengyang Gu and Qidong Tang and Fangxin Liu and Tao Yang and Xiaoyao Liang},
+      year={2022},
+      eprint={2210.15255},
+      archivePrefix={arXiv},
+      primaryClass={cs.AR},
+      url={https://arxiv.org/abs/2210.15255}, 
+}

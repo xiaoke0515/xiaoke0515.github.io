@@ -1,0 +1,13 @@
+@INPROCEEDINGS{11617439,
+  author={Zhao, Yilong and Liu, Fangxin and Mutlu, Onur and Gao, Mingyu and Liu, Jian and Guan, Haibing and Jiang, Li},
+  booktitle={2026 ACM/IEEE 53rd Annual International Symposium on Computer Architecture (ISCA)}, 
+  title={COSM: A Cooperative Scheduling Framework for Concurrent PIM and CPU Execution on Mobile Devices}, 
+  year={2026},
+  volume={},
+  number={},
+  pages={34-51},
+  abstract={The development of on-device large language models (LLMs) is driven by the need for privacy and fast response times. Energyintensive data transfer on mobile devices makes Processing-inMemory (PIM) an effective solution. Due to stringent DRAM cost constraints, limited physical footprint on circuit boards, and the interaction between applications and LLMs, it is imperative for the CPU and PIM to operate concurrently within a shared memory space. However, challenges such as bank conflicts and bus congestion can arise, potentially diminishing the performance and energy benefits of PIM. To address this challenge, we introduce COSM, a cooperative scheduling framework designed to facilitate the concurrent operation of PIM and CPU tasks on mobile platforms. Our key innovations include: 1) a low-interference PIM control interface that generates the maximum number of PIM commands without disrupting CPU memory accesses; 2) an idleness-aware scheduling method that integrates PIM commands into available idle time windows within the CPU's access sequence. COSM not only hides PIM execution latency from the CPU, but also overlaps PIM execution with data transfer. Experiments on concurrent execution of LLMs and mobile workloads, including mobile applications and compute-intensive kernels, demonstrate that COSM improves PIM throughput by up to 2.8× compared to the baseline scheduling method with less than 2.0% CPU performance loss.},
+  keywords={Banking;Central Processing Unit;Computer architecture;Conferences;DRAM chips;Memory;Modeling;Printing;Schedules;Scheduling;processing-in-memory (PIM);memory scheduling;mobile devices;LLM inference;memory interference},
+  doi={10.1109/ISCA66397.2026.00019},
+  ISSN={},
+  month={June},}

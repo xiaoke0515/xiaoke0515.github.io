@@ -16,15 +16,17 @@ permalink: /publications/
 
 ### 2026
 
-**Yilong Zhao**, Fangxin Liu, Yiwei Hu, Zongwu Wang, Mingyu Gao, Onur Mutlu, He Xian, Hanlin Dong, Naifeng Jing, Xiaoyao Liang, Haibing Guan, Qiang Xu, Chixiao Chen, Shuxue Quan, Tao Yang, and Li Jiang, "**GUMPIM: Unitary and Malleable Memory for Processing-in-Memory with Guaranteed PIM Pages**", in *ACM Transaction of Architecture and Code Optimization* (**TACO**, Accepted)
+**Yilong Zhao**, Fangxin Liu, Yiwei Hu, Zongwu Wang, Mingyu Gao, Onur Mutlu, He Xian, Hanlin Dong, Naifeng Jing, Xiaoyao Liang, Haibing Guan, Qiang Xu, Chixiao Chen, Shuxue Quan, Tao Yang, and Li Jiang, **GUMPIM: Unitary and Malleable Memory for Processing-in-Memory with Guaranteed PIM Pages**, in *ACM Transaction of Architecture and Code Optimization* (**TACO**, Accepted)
 
-Haomin Li, Fangxin Liu, Zongwu Wang, Ning Yang, Shiyuan Huang, **Yilong Zhao**, Chenyang Guan, Jian Liu, Xinran Liang, Li Jiang, Haibing Guan, "**Look Once, Compute Less: A Spatio-Temporal Redundancy-Aware CIM Accelerator for Adaptive BEV Representation**", in *Proceedings of 2026 International Conference on Compilers, Architectures, and Synthesis for Embedded Systems* (**CASES’26**)
+Haomin Li, Fangxin Liu, Zongwu Wang, Ning Yang, Shiyuan Huang, **Yilong Zhao**, Chenyang Guan, Jian Liu, Xinran Liang, Li Jiang, and Haibing Guan, **Look Once, Compute Less: A Spatio-Temporal Redundancy-Aware CIM Accelerator for Adaptive BEV Representation**, in *Proceedings of 2026 International Conference on Compilers, Architectures, and Synthesis for Embedded Systems* (**CASES’26**)
 
-Fangxin Liu, Jingkui Yang, Yilong Zhao, Haomin Li, Wen Mei, Xinran Liang, Li Jiang, Haibing Guan, "**MOSAIC: Exploiting Structured Tolerance for Adaptive LLM Inference Mapping in Heterogeneous PIM Accelerators**, "in *Proceedings of the 59th IEEE/ACM International Symposium on Microarchitecture* (**MICRO’26**)
+Fangxin Liu, Jingkui Yang, Yilong Zhao, Haomin Li, Wen Mei, Xinran Liang, Li Jiang, and Haibing Guan, **MOSAIC: Exploiting Structured Tolerance for Adaptive LLM Inference Mapping in Heterogeneous PIM Accelerators**, in *Proceedings of the 59th IEEE/ACM International Symposium on Microarchitecture* (**MICRO’26**)
 
 
-**Yilong Zhao** ^, Fangxin Liu ^, Onur Mutlu, Mingyu Gao, Jian Liu, Haibing Guan, and Li Jiang, "**COSM: A Cooperative Scheduling Framework for Concurrent PIM and CPU Execution on Mobile Devices**", in *Proceedings of the 53st International Symposium on Computer Architecture* (**ISCA’26**, Best Paper Candidate, ^ Joint first authors)
+**Yilong Zhao** ^, Fangxin Liu ^, Onur Mutlu, Mingyu Gao, Jian Liu, Haibing Guan, and Li Jiang, **COSM: A Cooperative Scheduling Framework for Concurrent PIM and CPU Execution on Mobile Devices**, in *Proceedings of the 53st International Symposium on Computer Architecture* (**ISCA’26**, Best Paper Candidate, ^ Joint first authors)
 
+  [[BibTex]({{ site.baseurl.url }}/resume/publications/bibtex/11617439.txt)]
+  [[Link](https://ieeexplore.ieee.org/document/11617439)]
   [[slides]({{ site.baseurl.url }}/resume/publications/slides/ISCA2026-COSM.pdf)]
   [[arXiv](https://arxiv.org/abs/2606.30553)]
 
@@ -75,6 +77,7 @@ Tao Yang, Hui Ma, **Yilong Zhao**, Fangxin Liu, Zhezhi He, Xiaoli Sun, and Li Ji
 
 **Yilong Zhao**, Li Jiang, Mingyu Gao, Naifeng Jing, Chengyang Gu, Qidong Tang, Fangxin Liu, Tao Yang, and Xiaoyao Liang, **RePAST: A ReRAM-based PIM Accelerator for Second-order Training of DNN**, *arXiv preprint 2022*
 
+  [[BibTeX]({{ site.baseurl.url }}/resume/publications/bibtex/10137249zhao2022repastrerambasedpimaccelerator.txt)]
   [[arXiv](https://arxiv.org/abs/2210.15255)]
 
 Tao Yang, Fei Ma, Xiaoling Li, Fangxin Liu, **Yilong Zhao**, Zhezhi He, and Li Jiang, **DTATrans: Leveraging dynamic token-based quantization with accuracy compensation mechanism for efficient transformer architecture**, in *IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems* (**TCAD**), 2022
