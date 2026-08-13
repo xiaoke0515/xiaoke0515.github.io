@@ -16,14 +16,17 @@ permalink: /publications/
 
 ### 2026
 
-**Yilong Zhao**, Fangxin Liu, Yiwei Hu, Zongwu Wang, Mingyu Gao, Onur Mutlu, He Xian, Hanlin Dong, Naifeng Jing, Xiaoyao Liang, Haibing Guan, Qiang Xu, Chixiao Chen, Shuxue Quan, Tao Yang, and Li Jiang, **GUMPIM: Unitary and Malleable Memory for Processing-in-Memory with Guaranteed PIM Pages**, in *ACM Transaction of Architecture and Code Optimization* (**TACO**, Accepted)
+**Yilong Zhao**, Fangxin Liu, Yiwei Hu, Zongwu Wang, Mingyu Gao, Onur Mutlu, He Xian, Hanlin Dong, Naifeng Jing, Xiaoyao Liang, Haibing Guan, Qiang Xu, Chixiao Chen, Shuxue Quan, Tao Yang, and Li Jiang, **GUMPIM: Unitary and Malleable Memory for Processing-in-Memory with Guaranteed PIM Pages**, in *ACM Transaction of Architecture and Code Optimization* (**TACO**, Just Accepted)
+
+  [[BibTex]({{ site.baseurl.url }}/resume/publications/bibtex/10.1145_3833426.txt)]
+  [[Link](https://dl.acm.org/doi/abs/10.1145/3833426)]
 
 Haomin Li, Fangxin Liu, Zongwu Wang, Ning Yang, Shiyuan Huang, **Yilong Zhao**, Chenyang Guan, Jian Liu, Xinran Liang, Li Jiang, and Haibing Guan, **Look Once, Compute Less: A Spatio-Temporal Redundancy-Aware CIM Accelerator for Adaptive BEV Representation**, in *Proceedings of 2026 International Conference on Compilers, Architectures, and Synthesis for Embedded Systems* (**CASES’26**)
 
 Fangxin Liu, Jingkui Yang, Yilong Zhao, Haomin Li, Wen Mei, Xinran Liang, Li Jiang, and Haibing Guan, **MOSAIC: Exploiting Structured Tolerance for Adaptive LLM Inference Mapping in Heterogeneous PIM Accelerators**, in *Proceedings of the 59th IEEE/ACM International Symposium on Microarchitecture* (**MICRO’26**)
 
 
-**Yilong Zhao** ^, Fangxin Liu ^, Onur Mutlu, Mingyu Gao, Jian Liu, Haibing Guan, and Li Jiang, **COSM: A Cooperative Scheduling Framework for Concurrent PIM and CPU Execution on Mobile Devices**, in *Proceedings of the 53st International Symposium on Computer Architecture* (**ISCA’26**, Best Paper Candidate, ^ Joint first authors)
+**Yilong Zhao** ^, Fangxin Liu ^, Onur Mutlu, Mingyu Gao, Jian Liu, Haibing Guan, and Li Jiang, **COSM: A Cooperative Scheduling Framework for Concurrent PIM and CPU Execution on Mobile Devices**, in *Proceedings of the 53st International Symposium on Computer Architecture* (**ISCA’26**, **Best Paper Candidate**, ^ Joint first authors)
 
   [[BibTex]({{ site.baseurl.url }}/resume/publications/bibtex/11617439.txt)]
   [[Link](https://ieeexplore.ieee.org/document/11617439)]

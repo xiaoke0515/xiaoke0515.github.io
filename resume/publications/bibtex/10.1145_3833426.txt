@@ -1,0 +1,15 @@
+@article{10.1145/3833426,
+author = {Zhao, Yilong and Liu, Fangxin and Hu, Yiwei and Wang, Zongwu and Gao, Mingyu and Mutlu, Onur and Xian, He and Dong, Hanlin and Jing, Naifeng and Liang, Xiaoyao and Guan, Haibing and Xu, Qiang and Chen, Chixiao and Quan, Shuxue and Yang, Tao and Jiang, Li},
+title = {GUMPIM: Unitary and Malleable Memory for Processing-in-Memory with Guaranteed PIM Pages},
+year = {2026},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+issn = {1544-3566},
+url = {https://doi.org/10.1145/3833426},
+doi = {10.1145/3833426},
+abstract = {DRAM-based Processing-in-Memory (PIM) addresses the “memory wall” by executing computations directly inside main memory. However, memory interleaving and virtual memory limit contiguous data size visible to PIM units, constraining PIM task granularity. Fine-grained PIM tasks incur significant offloading overhead that negates PIM performance benefits. To mitigate this, existing PIM systems drastically isolate PIM memory or disable memory interleaving. These design choices, however, decrease the CPU memory bandwidth and introduce extra data transfer, leading to an additional “system memory wall” that degrades CPU performance and must be resolved to realize PIM’s full potential. In this work, we propose GUMPIM, a PIM system that allows interleaved CPU pages and non-interleaved PIM pages to coexist in a Unitary and Malleable memory space with Guaranteed PIM page allocation. GUMPIM enables zero-copy during PIM task offloading and maintains CPU memory bandwidth while ensuring low PIM offloading overhead. First, we propose a dual-track memory management mechanism consisting of independent page allocation and address translation for CPU and PIM pages. Second, we design GUMPIM interface hardware on PIM-enabled DRAMs to provide a dynamic address mapping for the different data layouts of CPU and PIM pages. Third, we propose a PIM-assisted page migration mechanism that transparently migrates pages while preserving CPU access bandwidth, thereby enabling guaranteed and accelerated PIM page allocation. GUMPIM requires no changes to commodity DRAM standards; all hardware modifications are limited to the DRAM side, ensuring full compatibility with existing CPUs and enabling immediate deployment on current HBMx- and LPDDRx-based PIM platforms. Our results show only <0.1\% performance degradation for CPU workloads on GUMPIM, in contrast to the 25.8\% degradation on PIM systems with memory interleaving turned off. For PIM workloads, GUMPIM reduces memory allocation and CPU-part computation times by 2.7{\texttimes} and 4.93{\texttimes}, respectively, yielding an end-to-end 2.3{\texttimes} speedup over a state-of-the-art baseline system.},
+note = {Just Accepted},
+journal = {ACM Trans. Archit. Code Optim.},
+month = aug,
+keywords = {Processing in Memory (PIM), DRAM, Address Mapping, Page Migration}
+}
