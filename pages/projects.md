@@ -11,6 +11,9 @@ permalink: /projects/
 <!--<p>About <a href="{{"/resume/resume/index.html" | prepend: site.baseurl}}">ME</a></p>-->
 
 
+#### **OPPO** `Aug. 2026 - Oct. 2026`
+_Research Intern_ <br>
+
 #### **Advanced Computer Architecture Laboratory, SJTU** `Sept. 2022 - Now`
 
 _Ph.D. Student_ <br>

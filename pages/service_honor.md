@@ -31,6 +31,7 @@ permalink: /service_honor/
 - Journal of Systems Architecture (JSA) [CCF-B]
 - Neural Networks (NEUNET) [CCF-B]
 - Knowledge-based Systems (KBS) [CCF-C]
+- IEEE Micro
 
 <!-- **Peer Review Experience:**
 
